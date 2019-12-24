@@ -20,7 +20,7 @@ const $ = plugins();
 const PRODUCTION = !!(yargs.argv.production);
 
 // Load settings from settings.yml
-const {COMPATIBILITY, PATHS} = loadConfig();
+const { COMPATIBILITY, PATHS } = loadConfig();
 
 function loadConfig() {
     let ymlFile = fs.readFileSync('config.yml', 'utf8');
@@ -59,11 +59,11 @@ function sass() {
         .pipe(
             $.autoprefixer()
         )
-        .pipe( $.if( PRODUCTION, $.cleanCss({ compatibility: 'ie9' }) ) )
-        .pipe( $.if( !PRODUCTION, $.sourcemaps.write() ) ) 
+        .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
+        .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
         .pipe($.rename(function (path) {
             console.log(path);
-        }))               
+        }))
         .pipe(gulp.dest(PATHS.dist + '/css'))
         .pipe(browser.stream());
 }
@@ -157,7 +157,7 @@ function reload(done) {
 // Watch for changes to static assets, pages, Sass, and JavaScript
 function watch() {
     gulp.watch(PATHS.pages).on('all', gulp.series(pages, browser.reload));
-    gulp.watch(PATHS.css).on('all', gulp.series(sass));
-    gulp.watch(PATHS.entries).on('all', gulp.series(javascript, browser.reload));
+    gulp.watch('scss/**/*.scss').on('all', gulp.series(sass));
+    gulp.watch('js/**/*.js').on('all', gulp.series(javascript, browser.reload));
     gulp.watch(PATHS.images).on('all', gulp.series(images, browser.reload));
 }

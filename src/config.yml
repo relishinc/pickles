@@ -25,4 +25,5 @@ PATHS:
   # Paths to JavaScript entry points for webpack to bundle modules
   entries:
     - "js/**/*.js"
+    - "!js/modules/**/*.js"
     - "!js/polyfills/**/*.js"
