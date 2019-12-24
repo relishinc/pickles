@@ -1,0 +1,89 @@
+@import 'sass-easing';
+@import '../inc/mixins';
+
+// Modals
+// --------------------------------------------------
+
+$overlay-bg-color: rgba(#1F1E20, 0.96);
+$modal-bg-color: #fff;
+
+body.overlay-open {
+  overflow: hidden;
+
+  html.touch & {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    padding-top: 0;
+  }
+
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  background: $overlay-bg-color;
+  transition: visibility 0s linear 0.5s, opacity 0.35s;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9999;
+
+  // @include breakpoint(small down) {
+  //   height: 100%; // 100vh is messed on mobile
+  //   max-height: 100%; // 100vh is messed on mobile
+  // }
+
+  &.open {
+    opacity: 1;
+    transition: opacity 0.5s $easeInOutCirc;
+    visibility: visible;
+    pointer-events: auto;
+
+    .modal {
+      transform: translateX(-50%) translateY(-50%);
+      opacity: 1;
+      transition: transform 0.4s $easeOutSine 0.25s, opacity 0.4s $easeOutSine 0.25s, box-shadow 0.4s $easeOutSine 0.25s;
+    }
+
+  }
+
+  .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 96vw;
+    max-width: 600px;
+    transition: transform 0.25s, opacity 0.25s, box-shadow 0.25s;
+    transform: translateX(-50%) translateY(-50%) translateY(30px);
+    background: $modal-bg-color;
+    opacity: 0;
+    /* ie 11 fix */
+    display: flex;
+    flex-direction: column;
+    /* ie 11 fix */
+
+    &.modal--sm {
+      max-width: 400px;
+    }
+
+    &.modal--lg {
+      max-width: 900px;
+    }
+
+    &.modal--xl {
+      max-width: 90vw;
+    }
+
+  }
+
+  // .modal
+
+}
+
+// .overlay
