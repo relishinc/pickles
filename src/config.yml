@@ -15,6 +15,13 @@ PATHS:
   pages: "panini/pages/**/*.html"
   # Path to images folder
   images: "img/**/*.*"
+  js: 
+    - "js/**/*.js"
+    - "!js/index.js"
+    - "!js/polyfills/**/*.js"
+    - "!js/tests/**/*.js"
+  examples: 
+    - 'js/examples/**/*.js'
   # Path to scss folders
   css:
     - "scss/**/*.scss"
@@ -24,6 +31,4 @@ PATHS:
     - "node_modules/awesome-sass-easing"
   # Paths to JavaScript entry points for webpack to bundle modules
   entries:
-    - "js/**/*.js"
-    - "!js/modules/**/*.js"
-    - "!js/polyfills/**/*.js"
+    - "js/index.js"

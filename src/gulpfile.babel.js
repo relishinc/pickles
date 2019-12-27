@@ -7,8 +7,7 @@ import gulp from 'gulp';
 import rimraf from 'rimraf';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import webpackStream from 'webpack-stream';
-import webpack2 from 'webpack';
+import webpack from 'webpack-stream';
 import named from 'vinyl-named';
 import through from 'through';
 import panini from 'panini';
@@ -32,11 +31,11 @@ var URL = 'http://pickles.local/demo';
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('deploy',
-    gulp.series(clean, sass, javascript, images, pages));
+    gulp.series(clean, sass, js, examples, bundle, images, pages));
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
-    gulp.series(clean, sass, javascript, images, pages));
+    gulp.series(clean, sass, js, examples, bundle, images, pages));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -45,6 +44,7 @@ gulp.task('default',
 // Delete the "dist" folder
 // This happens every time a build starts
 function clean(done) {
+    rimraf(PATHS.demo, function() {});
     rimraf(PATHS.dist, done);
 }
 
@@ -68,49 +68,49 @@ function sass() {
         .pipe(browser.stream());
 }
 
+function js() {
+    return gulp.src(PATHS.js)
+        //.pipe(umd())
+        .pipe(gulp.dest(PATHS.dist + '/js'));
+}
 
-let webpackConfig = {
-    module: {
-        rules: [
-            {
-                test: /.js$/,
-                use: [
+function examples() {
+    return gulp.src(PATHS.examples)
+        .pipe(named())
+        .pipe( webpack( {
+            module: {
+                rules: [
                     {
-                        loader: 'babel-loader'
+                        test: /.js$/,
+                        use: [
+                            {
+                                loader: 'babel-loader'
+                            }
+                        ]
                     }
                 ]
-            }
-        ]
-    },
-    externals: {
-        jquery: 'jQuery'
-    },
-    resolve: {
-        alias: {
-        }
-    }
-};
+            },
+            externals: {
+                jquery: 'jQuery'
+            },
+            resolve: {
+                alias: {}
+            }                    
+        } ) )
+        .pipe( gulp.dest( PATHS.dist + '/js/examples' ) );
+}
 
 // Combine JavaScript into one file
 // In production, the file is minified
-function javascript() {
+function bundle() {
     return gulp.src(PATHS.entries)
-        .pipe(named())
-        // .pipe(through(function(file) {
-        //     console.log(file.path);
-        //     // file.named now equals the basename minus the extension
-        // }))        
-        .pipe(webpackStream(webpackConfig, webpack2))
+        .pipe( webpack( require( './webpack.config.js' ) ) )
         .pipe($.if(PRODUCTION, $.uglify()
             .on('error', e => {
                 console.log(e);
             })
         ))
-        .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
-        // .pipe($.rename(function (path) {
-        //     console.log(path);
-        // }))         
-        .pipe(gulp.dest(PATHS.dist + '/js'));
+        .pipe( gulp.dest( PATHS.dist + '/js/lib' ) );
 }
 
 // Copy images to the "dist" folder
@@ -156,8 +156,8 @@ function reload(done) {
 
 // Watch for changes to static assets, pages, Sass, and JavaScript
 function watch() {
-    gulp.watch(PATHS.pages).on('all', gulp.series(pages, browser.reload));
+    gulp.watch(PATHS.pages).on('all', gulp.series(pages, reload));
     gulp.watch('scss/**/*.scss').on('all', gulp.series(sass));
-    gulp.watch('js/**/*.js').on('all', gulp.series(javascript, browser.reload));
-    gulp.watch(PATHS.images).on('all', gulp.series(images, browser.reload));
+    gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, examples, reload));
+    gulp.watch(PATHS.images).on('all', gulp.series(images, reload));
 }
