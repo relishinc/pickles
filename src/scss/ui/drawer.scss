@@ -5,18 +5,21 @@
 // Drawer nav
 // --------------------------------------------------
 
-$drawer-width-desktop: 20%;
-$drawer-width-phone: 20%;
-$drawer-breakpoint: 700px;
+$drawer-width-desktop: 20% !default;
+$drawer-width-phone: 80% !default;
+$drawer-breakpoint: 700px !default;
 
-$drawer-easing: $easeInOutCirc;
-$drawer-bg: #888;
+$drawer-easing: $easeInOutCirc !default;
+$drawer-bg: #fff !default;
+$drawer-shadow: 0 0 50px rgba(#000, 0.5) !default;
+$drawer-content-opacity: 0.25 !default;
 
-$drawer-hamburger-color: #333;
-$drawer-hamburger-width: 30px;
-$drawer-hamburger-bar-height: 2px;
-$drawer-hamburger-bar-gap: 6px;
-$drawer-hamburger-easing: $easeInOutBack;
+$drawer-hamburger-color: #333 !default;
+$drawer-hamburger-width: 30px !default;
+$drawer-hamburger-bar-height: 2px !default;
+$drawer-hamburger-bar-gap: 6px !default;
+$drawer-hamburger-easing: $easeInOutBack !default;
+
 $drawer-hamburger-translate: ( ( sin(45deg) * $drawer-hamburger-width ) - 2 * ( $drawer-hamburger-bar-height + $drawer-hamburger-bar-gap ) ) / 2;
 
 
@@ -78,33 +81,33 @@ $drawer-hamburger-translate: ( ( sin(45deg) * $drawer-hamburger-width ) - 2 * ( 
 body.drawer--open {
 	overflow: hidden;
 	
-    .hamburger {
-        
-        .bar {
-        transition: all 0.35s $drawer-hamburger-easing;
-        transform: translateX(100%) scaleX(0);
-        opacity: 0;
-        background: $drawer-hamburger-color;
-        }
-
-        .bar:first-child {
-        transform-origin: 0 50%;
-        transform: translateY(-$drawer-hamburger-translate) rotate(45deg);
-        opacity: 1;
-        }
-
-        .bar:last-child {
-        transform-origin: 0 50%;
-        transform: translateY($drawer-hamburger-translate) rotate(-45deg);
-        opacity: 1;
-        }
-
+  .hamburger {
+      
+    .bar {
+      transition: all 0.35s $drawer-hamburger-easing;
+      transform: translateX(75%) scaleX(0);
+      opacity: 0;
+      background: $drawer-hamburger-color;
     }
-    // .hamburger
+
+    .bar:first-child {
+      transform-origin: 0 50%;
+      transform: translateY(-$drawer-hamburger-translate) rotate(45deg);
+      opacity: 1;
+    }
+
+    .bar:last-child {
+      transform-origin: 0 50%;
+      transform: translateY($drawer-hamburger-translate) rotate(-45deg);
+      opacity: 1;
+    }
+
+  }
+  // .hamburger
 
   #content {
     transform: translate(-$drawer-width-desktop / 2, 0);
-    opacity: 0.25;
+    opacity: $drawer-content-opacity;
 
     @media only screen and (max-width: $drawer-breakpoint) {
       transform: translate(-$drawer-width-phone / 2, 0);
@@ -114,7 +117,7 @@ body.drawer--open {
 
   .drawer {
     transform: translate(-100%, 0);
-    box-shadow: 0 0 20px fade(#000, 25);
+    box-shadow: $drawer-shadow;
   }
 
 }

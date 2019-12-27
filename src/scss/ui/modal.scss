@@ -4,8 +4,8 @@
 // Modal
 // --------------------------------------------------
 
-$overlay-bg-color: rgba(#1F1E20, 0.9);
-$modal-bg-color: #fff;
+$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+$modal-bg-color: #fff !default;
 
 body.overlay-open {
   overflow: hidden;
