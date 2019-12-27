@@ -3,45 +3,41 @@
 
 export default class ScrollListener {
 
-  constructor( $callback = () => null, $immediate = false ) 
-  {
+  constructor($callback = () => null, $immediate = false) {
     this.lastScrollY = 0;
-    
+
     let ticking = false;
-  
+
     let update = () => {
       $callback();
       ticking = false;
     };
-  
+
     let requestTick = () => {
-      if ( ! ticking ) 
-      {
+      if (!ticking) {
         window.requestAnimationFrame(update);
         ticking = true;
       }
     };
-  
+
     this.onScroll = () => {
       this.lastScrollY = window.scrollY;
       requestTick();
-    };                
+    };
 
-    this.on(); 
-    
-    if ( $immediate ) $callback();
+    this.on();
+
+    if ($immediate) $callback();
   }
 
-  off()
-  {
+  off() {
     $(window)
       .off('scroll.scrollListener');
   }
 
-  on()
-  {
+  on() {
     $(window)
-      .on('scroll.scrollListener', e => this.onScroll()); 
+      .on('scroll.scrollListener', e => this.onScroll());
   }
 
 }

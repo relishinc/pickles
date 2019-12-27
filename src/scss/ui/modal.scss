@@ -1,10 +1,10 @@
 @import 'sass-easing';
 @import '../inc/mixins';
 
-// Modals
+// Modal
 // --------------------------------------------------
 
-$overlay-bg-color: rgba(#1F1E20, 0.96);
+$overlay-bg-color: rgba(#1F1E20, 0.9);
 $modal-bg-color: #fff;
 
 body.overlay-open {
@@ -33,6 +33,10 @@ body.overlay-open {
   visibility: hidden;
   opacity: 0;
   z-index: 9999;
+
+  * { 
+    box-sizing: border-box;
+  }
 
   // @include breakpoint(small down) {
   //   height: 100%; // 100vh is messed on mobile

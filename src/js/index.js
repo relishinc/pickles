@@ -1,15 +1,16 @@
 import $ from 'jquery';
+
 import Modal from './ui/modal';
+import Lightbox from './ui/lightbox';
+import Drawer from './ui/drawer';
 
 import FocusTrap from './utils/focus-trap';
 import ScrollListener from './utils/scroll-listener';
 
-const modal = new Modal();
-const focusTrap = new FocusTrap();
-const scrollListener = new ScrollListener();
-
-export default { 
-  modal,
-  focusTrap,
-  scrollListener
+export default {
+  Modal,
+  Lightbox,
+  Drawer,
+  FocusTrap,
+  ScrollListener
 };

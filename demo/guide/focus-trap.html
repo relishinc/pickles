@@ -4,14 +4,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title></title>
+	<title>Focus Trap</title>
 
 	<link rel="stylesheet" href="../../dist/css/main.css">
 	<link rel="stylesheet" href="">
 
 	<style type="text/css">
-	
-
+	 #here { background: #ddd; padding: 1em; } 
 	</style>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -19,20 +18,54 @@
 </head>
 <body>
 
+<a href="../index.html">⬅️Back</a>
 
-<p>Focus trap</p>
+<h3>Focus trap</h3>
+
+<p>Use the tab key to focus on <a href="#">a link</a></p>
+
+<div id="here">
+  Or tab
+  <a href="#">to</a>
+  <a href="#">these</a>
+  <a href="#">links</a>
+</div>
+
+<p>One last <a href="#">link</a></p>
+
+<p>
+  <label>
+    <input type="checkbox" id="focusToggle"> Trap focus in grey box
+  </label>  
+</p>
 
 <script src="../../dist/js/lib/Pickles.js"></script>
+
 <script>
 
     jQuery(document)
         .ready(function($) {
 
-          console.log(new Modal());
+          var ft = new Pickles.FocusTrap('#here');
+
+          console.log(ft)
+
+          $('#focusToggle')
+            .on('change', function() {
+              if ( $(this).prop('checked') )
+              {
+                ft.start();
+              }
+              else
+              {
+                ft.stop();
+              }
+            });
             
         });
 
 </script>
+
 
 </body>
 </html>

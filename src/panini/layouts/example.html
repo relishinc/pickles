@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{ title }}</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="{{ root }}../dist/css/main.css">
 	<link rel="stylesheet" href="{{ css }}">
 
 	<style type="text/css">
@@ -18,7 +18,10 @@
 </head>
 <body>
 
-{{> body}}
+	<div id="content">
+		{{#if root }}<a href="../index.html">⬅️Back</a>{{/if}}
+		{{> body}}
+    </div>
 
 </body>
 </html>

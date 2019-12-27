@@ -16,27 +16,28 @@ export default class Modal {
 
     // vars
 
+    this.namespace = 'modal';
     this.scrollPosition = 0;
     this.modalElement = null;
 
     // attach click handlers for overlay and close buttons
 
     $(`.${this.overlayClass}`)
-      .on('click.modal', e => {
+      .on(`click.${this.namespace}`, e => {
         if ($(e.target).hasClass(this.overlayClass)) {
           e.preventDefault();
           this.close();
         }
       })
       .find(`.${this.modalClass} [data-close-modal]`)
-      .on('click.modal', e => {
+      .on(`click.${this.namespace}`, e => {
         e.preventDefault();
         this.close();
       });
 
     $(document)
-      .off('.modal')
-      .on('click.modal', this.openSelector, e => {
+      .off(`.${this.namespace}`)
+      .on(`click.${this.namespace}`, this.openSelector, e => {
         e.preventDefault();
         this.open($(e.currentTarget).attr('href'));
       });
@@ -71,7 +72,7 @@ export default class Modal {
           // key listener
 
           this.modalElement
-            .on('keydown', e => this.keyHandler(e));
+            .on(`keydown.${this.namespace}`, e => this.keyHandler(e));
 
         });
 
@@ -98,7 +99,7 @@ export default class Modal {
         // dispatch open event
 
         $(document)
-          .trigger('modal.open', [{ target: this.modalElement }]);
+          .trigger(`${this.namespace}.open`, [{ target: this.modalElement }]);
 
       }, delay); // TO DO - attach to transitionend event
 
@@ -123,7 +124,7 @@ export default class Modal {
         // key listener
 
         modal
-          .off('keydown', e => this.keyHandler(e));
+          .off(`keydown.${this.namespace}`, e => this.keyHandler(e));
 
       });
 
@@ -140,12 +141,12 @@ export default class Modal {
 
     $(window)
       .scrollTop(this.scrollPosition)
-      .trigger('scroll');
+      .trigger(`scroll.${this.namespace}`);
 
     // dispatch close event
 
     $(document)
-      .trigger('modal.close', [{ target: modal }]);
+      .trigger(`${this.namespace}.close`, [{ target: modal }]);
   }
 
   // post-ajax

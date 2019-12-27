@@ -3,32 +3,32 @@
 
 export default class FocusTrap {
 
-  constructor($el) 
-  {
+  constructor($el = null) {
     this.initJqueryPlugins();
-    if ( $el ) this.attach($el);
+    this.attach($el);
   }
 
-  attach($el)
-  {
-    this.element = $el;
+  attach($el) {
+    if (!$el) {
+      console.warn('FocusTrap needs an element to focus on');
+      return;
+    }
+
+    this.element = $el instanceof jQuery ? $el : $($el);
     this.lastFocusedElement = null;
     this.focusableElements = false;
     this.firstFocusableElement = false;
-    this.lastFocusableElement = false;    
+    this.lastFocusableElement = false;
   }
 
-  start($el = false) 
-  {
-    if ( $el ) this.attach($el);
+  start($el = null) {
+    if ($el) this.attach($el);
 
-    if ( ! this.element )
-    {
+    if (!this.element) {
       console.warn('No element set for FocusTrap'); return;
     }
 
-    if ( this.lastFocusedElement == null )
-    {
+    if (this.lastFocusedElement == null) {
       this.lastFocusedElement = $(document.activeElement);
     }
 
@@ -40,56 +40,52 @@ export default class FocusTrap {
 
     this.element
       .off('keydown.focustrap')
-      .on('keydown.focustrap', e => this.keyHandler(e));      
+      .on('keydown.focustrap', e => this.keyHandler(e));
 
   }
 
-  stop()
-  {
-    if ( ! this.element )
-    {
+  stop() {
+    if (!this.element) {
       return;
     }
 
     this.element
-      .off('keydown.focustrap', e => this.keyHandler(e) );   
-      
+      .off('keydown.focustrap');
+
     this.lastFocusedElement.focus();
   }
 
   // handle key events
 
-  keyHandler(e)
-  {
+  keyHandler(e) {
     const KEY_TAB = 9;
     const KEY_ESC = 27;
 
     // focus trapping
 
     let handleBackwardTab = () => {
-      if ( $(document.activeElement).is(this.firstFocusableElement) ) {
+      if ($(document.activeElement).is(this.firstFocusableElement)) {
         e.preventDefault();
         this.lastFocusableElement.focus();
       }
     };
 
     let handleForwardTab = () => {
-      if ( $(document.activeElement).is(this.lastFocusableElement) ) {
+      if ($(document.activeElement).is(this.lastFocusableElement)) {
         e.preventDefault();
         this.firstFocusableElement.focus();
       }
     };
 
     // which keys are pressed
-  
-    switch( e.keyCode ) 
-    {
+
+    switch (e.keyCode) {
       case KEY_TAB:
-        if ( this.focusableElements.length === 1 ) {
+        if (this.focusableElements.length === 1) {
           e.preventDefault();
           break;
-        } 
-        if ( e.shiftKey ) {
+        }
+        if (e.shiftKey) {
           handleBackwardTab();
         } else {
           handleForwardTab();
@@ -103,11 +99,10 @@ export default class FocusTrap {
 
   }
 
-  initJqueryPlugins()
-  {
+  initJqueryPlugins() {
     // add :focusable pseudo selector
     jQuery.extend(jQuery.expr[':'], {
-      focusable: function(el, index, selector) {
+      focusable: function (el, index, selector) {
         return $(el).is('button, [href], :input:not([disabled]):not([type="hidden"]), [tabindex]:not([tabindex="-1"]), iframe, object, embed');
       }
     });

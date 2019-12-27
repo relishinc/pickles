@@ -1,0 +1,33 @@
+---
+title: 'Scroll Listener'
+styles: '
+body {
+    min-height: 200vh;
+}
+#counter {
+    position: fixed;
+}
+'
+---
+
+<h3>Scroll Listener</h3>
+
+<p>Start scrolling...</p>
+
+<div id="counter"></div>
+
+<script src="../../dist/js/lib/Pickles.js"></script>
+
+<script>
+
+    jQuery(document)
+        .ready(function($) {
+
+            var s = new Pickles.ScrollListener(function() {
+                $('#counter').text($(window).scrollTop());
+            });
+
+        });
+
+</script>
+

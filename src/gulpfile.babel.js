@@ -44,7 +44,7 @@ gulp.task('default',
 // Delete the "dist" folder
 // This happens every time a build starts
 function clean(done) {
-    rimraf(PATHS.demo, function() {});
+    rimraf(PATHS.demo, function () { });
     rimraf(PATHS.dist, done);
 }
 
@@ -77,7 +77,7 @@ function js() {
 function examples() {
     return gulp.src(PATHS.examples)
         .pipe(named())
-        .pipe( webpack( {
+        .pipe(webpack({
             module: {
                 rules: [
                     {
@@ -95,22 +95,22 @@ function examples() {
             },
             resolve: {
                 alias: {}
-            }                    
-        } ) )
-        .pipe( gulp.dest( PATHS.dist + '/js/examples' ) );
+            }
+        }))
+        .pipe(gulp.dest(PATHS.dist + '/js/examples'));
 }
 
 // Combine JavaScript into one file
 // In production, the file is minified
 function bundle() {
     return gulp.src(PATHS.entries)
-        .pipe( webpack( require( './webpack.config.js' ) ) )
+        .pipe(webpack(require('./webpack.config.js')))
         .pipe($.if(PRODUCTION, $.uglify()
             .on('error', e => {
                 console.log(e);
             })
         ))
-        .pipe( gulp.dest( PATHS.dist + '/js/lib' ) );
+        .pipe(gulp.dest(PATHS.dist + '/js/lib'));
 }
 
 // Copy images to the "dist" folder
@@ -129,6 +129,12 @@ function pages() {
             root: PATHS.panini + 'pages/',
             layouts: PATHS.panini + 'layouts/',
             partials: PATHS.panini + 'partials/',
+            /*
+            pageLayouts: {
+                examples: 'example',
+                guide: 'example'
+            },
+            */
             helpers: PATHS.panini + 'helpers/',
             data: PATHS.panini + 'data/'
         }))

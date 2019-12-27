@@ -1,0 +1,78 @@
+@import 'sass-easing';
+@import '../inc/mixins';
+
+// Modal
+// --------------------------------------------------
+
+$overlay-bg-color: rgba(#1F1E20, 0.9);
+$caption-text-color: #fff;
+$spinner-color: #fff;
+
+.lightbox {
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	background: $overlay-bg-color;
+	padding: 2em;
+	z-index: 9999;
+	transition: 0.5s $easeInOutCirc;
+	transform: scale(1.05);
+	opacity: 0;
+	display: flex;
+	flex-direction: column;
+
+	&:before {
+		position: absolute;
+		top: 50%; left: 50%;
+		width: 30px; height: 30px;
+		border-radius: 50%;
+		border: solid 3px $spinner-color;
+		border-left-color: rgba($spinner-color, 0.25);
+		display: block;
+		content: '';
+		animation: 1s spin infinite linear;
+		transition: opacity 0.35s;
+	}
+
+	@keyframes spin {
+		0% { transform: translate(-50%, -50%) rotate(0deg); }
+		100% { transform: translate(-50%, -50%) rotate(360deg); }
+	}
+	
+	.lightbox__image {
+		background-position: center center;
+		background-repeat: no-repeat;
+		background-size: contain;
+		flex: 1;
+		opacity: 0;
+		transition: opacity 0.35s;
+	}
+	
+	.lightbox__caption 
+	{
+		text-align: center;
+		font-size: 0.8rem;
+		line-height: 1.1;
+		margin-top: 1em;
+		color: $caption-text-color;
+	}
+	
+	&.lightbox--open {
+		transform: scale(1);
+		opacity: 1;
+		cursor: -webkit-zoom-out;
+	}
+
+	&.lightbox--loaded {
+
+		.lightbox__image {
+			opacity: 1;
+		}
+
+		&:before {
+			display: none;
+		}
+
+	}
+	
+}

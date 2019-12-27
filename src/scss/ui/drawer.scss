@@ -1,0 +1,121 @@
+@import 'sass-easing';
+@import '../inc/mixins';
+@import '../inc/trig';
+
+// Drawer nav
+// --------------------------------------------------
+
+$drawer-width-desktop: 20%;
+$drawer-width-phone: 20%;
+$drawer-breakpoint: 700px;
+
+$drawer-easing: $easeInOutCirc;
+$drawer-bg: #888;
+
+$drawer-hamburger-color: #333;
+$drawer-hamburger-width: 30px;
+$drawer-hamburger-bar-height: 2px;
+$drawer-hamburger-bar-gap: 6px;
+$drawer-hamburger-easing: $easeInOutBack;
+$drawer-hamburger-translate: ( ( sin(45deg) * $drawer-hamburger-width ) - 2 * ( $drawer-hamburger-bar-height + $drawer-hamburger-bar-gap ) ) / 2;
+
+
+.drawer {
+    transition: all 0.6s $drawer-easing;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: $drawer-width-desktop;
+    background: $drawer-bg;
+    z-index: 99;
+    padding-top: 5em;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    @media only screen and (max-width: $drawer-breakpoint) {
+        width: $drawer-width-phone;
+        min-width: 270px;
+    }
+
+}
+// .drawer
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: $drawer-hamburger-width;
+    cursor: pointer;
+    position: relative;
+
+    .bar {
+        transition: 0.2s;
+        display: block;
+        height: $drawer-hamburger-bar-height;
+        background: $drawer-hamburger-color;
+        margin: $drawer-hamburger-bar-gap / 2 0;
+        border-radius: 99px;
+
+        &:first-child,
+        &:last-child {
+            transform-origin: 0 50%;
+        }
+
+    }
+    
+    html.no-touch &:hover {
+    }
+
+}	
+// .hamburger
+
+#content {
+    transition: all 0.6s $drawer-easing;
+}
+// .site-content
+
+body.drawer--open {
+	overflow: hidden;
+	
+    .hamburger {
+        
+        .bar {
+        transition: all 0.35s $drawer-hamburger-easing;
+        transform: translateX(100%) scaleX(0);
+        opacity: 0;
+        background: $drawer-hamburger-color;
+        }
+
+        .bar:first-child {
+        transform-origin: 0 50%;
+        transform: translateY(-$drawer-hamburger-translate) rotate(45deg);
+        opacity: 1;
+        }
+
+        .bar:last-child {
+        transform-origin: 0 50%;
+        transform: translateY($drawer-hamburger-translate) rotate(-45deg);
+        opacity: 1;
+        }
+
+    }
+    // .hamburger
+
+  #content {
+    transform: translate(-$drawer-width-desktop / 2, 0);
+    opacity: 0.25;
+
+    @media only screen and (max-width: $drawer-breakpoint) {
+      transform: translate(-$drawer-width-phone / 2, 0);
+    }
+
+  }
+
+  .drawer {
+    transform: translate(-100%, 0);
+    box-shadow: 0 0 20px fade(#000, 25);
+  }
+
+}
+// body.drawer--open

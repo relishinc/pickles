@@ -4,14 +4,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title></title>
+	<title>Drawer</title>
 
 	<link rel="stylesheet" href="../../dist/css/main.css">
-	<link rel="stylesheet" href="../../dist/css/ui/modal.css">
+	<link rel="stylesheet" href="../../dist/css/ui/drawer.css">
 
 	<style type="text/css">
-	
-
+	 .hamburger { margin: 2em 0; } .drawer { padding: 6em 1em; } 
 	</style>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -19,24 +18,38 @@
 </head>
 <body>
 
+<a href="../index.html">⬅️Back</a>
 
-<p>This is a <a href="#something" data-modal>modal</a></p>
+<div class="hamburger" data-drawer-toggle>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+</div> 
 
-<div id="something" class="modal-overlay">
-    <div class="modal">
-        Say hello to my little modal
-    </div>
+<div class="drawer">
+    <p>This is the drawer.</p>
+    <p><a href="#" data-drawer-toggle>Goodbye</a></p>
 </div>
 
+<div id="content">
+    <h3>Drawer</h3>
+    <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
+</div>
+    
 <script src="../../dist/js/lib/Pickles.js"></script>
+
 <script>
 
     jQuery(document)
         .ready(function($) {
-            
+
+           var d = new Pickles.Drawer();
+
         });
 
 </script>
+
+
 
 </body>
 </html>
