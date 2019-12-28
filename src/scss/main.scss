@@ -46,3 +46,8 @@ code {
   display: inline-block;
   padding: 0 0.3em;
 }
+
+body pre.prettyprint {
+  padding: 0;
+  border: none;
+}

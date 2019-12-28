@@ -10,5 +10,5 @@ function escapeHtml(unsafe) {
 }
 
 module.exports = function (options) {
-    return '<pre><code>' + escapeHtml(beautify(options.fn(this).trim())) + '</code></pre>';
+    return '<pre class="prettyprint lang-html"><code>' + escapeHtml(beautify(options.fn(this).trim())) + '</code></pre>';
 }

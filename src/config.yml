@@ -30,6 +30,7 @@ PATHS:
   # Paths to Sass libraries, which can then be loaded with @import
   sass:
     - "node_modules/awesome-sass-easing"
+    - "node_modules/flexboxgrid/dist"
   # Paths to JavaScript entry points for webpack to bundle modules
   entries:
     - "js/index.js"
