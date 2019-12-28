@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<script src="../../dist/js/lib/Pickles.js"></script>
+<script src="../../dist/js/Pickles.js"></script>
 
 <script>
 
@@ -43,7 +43,25 @@
         });
 
 </script>
+<pre><code>&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
 
+&lt;div id=&quot;something&quot; class=&quot;modal-overlay&quot;&gt;
+    &lt;div class=&quot;modal&quot;&gt;
+        &lt;p&gt;Say hello to my little modal&lt;/p&gt;
+        &lt;a href=&quot;#&quot; data-close-modal&gt;Goodbye&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    jQuery(document)
+        .ready(function($) {
+
+            var m = new Pickles.Modal();
+
+        });
+&lt;/script&gt;</code></pre>
 
 
 </body>

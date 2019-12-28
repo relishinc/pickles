@@ -10,25 +10,11 @@ styles: '
 
 <h3>Modal</h3>
 
-<p>This is a <a href="#something" data-modal>modal</a></p>
+{{> modal-example}}
 
-<div id="something" class="modal-overlay">
-    <div class="modal">
-        <p>Say hello to my little modal</p>
-        <a href="#" data-close-modal>Goodbye</a>
-    </div>
-</div>
+{{#code}}
 
-<script src="../../dist/js/lib/Pickles.js"></script>
+{{> modal-example}}
 
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-           var m = new Pickles.Modal();
-
-        });
-
-</script>
+{{/code}}
 

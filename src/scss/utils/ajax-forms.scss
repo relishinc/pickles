@@ -1,0 +1,18 @@
+@import 'sass-easing';
+@import '../inc/mixins';
+
+form[data-ajax] {
+
+    // disable and dim the form while submitting
+    
+    &.form--submitting {
+        pointer-events: none;
+        user-select: none;
+
+        > * {
+            opacity: 0.15;
+        }
+
+    }
+
+}

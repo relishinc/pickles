@@ -109,6 +109,10 @@ body.drawer--open {
     transform: translate(-$drawer-width-desktop / 2, 0);
     opacity: $drawer-content-opacity;
 
+    * {
+      pointer-events: none;
+    }
+
     @media only screen and (max-width: $drawer-breakpoint) {
       transform: translate(-$drawer-width-phone / 2, 0);
     }

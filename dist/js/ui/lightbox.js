@@ -18,10 +18,10 @@ export default class Lightbox {
 
         // go
 
-        this.initEvents();
+        this.init();
     }
 
-    initEvents() {
+    init() {
         $(this.options.selector)
             .off(`click.${this.namespace}`)
             .on(`click.${this.namespace}`, (e) => {

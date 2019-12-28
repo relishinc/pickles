@@ -31,11 +31,11 @@ var URL = 'http://pickles.local/demo';
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('deploy',
-    gulp.series(clean, sass, js, examples, bundle, images, pages));
+    gulp.series(clean, sass, js, examples, bundle, images, json, pages));
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
-    gulp.series(clean, sass, js, examples, bundle, images, pages));
+    gulp.series(clean, sass, js, examples, bundle, images, json, pages));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -61,9 +61,6 @@ function sass() {
         )
         .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
         .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
-        .pipe($.rename(function (path) {
-            console.log(path);
-        }))
         .pipe(gulp.dest(PATHS.dist + '/css'))
         .pipe(browser.stream());
 }
@@ -110,7 +107,7 @@ function bundle() {
                 console.log(e);
             })
         ))
-        .pipe(gulp.dest(PATHS.dist + '/js/lib'));
+        .pipe(gulp.dest(PATHS.dist + '/js'));
 }
 
 // Copy images to the "dist" folder
@@ -129,16 +126,15 @@ function pages() {
             root: PATHS.panini + 'pages/',
             layouts: PATHS.panini + 'layouts/',
             partials: PATHS.panini + 'partials/',
-            /*
-            pageLayouts: {
-                examples: 'example',
-                guide: 'example'
-            },
-            */
             helpers: PATHS.panini + 'helpers/',
             data: PATHS.panini + 'data/'
         }))
         .pipe(gulp.dest(PATHS.demo));
+}
+
+function json() {
+    return gulp.src(PATHS.json)
+        .pipe(gulp.dest(PATHS.demo + '/json'));
 }
 
 // Start BrowserSync to preview the site in
@@ -165,5 +161,6 @@ function watch() {
     gulp.watch(PATHS.pages).on('all', gulp.series(pages, reload));
     gulp.watch('scss/**/*.scss').on('all', gulp.series(sass));
     gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, examples, reload));
+    gulp.watch(PATHS.json).on('all', gulp.series(json, reload));
     gulp.watch(PATHS.images).on('all', gulp.series(images, reload));
 }

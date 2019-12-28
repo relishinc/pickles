@@ -1,0 +1,21 @@
+<p>This is a <a href="#something" data-modal>modal</a></p>
+
+<div id="something" class="modal-overlay">
+    <div class="modal">
+        <p>Say hello to my little modal</p>
+        <a href="#" data-close-modal>Goodbye</a>
+    </div>
+</div>
+
+<script src="../../dist/js/Pickles.js"></script>
+
+<script>
+
+    jQuery(document)
+        .ready(function($) {
+
+           var m = new Pickles.Modal();
+
+        });
+
+</script>

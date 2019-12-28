@@ -1,0 +1,28 @@
+<div class="hamburger" data-drawer-toggle>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+</div> 
+
+<div class="drawer">
+    <p>This is the drawer.</p>
+    <p><a href="#" data-drawer-toggle>Goodbye</a></p>
+</div>
+
+<div id="content">
+    <h3>Drawer</h3>
+    <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
+</div>
+    
+<script src="../../dist/js/Pickles.js"></script>
+
+<script>
+
+    jQuery(document)
+        .ready(function($) {
+
+           var d = new Pickles.Drawer();
+
+        });
+
+</script>

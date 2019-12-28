@@ -1,0 +1,10 @@
+form[data-ajax].form--submitting {
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+  form[data-ajax].form--submitting > * {
+    opacity: 0.15; }
+
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInV0aWxzL2FqYXgtZm9ybXMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHQTtFQUtRLG9CQUFvQjtFQUNwQix5QkFBaUI7S0FBakIsc0JBQWlCO01BQWpCLHFCQUFpQjtVQUFqQixpQkFBaUIsRUFBQTtFQU56QjtJQVNZLGFBQWEsRUFBQSIsImZpbGUiOiJ1dGlscy9hamF4LWZvcm1zLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkBpbXBvcnQgJ3Nhc3MtZWFzaW5nJztcbkBpbXBvcnQgJy4uL2luYy9taXhpbnMnO1xuXG5mb3JtW2RhdGEtYWpheF0ge1xuXG4gICAgLy8gZGlzYWJsZSBhbmQgZGltIHRoZSBmb3JtIHdoaWxlIHN1Ym1pdHRpbmdcbiAgICBcbiAgICAmLmZvcm0tLXN1Ym1pdHRpbmcge1xuICAgICAgICBwb2ludGVyLWV2ZW50czogbm9uZTtcbiAgICAgICAgdXNlci1zZWxlY3Q6IG5vbmU7XG5cbiAgICAgICAgPiAqIHtcbiAgICAgICAgICAgIG9wYWNpdHk6IDAuMTU7XG4gICAgICAgIH1cblxuICAgIH1cblxufSJdfQ== */

@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ajax Forms</title>
+
+	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../dist/css/utils/ajax-forms.css">
+
+	<style type="text/css">
+	 label { display: block; margin: 1em 0 0.5em; } input[type=email], input[type=name] { font: inherit; padding: 0.25em; border: none; border-radius: 0.25em; display: block; width: 100%; max-width: 250px; margin-bottom: 1em; } button { background: #ccc; border: none; padding: 0.5em; font: inherit; border-radius: 0.25em; } .alert { margin: 1em 0; } .alert.success { color: green; } .alert.error { color: red; } 
+	</style>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<a href="../index.html">⬅️Back</a>
+
+<h3>Ajax forms</h3>
+
+<form data-ajax="../json/ajax.json">
+
+    <label>Name</label>
+    <input type="name" placeholder="Enter name" required="required">
+
+    <label>Email</label>
+    <input type="email" placeholder="Enter email" required="required">
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<script src="../../dist/js/Pickles.js"></script>
+<script>
+
+    let af = new Pickles.AjaxForms();
+
+</script>
+
+</body>
+</html>

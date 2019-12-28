@@ -13,6 +13,7 @@ PATHS:
   # Path to panini
   panini: "panini/"
   pages: "panini/pages/**/*.html"
+  json: "json/**/*.*"
   # Path to images folder
   images: "img/**/*.*"
   js: 

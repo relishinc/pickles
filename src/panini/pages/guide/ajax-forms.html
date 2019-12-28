@@ -1,0 +1,58 @@
+---
+title: "Ajax Forms"
+css: '../../dist/css/utils/ajax-forms.css'
+styles: '
+label {
+    display: block;
+    margin: 1em 0 0.5em;
+}
+input[type=email],
+input[type=name] {
+    font: inherit;
+    padding: 0.25em;
+    border: none;
+    border-radius: 0.25em;
+    display: block;
+    width: 100%;
+    max-width: 250px;
+    margin-bottom: 1em;
+}
+button {
+    background: #ccc;
+    border: none;
+    padding: 0.5em;
+    font: inherit;
+    border-radius: 0.25em;
+}
+.alert {
+    margin: 1em 0;
+}
+.alert.success {
+    color: green;
+}
+.alert.error {
+    color: red;
+}
+'
+---
+
+<h3>Ajax forms</h3>
+
+<form data-ajax="../json/ajax.json">
+
+    <label>Name</label>
+    <input type="name" placeholder="Enter name" required="required">
+
+    <label>Email</label>
+    <input type="email" placeholder="Enter email" required="required">
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<script src="../../dist/js/Pickles.js"></script>
+<script>
+
+    let af = new Pickles.AjaxForms();
+
+</script>
