@@ -23,27 +23,30 @@
 
 <h3>Modal</h3>
 
-<p>This is a <a href="#something" data-modal>modal</a></p>
-
-<div id="something" class="modal-overlay">
-    <div class="modal">
-        <p>Say hello to my little modal</p>
-        <a href="#" data-close-modal>Goodbye</a>
-    </div>
-</div>
-
-<script src="../../dist/js/Pickles.js"></script>
-
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-           var m = new Pickles.Modal();
-
-        });
-
-</script>
+<div class="panes">
+    <div class="pane">
+        <p>This is a <a href="#something" data-modal>modal</a></p>
+        
+        <div id="something" class="modal-overlay">
+            <div class="modal">
+                <p>Say hello to my little modal</p>
+                <a href="#" data-close-modal>Goodbye</a>
+            </div>
+        </div>
+        
+        <script src="../../dist/js/Pickles.js"></script>
+        
+        <script>
+        
+            jQuery(document)
+                .ready(function($) {
+        
+                   var m = new Pickles.Modal();
+        
+                });
+        
+        </script>    </div>
+    <div class="pane">
 <pre class="prettyprint lang-html"><code>&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
 
 &lt;div id=&quot;something&quot; class=&quot;modal-overlay&quot;&gt;
@@ -62,8 +65,47 @@
             var m = new Pickles.Modal();
 
         });
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;</code></pre>    </div>
+</div>
+<h4>SASS variables</h4>
 
+<pre><code>$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+$modal-bg-color: #fff !default;
+</code></pre>
+
+
+
+
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
+
+</script>
+-->
 
 </body>
 </html>

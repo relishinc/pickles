@@ -21,7 +21,19 @@
     jQuery(document)
         .ready(function($) {
 
-           var d = new Pickles.Drawer();
+            // create the drawer
+
+            var d = new Pickles.Drawer();
+
+            // watch the open and close events
+
+            $(document)
+                .on('drawer.open', e => {
+                    console.log('the drawer is open');
+                })
+                .on('drawer.close', e => {
+                    console.log('the drawer is closed');
+                });         
 
         });
 

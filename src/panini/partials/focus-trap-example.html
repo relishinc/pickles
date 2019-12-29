@@ -1,0 +1,47 @@
+<p>Use the tab key to focus on <a href="#">a link</a></p>
+
+<div id="here">
+  Or tab
+  <a href="#">to</a>
+  <a href="#">these</a>
+  <a href="#">links</a>
+</div>
+
+<p>One last <a href="#">link</a></p>
+
+<p>
+  <label>
+    <input type="checkbox" id="focusToggle"> Trap focus in grey box
+  </label>  
+</p>
+
+<script src="../../dist/js/Pickles.js"></script>
+
+<script>
+
+    jQuery(document)
+        .ready(function($) {
+
+            // create the focus trap
+
+            var ft = new Pickles.FocusTrap('#here');
+
+            // start or stop the trap when the checkbox changes
+
+            $('#focusToggle')
+                .on('change', function() {
+                    if ( $(this).prop('checked') )
+                    {
+                        // start the focus trap
+                        ft.start(); 
+                    }
+                    else
+                    {
+                        // stop the focus trap
+                        ft.stop();
+                    }
+                });
+            
+        });
+
+</script>

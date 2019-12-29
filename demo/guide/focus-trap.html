@@ -23,50 +23,130 @@
 
 <h3>Focus trap</h3>
 
-<p>Use the tab key to focus on <a href="#">a link</a></p>
+<div class="panes">
+    <div class="pane">
+        <p>Use the tab key to focus on <a href="#">a link</a></p>
+        
+        <div id="here">
+          Or tab
+          <a href="#">to</a>
+          <a href="#">these</a>
+          <a href="#">links</a>
+        </div>
+        
+        <p>One last <a href="#">link</a></p>
+        
+        <p>
+          <label>
+            <input type="checkbox" id="focusToggle"> Trap focus in grey box
+          </label>  
+        </p>
+        
+        <script src="../../dist/js/Pickles.js"></script>
+        
+        <script>
+        
+            jQuery(document)
+                .ready(function($) {
+        
+                    // create the focus trap
+        
+                    var ft = new Pickles.FocusTrap('#here');
+        
+                    // start or stop the trap when the checkbox changes
+        
+                    $('#focusToggle')
+                        .on('change', function() {
+                            if ( $(this).prop('checked') )
+                            {
+                                // start the focus trap
+                                ft.start(); 
+                            }
+                            else
+                            {
+                                // stop the focus trap
+                                ft.stop();
+                            }
+                        });
+                    
+                });
+        
+        </script>    </div>
+    <div class="pane">
+<pre class="prettyprint lang-html"><code>&lt;p&gt;Use the tab key to focus on &lt;a href=&quot;#&quot;&gt;a link&lt;/a&gt;&lt;/p&gt;
 
-<div id="here">
-  Or tab
-  <a href="#">to</a>
-  <a href="#">these</a>
-  <a href="#">links</a>
-</div>
+&lt;div id=&quot;here&quot;&gt;
+    Or tab
+    &lt;a href=&quot;#&quot;&gt;to&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;these&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;links&lt;/a&gt;
+&lt;/div&gt;
 
-<p>One last <a href="#">link</a></p>
+&lt;p&gt;One last &lt;a href=&quot;#&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 
-<p>
-  <label>
-    <input type="checkbox" id="focusToggle"> Trap focus in grey box
-  </label>  
-</p>
+&lt;p&gt;
+    &lt;label&gt;
+        &lt;input type=&quot;checkbox&quot; id=&quot;focusToggle&quot;&gt; Trap focus in grey box
+    &lt;/label&gt;
+&lt;/p&gt;
 
-<script src="../../dist/js/Pickles.js"></script>
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
-<script>
-
+&lt;script&gt;
     jQuery(document)
         .ready(function($) {
 
-          var ft = new Pickles.FocusTrap('#here');
+            // create the focus trap
 
-          console.log(ft)
+            var ft = new Pickles.FocusTrap(&#039;#here&#039;);
 
-          $('#focusToggle')
-            .on('change', function() {
-              if ( $(this).prop('checked') )
-              {
-                ft.start();
-              }
-              else
-              {
-                ft.stop();
-              }
-            });
-            
+            // start or stop the trap when the checkbox changes
+
+            $(&#039;#focusToggle&#039;)
+                .on(&#039;change&#039;, function() {
+                    if ($(this).prop(&#039;checked&#039;)) {
+                        // start the focus trap
+                        ft.start();
+                    } else {
+                        // stop the focus trap
+                        ft.stop();
+                    }
+                });
+
         });
+&lt;/script&gt;</code></pre>    </div>
+</div>
+
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
 
 </script>
-
+-->
 
 </body>
 </html>

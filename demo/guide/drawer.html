@@ -21,34 +21,49 @@
 
 <a href="../index.html">⬅️Back</a>
 
-<div class="hamburger" data-drawer-toggle>
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
-</div> 
-
-<div class="drawer">
-    <p>This is the drawer.</p>
-    <p><a href="#" data-drawer-toggle>Goodbye</a></p>
-</div>
-
-<div id="content">
-    <h3>Drawer</h3>
-    <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
-</div>
-    
-<script src="../../dist/js/Pickles.js"></script>
-
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-           var d = new Pickles.Drawer();
-
-        });
-
-</script>
+<div class="panes">
+    <div class="pane">
+        <div class="hamburger" data-drawer-toggle>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div> 
+        
+        <div class="drawer">
+            <p>This is the drawer.</p>
+            <p><a href="#" data-drawer-toggle>Goodbye</a></p>
+        </div>
+        
+        <div id="content">
+            <h3>Drawer</h3>
+            <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
+        </div>
+            
+        <script src="../../dist/js/Pickles.js"></script>
+        
+        <script>
+        
+            jQuery(document)
+                .ready(function($) {
+        
+                    // create the drawer
+        
+                    var d = new Pickles.Drawer();
+        
+                    // watch the open and close events
+        
+                    $(document)
+                        .on('drawer.open', e => {
+                            console.log('the drawer is open');
+                        })
+                        .on('drawer.close', e => {
+                            console.log('the drawer is closed');
+                        });         
+        
+                });
+        
+        </script>    </div>
+    <div class="pane">
 <pre class="prettyprint lang-html"><code>&lt;div class=&quot;hamburger&quot; data-drawer-toggle&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
@@ -71,10 +86,73 @@
     jQuery(document)
         .ready(function($) {
 
+            // create the drawer
+
             var d = new Pickles.Drawer();
 
+            // watch the open and close events
+
+            $(document)
+                .on(&#039;drawer.open&#039;, e =&gt; {
+                    console.log(&#039;the drawer is open&#039;);
+                })
+                .on(&#039;drawer.close&#039;, e =&gt; {
+                    console.log(&#039;the drawer is closed&#039;);
+                });
+
         });
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;</code></pre>    </div>
+</div>
+<h4>Options</h4>
+
+<pre><code data-class-options="Pickles.Drawer"></code></pre>
+
+<h4>SASS variables</h4>
+
+<pre><code>$drawer-width-desktop: 20% !default;
+$drawer-width-phone: 80% !default;
+$drawer-breakpoint: 700px !default;
+$drawer-easing: cubic-bezier(0.075, 0.82, 0.165, 1) !default;
+$drawer-bg: #fff !default;
+$drawer-shadow: 0 0 50px rgba(#000, 0.5) !default;
+$drawer-content-opacity: 0.25 !default;
+$drawer-hamburger-color: #333 !default;
+$drawer-hamburger-width: 30px !default;
+$drawer-hamburger-bar-height: 2px !default;
+$drawer-hamburger-bar-gap: 6px !default;
+$drawer-hamburger-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
+</code></pre>
+
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
+
+</script>
+-->
 
 </body>
 </html>

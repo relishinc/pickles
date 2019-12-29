@@ -10,46 +10,4 @@ styles: '
 
 <h3>Focus trap</h3>
 
-<p>Use the tab key to focus on <a href="#">a link</a></p>
-
-<div id="here">
-  Or tab
-  <a href="#">to</a>
-  <a href="#">these</a>
-  <a href="#">links</a>
-</div>
-
-<p>One last <a href="#">link</a></p>
-
-<p>
-  <label>
-    <input type="checkbox" id="focusToggle"> Trap focus in grey box
-  </label>  
-</p>
-
-<script src="../../dist/js/Pickles.js"></script>
-
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-          var ft = new Pickles.FocusTrap('#here');
-
-          console.log(ft)
-
-          $('#focusToggle')
-            .on('change', function() {
-              if ( $(this).prop('checked') )
-              {
-                ft.start();
-              }
-              else
-              {
-                ft.stop();
-              }
-            });
-            
-        });
-
-</script>
+{{> example use='focus-trap-example'}}

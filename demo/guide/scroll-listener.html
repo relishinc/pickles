@@ -23,26 +23,75 @@
 
 <h3>Scroll Listener</h3>
 
-<p>Start scrolling...</p>
+<div class="panes">
+    <div class="pane">
+        <p>Start scrolling...</p>
+        
+        <div id="counter"></div>
+        
+        <script src="../../dist/js/Pickles.js"></script>
+        
+        <script>
+        
+            jQuery(document)
+                .ready(function($) {
+        
+                    var s = new Pickles.ScrollListener(function() {
+                        $('#counter').text($(window).scrollTop());
+                    });
+        
+                });
+        
+        </script>    </div>
+    <div class="pane">
+<pre class="prettyprint lang-html"><code>&lt;p&gt;Start scrolling...&lt;/p&gt;
 
-<div id="counter"></div>
+&lt;div id=&quot;counter&quot;&gt;&lt;/div&gt;
 
-<script src="../../dist/js/Pickles.js"></script>
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
-<script>
-
+&lt;script&gt;
     jQuery(document)
         .ready(function($) {
 
             var s = new Pickles.ScrollListener(function() {
-                $('#counter').text($(window).scrollTop());
+                $(&#039;#counter&#039;).text($(window).scrollTop());
             });
 
         });
+&lt;/script&gt;</code></pre>    </div>
+</div>
+
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
 
 </script>
-
-
+-->
 
 </body>
 </html>

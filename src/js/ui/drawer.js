@@ -38,11 +38,23 @@ export default class Drawer {
 
     toggle($e) {
 
+        // fire events
+
+        if (!$('body').hasClass('drawer--open')) {
+            $(document).trigger(`${this.namespace}.open`);
+        } else {
+            $(document).trigger(`${this.namespace}.close`);
+        }
+
+        // remove click handler from page content
+
         $(this.options.contentSelector)
             .off(`click.${this.namespace}`);
 
         $('body')
             .toggleClass('drawer--open');
+
+        // add click handler to page content
 
         $(`.drawer--open ${this.options.contentSelector}`)
             .one(`click.${this.namespace}`, e => this.toggle());

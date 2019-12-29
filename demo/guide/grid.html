@@ -34,5 +34,36 @@
 
 
 
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
+
+</script>
+-->
+
 </body>
 </html>

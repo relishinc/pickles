@@ -12,22 +12,4 @@ body {
 
 <h3>Scroll Listener</h3>
 
-<p>Start scrolling...</p>
-
-<div id="counter"></div>
-
-<script src="../../dist/js/Pickles.js"></script>
-
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-            var s = new Pickles.ScrollListener(function() {
-                $('#counter').text($(window).scrollTop());
-            });
-
-        });
-
-</script>
-
+{{> example use='scroll-listener-example'}}

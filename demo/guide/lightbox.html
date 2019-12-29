@@ -23,20 +23,23 @@
 
 <h3>Lightbox</h3>
 
-<p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
-
-<script src="../../dist/js/Pickles.js"></script>
-
-<script>
-
-    jQuery(document)
-        .ready(function($) {
-
-           var l = new Pickles.Lightbox();
-
-        });
-
-</script>
+<div class="panes">
+    <div class="pane">
+        <p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
+        
+        <script src="../../dist/js/Pickles.js"></script>
+        
+        <script>
+        
+            jQuery(document)
+                .ready(function($) {
+        
+                   var l = new Pickles.Lightbox();
+        
+                });
+        
+        </script>    </div>
+    <div class="pane">
 <pre class="prettyprint lang-html"><code>&lt;p&gt;Show a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
 
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
@@ -48,8 +51,41 @@
             var l = new Pickles.Lightbox();
 
         });
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;</code></pre>    </div>
+</div>
 
+
+
+<!--
+<script>
+
+	jQuery(document)
+		.ready(function($) {
+
+			$('[data-class-options]')
+				.each(function() {
+					var 
+						orig = $(this).data('classOptions').split('.'),
+						c = orig[0],
+						reference = window[c];
+					
+					if ( reference )
+					{
+						for ( var i = 1; i < orig.length; i++ )
+						{
+							reference = reference[orig[i]];
+						}
+
+						var d = new reference;
+
+						$(this).html(JSON.stringify(d.options, null, 2));
+					}
+				});
+
+		});
+
+</script>
+-->
 
 </body>
 </html>

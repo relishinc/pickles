@@ -38,6 +38,9 @@ code {
   border-radius: 0.15em;
   display: block;
   color: #888;
+  overflow-x: auto;
+  //white-space: pre-wrap;
+  //word-wrap: break-word;
 }
 
 :not(pre) > code {
@@ -50,4 +53,20 @@ code {
 body pre.prettyprint {
   padding: 0;
   border: none;
+}
+
+.panes {
+  display: flex;
+
+  .pane {
+    flex: 1;
+    width: 50%;
+
+    &:first-child {
+      width: 49%;
+      margin-right: 1%;
+    }
+
+  }
+
 }
