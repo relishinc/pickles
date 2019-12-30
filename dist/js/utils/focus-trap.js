@@ -4,6 +4,13 @@
 export default class FocusTrap {
 
   constructor($el = null) {
+
+    // vars
+
+    this.namespace = 'focusTrap';
+
+    // start it
+
     this.initJqueryPlugins();
     this.attach($el);
   }
@@ -39,8 +46,8 @@ export default class FocusTrap {
     this.firstFocusableElement.focus();
 
     this.element
-      .off('keydown.focustrap')
-      .on('keydown.focustrap', e => this.keyHandler(e));
+      .off(`keydown.${this.namespace}`)
+      .on(`keydown.${this.namespace}`, e => this.keyHandler(e));
 
   }
 
@@ -50,7 +57,7 @@ export default class FocusTrap {
     }
 
     this.element
-      .off('keydown.focustrap');
+      .off(`keydown.${this.namespace}`);
 
     this.lastFocusedElement.focus();
   }
@@ -99,8 +106,9 @@ export default class FocusTrap {
 
   }
 
+  // add :focusable pseudo selector
+
   initJqueryPlugins() {
-    // add :focusable pseudo selector
     jQuery.extend(jQuery.expr[':'], {
       focusable: function (el, index, selector) {
         return $(el).is('button, [href], :input:not([disabled]):not([type="hidden"]), [tabindex]:not([tabindex="-1"]), iframe, object, embed');

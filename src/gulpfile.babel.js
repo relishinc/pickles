@@ -9,7 +9,6 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import webpack from 'webpack-stream';
 import named from 'vinyl-named';
-import through from 'through';
 import panini from 'panini';
 
 // Load all Gulp plugins into one variable
@@ -29,27 +28,35 @@ function loadConfig() {
 // Enter URL of your local server here
 var URL = 'http://pickles.local/demo';
 
+// Demo and documentation tasks
+gulp.task('demo',
+    gulp.series(demo_sass, demo_js, demo_json, demo_pages));
+
 // Build the "dist" folder by running all of the below tasks
 gulp.task('deploy',
-    gulp.series(clean, sass, js, examples, bundle, images, json, pages));
+    gulp.series(clean, sass, js, bundle, images));
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
-    gulp.series(clean, sass, js, examples, bundle, images, json, pages));
+    gulp.series(clean, sass, js, bundle, images, 'demo'));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
     gulp.series('build', server, watch));
 
-// Delete the "dist" folder
-// This happens every time a build starts
+
+
+// Delete the "dist" folders
+// =======
+
 function clean(done) {
-    rimraf(PATHS.demo, function () { });
+    rimraf(PATHS.demo.dist, function () { });
     rimraf(PATHS.dist, done);
 }
 
-// Compile Sass into CSS
-// In production, the CSS is compressed
+// Library tasks
+// =======
+
 function sass() {
     return gulp.src(PATHS.css)
         .pipe($.sourcemaps.init())
@@ -71,8 +78,44 @@ function js() {
         .pipe(gulp.dest(PATHS.dist + '/js'));
 }
 
-function examples() {
-    return gulp.src(PATHS.examples)
+function bundle() {
+    return gulp.src(PATHS.entries)
+        .pipe(webpack(require('./webpack.config.js')))
+        .pipe($.if(PRODUCTION, $.uglify()
+            .on('error', e => {
+                console.log(e);
+            })
+        ))
+        .pipe(gulp.dest(PATHS.dist + '/js'));
+}
+
+function images() {
+    return gulp.src(PATHS.images)
+        // .pipe($.if(PRODUCTION, $.imagemin({
+        //   progressive: true
+        // })))
+        .pipe(gulp.dest(PATHS.dist + 'img'));
+}
+
+
+
+// Demo tasks
+// =======
+
+function demo_sass() {
+    return gulp.src(PATHS.demo.css)
+        .pipe(
+            $.sass({ includePaths: PATHS.sass }).on('error', $.sass.logError)
+        )
+        .pipe(
+            $.autoprefixer()
+        )
+        .pipe(gulp.dest(PATHS.demo.dist + '/css'))
+        .pipe(browser.stream());
+}
+
+function demo_js() {
+    return gulp.src(PATHS.demo.js)
         .pipe(named())
         .pipe(webpack({
             module: {
@@ -94,73 +137,57 @@ function examples() {
                 alias: {}
             }
         }))
-        .pipe(gulp.dest(PATHS.dist + '/js/examples'));
+        .pipe(gulp.dest(PATHS.demo.dist + '/js'));
 }
 
-// Combine JavaScript into one file
-// In production, the file is minified
-function bundle() {
-    return gulp.src(PATHS.entries)
-        .pipe(webpack(require('./webpack.config.js')))
-        .pipe($.if(PRODUCTION, $.uglify()
-            .on('error', e => {
-                console.log(e);
-            })
-        ))
-        .pipe(gulp.dest(PATHS.dist + '/js'));
-}
-
-// Copy images to the "dist" folder
-// In production, the images are compressed
-function images() {
-    return gulp.src(PATHS.images)
-        // .pipe($.if(PRODUCTION, $.imagemin({
-        //   progressive: true
-        // })))
-        .pipe(gulp.dest(PATHS.dist + 'img'));
-}
-
-function pages() {
-    return gulp.src(PATHS.pages)
+function demo_pages() {
+    return gulp.src(PATHS.demo.pages)
         .pipe(panini({
-            root: PATHS.panini + 'pages/',
-            layouts: PATHS.panini + 'layouts/',
-            partials: PATHS.panini + 'partials/',
-            helpers: PATHS.panini + 'helpers/',
-            data: PATHS.panini + 'data/'
+            root: PATHS.demo.panini + 'pages/',
+            layouts: PATHS.demo.panini + 'layouts/',
+            partials: PATHS.demo.panini + 'partials/',
+            helpers: PATHS.demo.panini + 'helpers/',
+            data: PATHS.demo.panini + 'data/'
         }))
-        .pipe(gulp.dest(PATHS.demo));
+        .pipe(gulp.dest(PATHS.demo.dist));
 }
 
-function json() {
-    return gulp.src(PATHS.json)
-        .pipe(gulp.dest(PATHS.demo + '/json'));
+function demo_json() {
+    return gulp.src(PATHS.demo.json)
+        .pipe(gulp.dest(PATHS.demo.dist + '/json'));
 }
 
-// Start BrowserSync to preview the site in
+// Browsersync server
+// =======
+
 function server(done) {
     browser.init({
         proxy: URL,
-
         ui: {
             port: 8080
         }
-
     });
     done();
 }
 
-// Reload the browser with BrowserSync
+// Reload browser w/ Browsersync
+// =======
+
 function reload(done) {
     browser.reload();
     done();
 }
 
-// Watch for changes to static assets, pages, Sass, and JavaScript
+// Watch for changes
+// =======
+
 function watch() {
-    gulp.watch(PATHS.pages).on('all', gulp.series(pages, reload));
-    gulp.watch('scss/**/*.scss').on('all', gulp.series(sass));
-    gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, examples, reload));
-    gulp.watch(PATHS.json).on('all', gulp.series(json, reload));
+    gulp.watch(PATHS.css).on('all', gulp.series(sass));
+    gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, reload));
     gulp.watch(PATHS.images).on('all', gulp.series(images, reload));
+
+    gulp.watch(PATHS.demo.js).on('all', gulp.series(demo_js, reload));
+    gulp.watch(PATHS.demo.css).on('all', gulp.series(demo_sass));
+    gulp.watch(PATHS.demo.json).on('all', gulp.series(demo_json, reload));
+    gulp.watch('demo/panini/**/*.*').on('all', gulp.series('demo', reload));
 }

@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>ES6 module imports</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../demo/css/main.css">
 	<link rel="stylesheet" href="">
 
 	<style type="text/css">
@@ -16,6 +16,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+	<script src="../../demo/js/main.js"></script>
+
 </head>
 <body>
 
@@ -23,11 +25,20 @@
 
 <h3>ES6 module imports</h3>
 
-<p>See <code><a href="../../src/js/examples/import.js">src/js/examples/import.js</a></code></p>
+<p>See <code><a href="../../src/demo/js/examples/import.js">src/demo/js/examples/import.js</a></code></p>
 
-<script src="../../dist/js/examples/import.js"></script>
+<pre class="prettyprint lang-js"><code>import Modal from &#039;../../../js/ui/modal&#039;;
+import FocusTrap from &#039;../../../js/utils/focus-trap&#039;;
 
+//=== 
 
+console.log(&#039;Modal&#039;, Modal);
+console.log(&#039;FocusTrap&#039;, FocusTrap);
+
+// ===
+
+let ft = new FocusTrap(&#039;#foo&#039;);
+ft.stop();</code></pre>
 <!--
 <script>
 

@@ -4,19 +4,24 @@
 export default class ScrollListener {
 
   constructor($callback = () => null, $immediate = false) {
-    this.lastScrollY = 0;
 
-    let ticking = false;
+    // vars
+
+    this.namespace = 'scrollListener';
+    this.lastScrollY = 0;
+    this.ticking = false;
+
+    // internal funcs
 
     let update = () => {
       $callback();
-      ticking = false;
+      this.ticking = false;
     };
 
     let requestTick = () => {
-      if (!ticking) {
+      if (!this.ticking) {
         window.requestAnimationFrame(update);
-        ticking = true;
+        this.ticking = true;
       }
     };
 
@@ -25,6 +30,8 @@ export default class ScrollListener {
       requestTick();
     };
 
+    // start it
+
     this.on();
 
     if ($immediate) $callback();
@@ -32,12 +39,12 @@ export default class ScrollListener {
 
   off() {
     $(window)
-      .off('scroll.scrollListener');
+      .off(`scroll.${this.namespace}`);
   }
 
   on() {
     $(window)
-      .on('scroll.scrollListener', e => this.onScroll());
+      .on(`scroll.${this.namespace}`, e => this.onScroll());
   }
 
 }

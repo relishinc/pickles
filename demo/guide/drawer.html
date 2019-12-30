@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Drawer</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../demo/css/main.css">
 	<link rel="stylesheet" href="../../dist/css/ui/drawer.css">
 
 	<style type="text/css">
@@ -16,54 +16,56 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+	<script src="../../demo/js/main.js"></script>
+
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
-<div class="panes">
-    <div class="pane">
-        <div class="hamburger" data-drawer-toggle>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div> 
+<section class="example-section" title="Demo">
+    <div class="hamburger" data-drawer-toggle>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div> 
+    
+    <div class="drawer">
+        <p>This is the drawer.</p>
+        <p><a href="#" data-drawer-toggle>Goodbye</a></p>
+    </div>
+    
+    <div id="content">
+        <h3>Drawer</h3>
+        <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
+    </div>
         
-        <div class="drawer">
-            <p>This is the drawer.</p>
-            <p><a href="#" data-drawer-toggle>Goodbye</a></p>
-        </div>
-        
-        <div id="content">
-            <h3>Drawer</h3>
-            <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
-        </div>
-            
-        <script src="../../dist/js/Pickles.js"></script>
-        
-        <script>
-        
-            jQuery(document)
-                .ready(function($) {
-        
-                    // create the drawer
-        
-                    var d = new Pickles.Drawer();
-        
-                    // watch the open and close events
-        
-                    $(document)
-                        .on('drawer.open', e => {
-                            console.log('the drawer is open');
-                        })
-                        .on('drawer.close', e => {
-                            console.log('the drawer is closed');
-                        });         
-        
-                });
-        
-        </script>    </div>
-    <div class="pane">
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        jQuery(document)
+            .ready(function($) {
+    
+                // create the drawer
+    
+                var d = new Pickles.Drawer();
+    
+                // watch the open and close events
+    
+                $(document)
+                    .on('drawer.open', e => {
+                        console.log('the drawer is open');
+                    })
+                    .on('drawer.close', e => {
+                        console.log('the drawer is closed');
+                    });         
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;div class=&quot;hamburger&quot; data-drawer-toggle&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
@@ -101,14 +103,10 @@
                 });
 
         });
-&lt;/script&gt;</code></pre>    </div>
-</div>
-<h4>Options</h4>
+&lt;/script&gt;</code></pre></section>
 
-<pre><code data-class-options="Pickles.Drawer"></code></pre>
-
-<h4>SASS variables</h4>
-
+<section class="example-section" title="Config">
+        <h4>SASS vars</h4>
 <pre><code>$drawer-width-desktop: 20% !default;
 $drawer-width-phone: 80% !default;
 $drawer-breakpoint: 700px !default;
@@ -121,7 +119,93 @@ $drawer-hamburger-width: 30px !default;
 $drawer-hamburger-bar-height: 2px !default;
 $drawer-hamburger-bar-gap: 6px !default;
 $drawer-hamburger-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
-</code></pre>
+</code></pre></section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>import ScrollListener from &#039;../utils/scroll-listener&#039;;
+
+/* Drawer plugin
+----------------------------- */
+
+export default class Drawer {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            contentSelector: &#039;#content&#039;,
+            scrolledBodyClass: &#039;page-scrolled&#039;,
+            scrollMin: 100
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // vars
+
+        this.namespace = &#039;drawer&#039;;
+
+        // go
+
+        this.init();
+    }
+
+    init() {
+        $(document)
+            .on(`click.${this.namespace}`, &#039;[data-drawer-toggle]&#039;, e =&gt; this.toggle());
+
+        new ScrollListener(() =&gt; {
+            $(&#039;body&#039;)
+                .toggleClass(this.options.scrolledBodyClass, $(window).scrollTop() &gt; this.options.scrollMin);
+        }, true);
+    };
+
+    // toggle drawer navigation
+
+    toggle($e) {
+
+        // fire events
+
+        if (!$(&#039;body&#039;).hasClass(&#039;drawer--open&#039;)) {
+            $(document).trigger(`${this.namespace}.open`);
+        } else {
+            $(document).trigger(`${this.namespace}.close`);
+        }
+
+        // remove click handler from page content
+
+        $(this.options.contentSelector)
+            .off(`click.${this.namespace}`);
+
+        $(&#039;body&#039;)
+            .toggleClass(&#039;drawer--open&#039;);
+
+        // add click handler to page content
+
+        $(`.drawer--open ${this.options.contentSelector}`)
+            .one(`click.${this.namespace}`, e =&gt; this.toggle());
+
+        if ($e) {
+            $e.preventDefault();
+        }
+
+    };
+
+    // open drawer navigation
+
+    open() {
+        if (!$(&#039;body&#039;).hasClass(&#039;drawer--open&#039;)) {
+            this.toggle();
+        }
+    };
+
+    // close drawer navigation
+
+    close() {
+        if ($(&#039;body&#039;).hasClass(&#039;drawer--open&#039;)) {
+            this.toggle();
+        }
+    };
+
+}</code></pre></section>
 
 <!--
 <script>

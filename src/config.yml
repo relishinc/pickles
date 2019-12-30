@@ -9,20 +9,20 @@ PATHS:
   # Path to dist folder
   dist: "../dist/"
   # Path to demo folder
-  demo: "../demo/"
-  # Path to panini
-  panini: "panini/"
-  pages: "panini/pages/**/*.html"
-  json: "json/**/*.*"
+  demo: 
+    dist: "../demo/"
+    js: "demo/js/**/*.js"
+    css: "demo/scss/**/*.scss"
+    json: "demo/json/**/*.*"
+    # Path to panini
+    panini: "demo/panini/"
+    pages: "demo/panini/pages/**/*.html"
   # Path to images folder
   images: "img/**/*.*"
   js: 
     - "js/**/*.js"
     - "!js/index.js"
     - "!js/polyfills/**/*.js"
-    - "!js/tests/**/*.js"
-  examples: 
-    - 'js/examples/**/*.js'
   # Path to scss folders
   css:
     - "scss/**/*.scss"

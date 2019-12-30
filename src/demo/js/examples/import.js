@@ -1,5 +1,5 @@
-import Modal from '../ui/modal';
-import FocusTrap from '../utils/focus-trap';
+import Modal from '../../../js/ui/modal';
+import FocusTrap from '../../../js/utils/focus-trap';
 
 //=== 
 

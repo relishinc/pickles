@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Lightbox</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../demo/css/main.css">
 	<link rel="stylesheet" href="../../dist/css/ui/lightbox.css">
 
 	<style type="text/css">
@@ -16,6 +16,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+	<script src="../../demo/js/main.js"></script>
+
 </head>
 <body>
 
@@ -23,23 +25,23 @@
 
 <h3>Lightbox</h3>
 
-<div class="panes">
-    <div class="pane">
-        <p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
-        
-        <script src="../../dist/js/Pickles.js"></script>
-        
-        <script>
-        
-            jQuery(document)
-                .ready(function($) {
-        
-                   var l = new Pickles.Lightbox();
-        
-                });
-        
-        </script>    </div>
-    <div class="pane">
+<section class="example-section" title="Demo">
+    <p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
+    
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        jQuery(document)
+            .ready(function($) {
+    
+               var l = new Pickles.Lightbox();
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;p&gt;Show a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
 
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
@@ -51,8 +53,119 @@
             var l = new Pickles.Lightbox();
 
         });
-&lt;/script&gt;</code></pre>    </div>
-</div>
+&lt;/script&gt;</code></pre></section>
+
+<section class="example-section" title="Config">
+        <h4>SASS vars</h4>
+<pre><code>$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+$caption-text-color: #fff !default;
+$spinner-color: #fff !default;
+</code></pre></section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>/* Lightbox plugin
+----------------------------- */
+
+export default class Lightbox {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            selector: &#039;[data-thumbnail]&#039;
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // vars
+
+        this.namespace = &#039;lightbox&#039;;
+        this.lightboxElement = null;
+
+        // go
+
+        this.init();
+    }
+
+    init() {
+        $(this.options.selector)
+            .off(`click.${this.namespace}`)
+            .on(`click.${this.namespace}`, (e) =&gt; {
+                e.preventDefault();
+
+                this.createLightbox(e);
+
+                setTimeout(() =&gt; {
+                    this.show();
+                }, 50);
+
+            });
+    }
+
+    createLightbox(e) {
+        let
+            img = $(&#039;&lt;img /&gt;&#039;),
+            src = e.currentTarget.href,
+            imgEl = $(&#039;&lt;div class=&quot;lightbox__image&quot; /&gt;&#039;),
+            captionEl = $(&#039;&lt;div class=&quot;lightbox__caption&quot; /&gt;&#039;);
+
+        this.lightboxElement = $(&#039;&lt;div class=&quot;lightbox&quot; /&gt;&#039;);
+
+        // listen for load event
+
+        img
+            .attr(&#039;src&#039;, src)
+            .on(&#039;load&#039;, (e) =&gt; {
+                this.lightboxElement
+                    .addClass(&#039;lightbox--loaded&#039;);
+            });
+
+        // set background image    
+
+        imgEl
+            .css(&#039;backgroundImage&#039;, `url(${src})`);
+
+        // append to body    
+
+        this.lightboxElement
+            .prependTo($(&#039;body&#039;))
+            .append(imgEl);
+
+        // add caption
+
+        if ($(e.currentTarget).attr(&#039;alt&#039;) || $(e.currentTarget).attr(&#039;title&#039;)) {
+            captionEl
+                .text($(e.currentTarget).attr(&#039;alt&#039;) || $(e.currentTarget).attr(&#039;title&#039;))
+                .appendTo(this.lightboxElement);
+        }
+
+        // click handler
+
+        this.lightboxElement
+            .on(`click.${this.namespace}`, (e) =&gt; {
+                this.hide();
+            });
+
+    }
+
+    show() {
+        this.lightboxElement
+            .addClass(&#039;lightbox--open&#039;);
+    };
+
+    hide() {
+        this.lightboxElement
+            .removeClass(&#039;lightbox--open&#039;)
+            .on(`transitionend.${this.namespace}`, (e) =&gt; {
+                this.destroy();
+            });
+    };
+
+    destroy() {
+        this.lightboxElement.remove();
+    }
+
+}</code></pre></section>
+
 
 
 

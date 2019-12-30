@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Modal</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../demo/css/main.css">
 	<link rel="stylesheet" href="../../dist/css/ui/modal.css">
 
 	<style type="text/css">
@@ -16,6 +16,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+	<script src="../../demo/js/main.js"></script>
+
 </head>
 <body>
 
@@ -23,30 +25,30 @@
 
 <h3>Modal</h3>
 
-<div class="panes">
-    <div class="pane">
-        <p>This is a <a href="#something" data-modal>modal</a></p>
-        
-        <div id="something" class="modal-overlay">
-            <div class="modal">
-                <p>Say hello to my little modal</p>
-                <a href="#" data-close-modal>Goodbye</a>
-            </div>
+<section class="example-section" title="Demo">
+    <p>This is a <a href="#something" data-modal>modal</a></p>
+    
+    <div id="something" class="modal-overlay">
+        <div class="modal">
+            <p>Say hello to my little modal</p>
+            <a href="#" data-close-modal>Goodbye</a>
         </div>
-        
-        <script src="../../dist/js/Pickles.js"></script>
-        
-        <script>
-        
-            jQuery(document)
-                .ready(function($) {
-        
-                   var m = new Pickles.Modal();
-        
-                });
-        
-        </script>    </div>
-    <div class="pane">
+    </div>
+    
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        jQuery(document)
+            .ready(function($) {
+    
+               var m = new Pickles.Modal();
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
 
 &lt;div id=&quot;something&quot; class=&quot;modal-overlay&quot;&gt;
@@ -65,13 +67,210 @@
             var m = new Pickles.Modal();
 
         });
-&lt;/script&gt;</code></pre>    </div>
-</div>
-<h4>SASS variables</h4>
+&lt;/script&gt;</code></pre></section>
 
+<section class="example-section" title="Config">
+        <h4>SASS vars</h4>
 <pre><code>$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
 $modal-bg-color: #fff !default;
-</code></pre>
+</code></pre>        <h4>Options</h4>
+        <pre class="prettyprint lang-js"><code>{
+            bodyOpenClass: &#039;overlay-open&#039;,
+            modalOpenClass: &#039;open&#039;,
+            overlayClass: &#039;modal-overlay&#039;,
+            modalClass: &#039;modal&#039;,
+            openSelector: &#039;[data-modal]&#039;,
+            closeSelector: &#039;[data-close-modal]&#039;
+        }</code></pre></section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>import FocusTrap from &#039;../utils/focus-trap&#039;;
+
+/* Modal plugin
+----------------------------- */
+
+export default class Modal {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            bodyOpenClass: &#039;overlay-open&#039;,
+            modalOpenClass: &#039;open&#039;,
+            overlayClass: &#039;modal-overlay&#039;,
+            modalClass: &#039;modal&#039;,
+            openSelector: &#039;[data-modal]&#039;,
+            closeSelector: &#039;[data-close-modal]&#039;
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // vars
+
+        this.namespace = &#039;modal&#039;;
+        this.scrollPosition = 0;
+        this.modalElement = null;
+
+        // attach click handlers for overlay and close buttons
+
+        $(`.${this.options.overlayClass}`)
+            .on(`click.${this.namespace}`, e =&gt; {
+                if ($(e.target).hasClass(this.options.overlayClass)) {
+                    e.preventDefault();
+                    this.close();
+                }
+            })
+            .find(`.${this.options.modalClass} ${this.options.closeSelector}`)
+            .on(`click.${this.namespace}`, e =&gt; {
+                e.preventDefault();
+                this.close();
+            });
+
+        $(document)
+            .off(`.${this.namespace}`)
+            .on(`click.${this.namespace}`, this.options.openSelector, e =&gt; {
+                e.preventDefault();
+                this.open($(e.currentTarget).attr(&#039;href&#039;));
+            });
+    }
+
+    // open modal by selector
+
+    open($selector) {
+        // remember scroll position
+
+        this.scrollPosition = $(window).scrollTop();
+        this.modalElement = $selector instanceof jQuery ? $selector : $($selector);
+
+        let
+            delay = 0;
+
+        if (this.modalElement.length &amp;&amp; this.modalElement.hasClass(this.options.overlayClass)) {
+            this.modalElement
+                .off(`${this.namespace}.show`)
+                .on(`${this.namespace}.show`, e =&gt; {
+
+                    // start focus trap
+
+                    this.focusTrap.start();
+
+                    // reset forms
+
+                    this.modalElement
+                        .find(&#039;form&#039;)
+                        .trigger(&#039;reset&#039;);
+
+                    // key listener
+
+                    this.modalElement
+                        .on(`keydown.${this.namespace}`, e =&gt; this.keyHandler(e));
+
+                });
+
+            // new focus trap
+            this.focusTrap = new FocusTrap(this.modalElement);
+
+            // are any modals open?
+
+            if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length &amp;&amp; $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
+                this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)); // close any open modals
+                delay = 300;
+            }
+
+            setTimeout(() =&gt; {
+                // add css classes
+
+                $(&#039;body&#039;)
+                    .addClass(this.options.bodyOpenClass);
+
+                this.modalElement
+                    .addClass(this.options.modalOpenClass)
+                    .trigger(`${this.namespace}.show`);
+
+                // dispatch open event
+
+                $(document)
+                    .trigger(`${this.namespace}.open`, [{
+                        target: this.modalElement
+                    }]);
+
+            }, delay); // TO DO - attach to transitionend event
+
+        }
+
+    }
+
+    // close any open modal
+
+    close($modal = false) {
+        let modal = $modal || this.modalElement;
+
+        modal
+            .off(`${this.namespace}.hide`)
+            .on(`${this.namespace}.hide`, e =&gt; {
+
+                // release focus trap
+
+                if (modal == this.modalElement) {
+                    this.focusTrap.stop();
+                }
+                // key listener
+
+                modal
+                    .off(`keydown.${this.namespace}`, e =&gt; this.keyHandler(e));
+
+            });
+
+        // remove css classes
+
+        $(&#039;body&#039;)
+            .removeClass(this.options.bodyOpenClass);
+
+        $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
+            .removeClass(this.options.modalOpenClass)
+            .trigger(`${this.namespace}.hide`);
+
+        // restore scroll position
+
+        $(window)
+            .scrollTop(this.scrollPosition)
+            .trigger(`scroll.${this.namespace}`);
+
+        // dispatch close event
+
+        $(document)
+            .trigger(`${this.namespace}.close`, [{
+                target: modal
+            }]);
+    }
+
+    // post-ajax
+
+    refresh($selector) {
+        let element = $selector instanceof jQuery ? $selector : $($selector);
+
+        if (element.is(this.modalElement) &amp;&amp; this.modalElement.hasClass(this.options.modalOpenClass)) {
+            this.modalElement.trigger(`${this.namespace}.show`);
+        }
+    }
+
+    // handle key events
+
+    keyHandler(e) {
+        const KEY_ESC = 27;
+
+        // which keys are pressed
+
+        switch (e.keyCode) {
+            case KEY_ESC:
+                this.close();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+}</code></pre></section>
 
 
 

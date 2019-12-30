@@ -1,4 +1,4 @@
-var beautify = require('js-beautify').html;
+var beautify = require('js-beautify');
 
 function escapeHtml(unsafe) {
     return unsafe
@@ -10,5 +10,6 @@ function escapeHtml(unsafe) {
 }
 
 module.exports = function (options) {
-    return '<pre class="prettyprint lang-html"><code>' + escapeHtml(beautify(options.fn(this).trim())) + '</code></pre>';
+    var lang = options.hash.lang || 'html';
+    return '<pre class="prettyprint lang-' + lang + '"><code>' + escapeHtml(beautify[lang](options.fn(this).trim())) + '</code></pre>';
 }

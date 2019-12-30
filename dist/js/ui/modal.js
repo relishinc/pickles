@@ -5,14 +5,18 @@ import FocusTrap from '../utils/focus-trap';
 
 export default class Modal {
 
-  constructor() {
+  constructor($options = {}) {
     // settings
 
-    this.bodyOpenClass = 'overlay-open';
-    this.modalOpenClass = 'open';
-    this.overlayClass = 'modal-overlay';
-    this.modalClass = 'modal';
-    this.openSelector = '[data-modal]';
+    let defaults = {
+      bodyOpenClass: 'overlay-open',
+      modalOpenClass: 'open',
+      overlayClass: 'modal-overlay',
+      modalClass: 'modal',
+      openSelector: '[data-modal]',
+      closeSelector: '[data-close-modal]'
+    };
+    this.options = Object.assign({}, defaults, $options);
 
     // vars
 
@@ -22,14 +26,14 @@ export default class Modal {
 
     // attach click handlers for overlay and close buttons
 
-    $(`.${this.overlayClass}`)
+    $(`.${this.options.overlayClass}`)
       .on(`click.${this.namespace}`, e => {
-        if ($(e.target).hasClass(this.overlayClass)) {
+        if ($(e.target).hasClass(this.options.overlayClass)) {
           e.preventDefault();
           this.close();
         }
       })
-      .find(`.${this.modalClass} [data-close-modal]`)
+      .find(`.${this.options.modalClass} ${this.options.closeSelector}`)
       .on(`click.${this.namespace}`, e => {
         e.preventDefault();
         this.close();
@@ -37,7 +41,7 @@ export default class Modal {
 
     $(document)
       .off(`.${this.namespace}`)
-      .on(`click.${this.namespace}`, this.openSelector, e => {
+      .on(`click.${this.namespace}`, this.options.openSelector, e => {
         e.preventDefault();
         this.open($(e.currentTarget).attr('href'));
       });
@@ -54,10 +58,10 @@ export default class Modal {
     let
       delay = 0;
 
-    if (this.modalElement.length && this.modalElement.hasClass(this.overlayClass)) {
+    if (this.modalElement.length && this.modalElement.hasClass(this.options.overlayClass)) {
       this.modalElement
-        .off('show')
-        .on('show', e => {
+        .off(`${this.namespace}.show`)
+        .on(`${this.namespace}.show`, e => {
 
           // start focus trap
 
@@ -81,8 +85,8 @@ export default class Modal {
 
       // are any modals open?
 
-      if ($(`.${this.overlayClass}.${this.modalOpenClass}`).length && $(`.${this.overlayClass}.${this.modalOpenClass}`)[0] != this.modalElement[0]) {
-        this.close($(`.${this.overlayClass}.${this.modalOpenClass}`)); // close any open modals
+      if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length && $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
+        this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)); // close any open modals
         delay = 300;
       }
 
@@ -90,11 +94,11 @@ export default class Modal {
         // add css classes
 
         $('body')
-          .addClass(this.bodyOpenClass);
+          .addClass(this.options.bodyOpenClass);
 
         this.modalElement
-          .addClass(this.modalOpenClass)
-          .trigger('show');
+          .addClass(this.options.modalOpenClass)
+          .trigger(`${this.namespace}.show`);
 
         // dispatch open event
 
@@ -113,8 +117,8 @@ export default class Modal {
     let modal = $modal || this.modalElement;
 
     modal
-      .off('hide')
-      .on('hide', e => {
+      .off(`${this.namespace}.hide`)
+      .on(`${this.namespace}.hide`, e => {
 
         // release focus trap
 
@@ -131,11 +135,11 @@ export default class Modal {
     // remove css classes
 
     $('body')
-      .removeClass(this.bodyOpenClass);
+      .removeClass(this.options.bodyOpenClass);
 
-    $(`.${this.overlayClass}.${this.modalOpenClass}`)
-      .removeClass(this.modalOpenClass)
-      .trigger('hide');
+    $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
+      .removeClass(this.options.modalOpenClass)
+      .trigger(`${this.namespace}.hide`);
 
     // restore scroll position
 
@@ -154,8 +158,8 @@ export default class Modal {
   refresh($selector) {
     let element = $selector instanceof jQuery ? $selector : $($selector);
 
-    if (element.is(this.modalElement) && this.modalElement.hasClass(this.modalOpenClass)) {
-      this.modalElement.trigger('show');
+    if (element.is(this.modalElement) && this.modalElement.hasClass(this.options.modalOpenClass)) {
+      this.modalElement.trigger(`${this.namespace}.show`);
     }
   }
 

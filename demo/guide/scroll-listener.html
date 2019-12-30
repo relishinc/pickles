@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Scroll Listener</title>
 
-	<link rel="stylesheet" href="../../dist/css/main.css">
+	<link rel="stylesheet" href="../../demo/css/main.css">
 	<link rel="stylesheet" href="">
 
 	<style type="text/css">
@@ -16,6 +16,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+	<script src="../../demo/js/main.js"></script>
+
 </head>
 <body>
 
@@ -23,27 +25,27 @@
 
 <h3>Scroll Listener</h3>
 
-<div class="panes">
-    <div class="pane">
-        <p>Start scrolling...</p>
-        
-        <div id="counter"></div>
-        
-        <script src="../../dist/js/Pickles.js"></script>
-        
-        <script>
-        
-            jQuery(document)
-                .ready(function($) {
-        
-                    var s = new Pickles.ScrollListener(function() {
-                        $('#counter').text($(window).scrollTop());
-                    });
-        
+<section class="example-section" title="Demo">
+    <p>Start scrolling...</p>
+    
+    <div id="counter"></div>
+    
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        jQuery(document)
+            .ready(function($) {
+    
+                var s = new Pickles.ScrollListener(function() {
+                    $('#counter').text($(window).scrollTop());
                 });
-        
-        </script>    </div>
-    <div class="pane">
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;p&gt;Start scrolling...&lt;/p&gt;
 
 &lt;div id=&quot;counter&quot;&gt;&lt;/div&gt;
@@ -59,8 +61,63 @@
             });
 
         });
-&lt;/script&gt;</code></pre>    </div>
-</div>
+&lt;/script&gt;</code></pre></section>
+
+<section class="example-section" title="Config">
+</section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>/* Scroll listener
+----------------------------- */
+
+export default class ScrollListener {
+
+    constructor($callback = () =&gt; null, $immediate = false) {
+
+        // vars
+
+        this.namespace = &#039;scrollListener&#039;;
+        this.lastScrollY = 0;
+        this.ticking = false;
+
+        // internal funcs
+
+        let update = () =&gt; {
+            $callback();
+            this.ticking = false;
+        };
+
+        let requestTick = () =&gt; {
+            if (!this.ticking) {
+                window.requestAnimationFrame(update);
+                this.ticking = true;
+            }
+        };
+
+        this.onScroll = () =&gt; {
+            this.lastScrollY = window.scrollY;
+            requestTick();
+        };
+
+        // start it
+
+        this.on();
+
+        if ($immediate) $callback();
+    }
+
+    off() {
+        $(window)
+            .off(`scroll.${this.namespace}`);
+    }
+
+    on() {
+        $(window)
+            .on(`scroll.${this.namespace}`, e =&gt; this.onScroll());
+    }
+
+}</code></pre></section>
+
 
 <!--
 <script>

@@ -1,0 +1,30 @@
+<section class="example-section" title="Demo">
+    {{> (lookup . 'example')}}
+</section>
+
+<section class="example-section" title="Code">
+    {{#code}}
+        {{> (lookup . 'example')}}
+    {{/code}}                
+</section>
+
+<section class="example-section" title="Config">
+    {{#if sass }}
+        <h4>SASS vars</h4>
+        {{#sass-vars}}
+            {{ sass }}
+        {{/sass-vars}}
+    {{/if}}
+    {{#if options }}
+        <h4>Options</h4>
+        {{> (lookup . 'options')}}
+    {{/if}}
+</section>
+
+{{#if source }}
+<section class="example-section" title="Source">
+    {{#code lang='js'}}
+        {{#fetch}}{{ source }}{{/fetch}}
+    {{/code}}
+</section>
+{{/if}}
