@@ -18,15 +18,12 @@ const $ = plugins();
 const PRODUCTION = !!(yargs.argv.production);
 
 // Load settings from settings.yml
-const { COMPATIBILITY, PATHS } = loadConfig();
+const { PORT, PATHS } = loadConfig();
 
 function loadConfig() {
     let ymlFile = fs.readFileSync('config.yml', 'utf8');
     return yaml.load(ymlFile);
 }
-
-// Enter URL of your local server here
-var URL = 'http://pickles.local/demo';
 
 // Demo and documentation tasks
 gulp.task('demo',
@@ -162,10 +159,9 @@ function demo_json() {
 
 function server(done) {
     browser.init({
-        proxy: URL,
-        ui: {
-            port: 8080
-        }
+        server: PATHS.server,
+        startPath: '/demo',
+        port: PORT
     });
     done();
 }
