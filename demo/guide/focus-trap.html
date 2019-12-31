@@ -16,14 +16,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
-<h3>Focus trap</h3>
+<h2>Focus trap</h2>
 
 <section class="example-section" title="Demo">
     <p>Use the tab key to focus on <a href="#">a link</a></p>
@@ -43,30 +41,31 @@
       </label>  
     </p>
     
+    <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
     
+        var myFocusTrap;
+    
         jQuery(document)
             .ready(function($) {
     
-                // create the focus trap
+                // Create the focus trap
+                myFocusTrap = new Pickles.FocusTrap('#here');
     
-                var ft = new Pickles.FocusTrap('#here');
-    
-                // start or stop the trap when the checkbox changes
-    
+                // Start or stop the trap when the checkbox changes
                 $('#focusToggle')
                     .on('change', function() {
                         if ( $(this).prop('checked') )
                         {
-                            // start the focus trap
-                            ft.start(); 
+                            // Start the focus trap
+                            myFocusTrap.start(); 
                         }
                         else
                         {
-                            // stop the focus trap
-                            ft.stop();
+                            // Stop the focus trap
+                            myFocusTrap.stop();
                         }
                     });
                 
@@ -92,26 +91,27 @@
     &lt;/label&gt;
 &lt;/p&gt;
 
+&lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    var myFocusTrap;
+
     jQuery(document)
         .ready(function($) {
 
-            // create the focus trap
+            // Create the focus trap
+            myFocusTrap = new Pickles.FocusTrap(&#039;#here&#039;);
 
-            var ft = new Pickles.FocusTrap(&#039;#here&#039;);
-
-            // start or stop the trap when the checkbox changes
-
+            // Start or stop the trap when the checkbox changes
             $(&#039;#focusToggle&#039;)
                 .on(&#039;change&#039;, function() {
                     if ($(this).prop(&#039;checked&#039;)) {
-                        // start the focus trap
-                        ft.start();
+                        // Start the focus trap
+                        myFocusTrap.start();
                     } else {
-                        // stop the focus trap
-                        ft.stop();
+                        // Stop the focus trap
+                        myFocusTrap.stop();
                     }
                 });
 
@@ -119,6 +119,12 @@
 &lt;/script&gt;</code></pre></section>
 
 <section class="example-section" title="Config">
+</section>
+
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="myFocusTrap"></code>
+    </pre>
 </section>
 
 <section class="example-section" title="Source">
@@ -244,36 +250,7 @@ export default class FocusTrap {
 }</code></pre></section>
 
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

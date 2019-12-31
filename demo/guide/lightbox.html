@@ -16,51 +16,71 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
-<h3>Lightbox</h3>
+<h2>Lightbox</h2>
 
 <section class="example-section" title="Demo">
+    <!-- Don't forget to load the styles: "../../dist/css/ui/lightbox.css" or "scss/ui/lightbox.scss" -->
+    
     <p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
     
+    <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
     
+        var myLightbox;
+    
         jQuery(document)
             .ready(function($) {
-    
-               var l = new Pickles.Lightbox();
+                
+                // Have all [data-thumbnail] links open lightboxes
+                myLightbox = new Pickles.Lightbox();
     
             });
     
     </script></section>
 
 <section class="example-section" title="Code">
-<pre class="prettyprint lang-html"><code>&lt;p&gt;Show a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
+<pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/lightbox.css&quot; or &quot;scss/ui/lightbox.scss&quot; --&gt;
 
+&lt;p&gt;Show a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
+
+&lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    var myLightbox;
+
     jQuery(document)
         .ready(function($) {
 
-            var l = new Pickles.Lightbox();
+            // Have all [data-thumbnail] links open lightboxes
+            myLightbox = new Pickles.Lightbox();
 
         });
 &lt;/script&gt;</code></pre></section>
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-<pre><code>$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+<pre><code class="prettyprint lang-css">$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
 $caption-text-color: #fff !default;
 $spinner-color: #fff !default;
-</code></pre></section>
+</code></pre>        <h4>Options</h4>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myLightbox.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="myLightbox"></code>
+    </pre>
+</section>
 
 <section class="example-section" title="Source">
 <pre class="prettyprint lang-js"><code>/* Lightbox plugin
@@ -169,36 +189,7 @@ export default class Lightbox {
 
 
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

@@ -16,8 +16,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
@@ -32,36 +30,7 @@
     let lightbox = new Pickles.Lightbox();
 &lt;/script&gt;</code></pre>
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

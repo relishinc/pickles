@@ -17,9 +17,19 @@
     {{/if}}
     {{#if options }}
         <h4>Options</h4>
-        {{> (lookup . 'options')}}
+        <pre>
+            <code class="prettyprint lang-json" data-options="{{ options }}"></code>
+        </pre>
     {{/if}}
 </section>
+
+{{#if api }}
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="{{ api }}"></code>
+    </pre>
+</section>
+{{/if}}
 
 {{#if source }}
 <section class="example-section" title="Source">

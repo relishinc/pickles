@@ -17,22 +17,25 @@ module.exports = {
   externals: {
     jquery: 'jQuery'
   },
+  optimization: {
+    minimize: false
+  },
   module: {
     rules: [
-       {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-               presets: ['@babel/preset-env'],
-               compact: false
-            }             
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            compact: false
           }
-       }
+        }
+      }
     ]
   },
   plugins: [
-     new webpack.BannerPlugin( banner )
-  ]  
+    new webpack.BannerPlugin(banner)
+  ]
 };

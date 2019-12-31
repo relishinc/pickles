@@ -1,3 +1,5 @@
+<!-- Don't forget to load the styles: "{{css}}" or "{{sass}}" -->
+
 <p>This is a <a href="#something" data-modal>modal</a></p>
 
 <div id="something" class="modal-overlay">
@@ -7,14 +9,18 @@
     </div>
 </div>
 
+<!-- Load the JS library -->
 <script src="../../dist/js/Pickles.js"></script>
 
 <script>
 
+    var myModal;
+
     jQuery(document)
         .ready(function($) {
 
-           var m = new Pickles.Modal();
+            // Have all [data-modal] links open modals based on href selector
+            myModal = new Pickles.Modal();
 
         });
 

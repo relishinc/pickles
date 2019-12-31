@@ -1,3 +1,5 @@
+<!-- Don't forget to load the styles: "{{css}}" or "{{sass}}" -->
+
 <div class="hamburger" data-drawer-toggle>
     <span class="bar"></span>
     <span class="bar"></span>
@@ -10,20 +12,23 @@
 </div>
 
 <div id="content">
-    <h3>Drawer</h3>
+    <h2>Drawer</h2>
     <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
 </div>
     
+<!-- Load the JS library -->
 <script src="../../dist/js/Pickles.js"></script>
 
 <script>
+
+    var myDrawer;
 
     jQuery(document)
         .ready(function($) {
 
             // create the drawer
 
-            var d = new Pickles.Drawer();
+            myDrawer = new Pickles.Drawer();
 
             // watch the open and close events
 

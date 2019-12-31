@@ -16,16 +16,16 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
-<h3>Modal</h3>
+<h2>Modal</h2>
 
 <section class="example-section" title="Demo">
+    <!-- Don't forget to load the styles: "../../dist/css/ui/modal.css" or "scss/ui/modal.scss" -->
+    
     <p>This is a <a href="#something" data-modal>modal</a></p>
     
     <div id="something" class="modal-overlay">
@@ -35,21 +35,26 @@
         </div>
     </div>
     
+    <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
     
+        var myModal;
+    
         jQuery(document)
             .ready(function($) {
     
-               var m = new Pickles.Modal();
+               myModal = new Pickles.Modal();
     
             });
     
     </script></section>
 
 <section class="example-section" title="Code">
-<pre class="prettyprint lang-html"><code>&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
+<pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/modal.css&quot; or &quot;scss/ui/modal.scss&quot; --&gt;
+
+&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
 
 &lt;div id=&quot;something&quot; class=&quot;modal-overlay&quot;&gt;
     &lt;div class=&quot;modal&quot;&gt;
@@ -58,30 +63,35 @@
     &lt;/div&gt;
 &lt;/div&gt;
 
+&lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    var myModal;
+
     jQuery(document)
         .ready(function($) {
 
-            var m = new Pickles.Modal();
+            myModal = new Pickles.Modal();
 
         });
 &lt;/script&gt;</code></pre></section>
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-<pre><code>$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+<pre><code class="prettyprint lang-css">$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
 $modal-bg-color: #fff !default;
 </code></pre>        <h4>Options</h4>
-        <pre class="prettyprint lang-js"><code>{
-            bodyOpenClass: &#039;overlay-open&#039;,
-            modalOpenClass: &#039;open&#039;,
-            overlayClass: &#039;modal-overlay&#039;,
-            modalClass: &#039;modal&#039;,
-            openSelector: &#039;[data-modal]&#039;,
-            closeSelector: &#039;[data-close-modal]&#039;
-        }</code></pre></section>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myModal.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="myModal"></code>
+    </pre>
+</section>
 
 <section class="example-section" title="Source">
 <pre class="prettyprint lang-js"><code>import FocusTrap from &#039;../utils/focus-trap&#039;;
@@ -275,36 +285,7 @@ export default class Modal {
 
 
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

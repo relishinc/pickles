@@ -16,28 +16,30 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
-<h3>Scroll Listener</h3>
+<h2>Scroll Listener</h2>
 
 <section class="example-section" title="Demo">
     <p>Start scrolling...</p>
     
     <div id="counter"></div>
     
+    <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
     
+        var myScrollListener;
+    
         jQuery(document)
             .ready(function($) {
     
-                var s = new Pickles.ScrollListener(function() {
+                // Create a listener with a callback that fires while scrolling
+                myScrollListener = new Pickles.ScrollListener(function() {
                     $('#counter').text($(window).scrollTop());
                 });
     
@@ -50,13 +52,17 @@
 
 &lt;div id=&quot;counter&quot;&gt;&lt;/div&gt;
 
+&lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    var myScrollListener;
+
     jQuery(document)
         .ready(function($) {
 
-            var s = new Pickles.ScrollListener(function() {
+            // Create a listener with a callback that fires while scrolling
+            myScrollListener = new Pickles.ScrollListener(function() {
                 $(&#039;#counter&#039;).text($(window).scrollTop());
             });
 
@@ -64,6 +70,12 @@
 &lt;/script&gt;</code></pre></section>
 
 <section class="example-section" title="Config">
+</section>
+
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="myScrollListener"></code>
+    </pre>
 </section>
 
 <section class="example-section" title="Source">
@@ -119,36 +131,7 @@ export default class ScrollListener {
 }</code></pre></section>
 
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

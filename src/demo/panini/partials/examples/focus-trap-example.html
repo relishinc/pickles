@@ -15,30 +15,31 @@
   </label>  
 </p>
 
+<!-- Load the JS library -->
 <script src="../../dist/js/Pickles.js"></script>
 
 <script>
 
+    var myFocusTrap;
+
     jQuery(document)
         .ready(function($) {
 
-            // create the focus trap
+            // Create the focus trap
+            myFocusTrap = new Pickles.FocusTrap('#here');
 
-            var ft = new Pickles.FocusTrap('#here');
-
-            // start or stop the trap when the checkbox changes
-
+            // Start or stop the trap when the checkbox changes
             $('#focusToggle')
                 .on('change', function() {
                     if ( $(this).prop('checked') )
                     {
-                        // start the focus trap
-                        ft.start(); 
+                        // Start the focus trap
+                        myFocusTrap.start(); 
                     }
                     else
                     {
-                        // stop the focus trap
-                        ft.stop();
+                        // Stop the focus trap
+                        myFocusTrap.stop();
                     }
                 });
             

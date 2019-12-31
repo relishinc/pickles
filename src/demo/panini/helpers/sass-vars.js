@@ -28,5 +28,5 @@ module.exports = function (options) {
         output += `${varName}: ${varValue};\n`;
     }
 
-    return '<pre><code>' + output + '</code></pre>';
+    return '<pre><code class="prettyprint lang-css">' + output + '</code></pre>';
 }

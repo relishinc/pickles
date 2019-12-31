@@ -16,14 +16,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="../../demo/js/main.js"></script>
-
 </head>
 <body>
 
 <a href="../index.html">⬅️Back</a>
 
 <section class="example-section" title="Demo">
+    <!-- Don't forget to load the styles: "../../dist/css/ui/drawer.css" or "scss/ui/drawer.scss" -->
+    
     <div class="hamburger" data-drawer-toggle>
         <span class="bar"></span>
         <span class="bar"></span>
@@ -36,20 +36,23 @@
     </div>
     
     <div id="content">
-        <h3>Drawer</h3>
+        <h2>Drawer</h2>
         <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
     </div>
         
+    <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
+    
+        var myDrawer;
     
         jQuery(document)
             .ready(function($) {
     
                 // create the drawer
     
-                var d = new Pickles.Drawer();
+                myDrawer = new Pickles.Drawer();
     
                 // watch the open and close events
     
@@ -66,7 +69,9 @@
     </script></section>
 
 <section class="example-section" title="Code">
-<pre class="prettyprint lang-html"><code>&lt;div class=&quot;hamburger&quot; data-drawer-toggle&gt;
+<pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/drawer.css&quot; or &quot;scss/ui/drawer.scss&quot; --&gt;
+
+&lt;div class=&quot;hamburger&quot; data-drawer-toggle&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
     &lt;span class=&quot;bar&quot;&gt;&lt;/span&gt;
@@ -78,19 +83,22 @@
 &lt;/div&gt;
 
 &lt;div id=&quot;content&quot;&gt;
-    &lt;h3&gt;Drawer&lt;/h3&gt;
+    &lt;h2&gt;Drawer&lt;/h2&gt;
     &lt;p&gt;This is some content. Use the hamburger or &lt;a href=&quot;#&quot; data-drawer-toggle&gt;click here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 
+&lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
+    var myDrawer;
+
     jQuery(document)
         .ready(function($) {
 
             // create the drawer
 
-            var d = new Pickles.Drawer();
+            myDrawer = new Pickles.Drawer();
 
             // watch the open and close events
 
@@ -107,7 +115,7 @@
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-<pre><code>$drawer-width-desktop: 20% !default;
+<pre><code class="prettyprint lang-css">$drawer-width-desktop: 20% !default;
 $drawer-width-phone: 80% !default;
 $drawer-breakpoint: 700px !default;
 $drawer-easing: cubic-bezier(0.075, 0.82, 0.165, 1) !default;
@@ -119,7 +127,17 @@ $drawer-hamburger-width: 30px !default;
 $drawer-hamburger-bar-height: 2px !default;
 $drawer-hamburger-bar-gap: 6px !default;
 $drawer-hamburger-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
-</code></pre></section>
+</code></pre>        <h4>Options</h4>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myDrawer.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <pre>
+        <code class="prettyprint" data-api="myDrawer"></code>
+    </pre>
+</section>
 
 <section class="example-section" title="Source">
 <pre class="prettyprint lang-js"><code>import ScrollListener from &#039;../utils/scroll-listener&#039;;
@@ -207,36 +225,7 @@ export default class Drawer {
 
 }</code></pre></section>
 
-<!--
-<script>
-
-	jQuery(document)
-		.ready(function($) {
-
-			$('[data-class-options]')
-				.each(function() {
-					var 
-						orig = $(this).data('classOptions').split('.'),
-						c = orig[0],
-						reference = window[c];
-					
-					if ( reference )
-					{
-						for ( var i = 1; i < orig.length; i++ )
-						{
-							reference = reference[orig[i]];
-						}
-
-						var d = new reference;
-
-						$(this).html(JSON.stringify(d.options, null, 2));
-					}
-				});
-
-		});
-
-</script>
--->
+<script src="../../demo/js/main.js"></script>
 
 </body>
 </html>

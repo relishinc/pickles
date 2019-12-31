@@ -2,14 +2,18 @@
 
 <div id="counter"></div>
 
+<!-- Load the JS library -->
 <script src="../../dist/js/Pickles.js"></script>
 
 <script>
 
+    var myScrollListener;
+
     jQuery(document)
         .ready(function($) {
 
-            var s = new Pickles.ScrollListener(function() {
+            // Create a listener with a callback that fires while scrolling
+            myScrollListener = new Pickles.ScrollListener(function() {
                 $('#counter').text($(window).scrollTop());
             });
 
