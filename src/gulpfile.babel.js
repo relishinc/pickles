@@ -161,6 +161,17 @@ function server(done) {
     browser.init({
         server: PATHS.server,
         startPath: '/demo',
+        middleware: function (req, res, next) {
+            // convert post requests to get
+            if (/\.json|\.txt|\.html/.test(req.url) && req.method.toUpperCase() == 'POST') {
+                console.log('[POST => GET] : ' + req.url);
+                req.method = 'GET';
+            }
+            // simulate short delay
+            setTimeout(() => {
+                next();
+            }, 1000);
+        },
         port: PORT
     });
     done();

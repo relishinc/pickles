@@ -26,7 +26,9 @@
 <section class="example-section" title="Demo">
     <!-- Don't forget to load the styles: "../../dist/css/ui/lightbox.css" or "scss/ui/lightbox.scss" -->
     
-    <p>Show a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
+    <p>Show me a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
+    
+    <p>Show me <a href="https://picsum.photos/600/900" title="This is another caption" data-thumbnail>one more</a> and then <a href="https://picsum.photos/900/900" title="The 3rd caption" data-thumbnail>one last one</a>.</p>
     
     <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
@@ -48,7 +50,9 @@
 <section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/lightbox.css&quot; or &quot;scss/ui/lightbox.scss&quot; --&gt;
 
-&lt;p&gt;Show a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Show me a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Show me &lt;a href=&quot;https://picsum.photos/600/900&quot; title=&quot;This is another caption&quot; data-thumbnail&gt;one more&lt;/a&gt; and then &lt;a href=&quot;https://picsum.photos/900/900&quot; title=&quot;The 3rd caption&quot; data-thumbnail&gt;one last one&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
@@ -69,7 +73,8 @@
         <h4>SASS vars</h4>
 <pre><code class="prettyprint lang-css">$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
 $caption-text-color: #fff !default;
-$spinner-color: #fff !default;
+$nav-color: $caption-text-color !default;
+$spinner-color: $caption-text-color !default;
 </code></pre>        <h4>Options</h4>
         <pre>
             <code class="prettyprint lang-json" data-options="myLightbox.options"></code>
@@ -99,6 +104,7 @@ export default class Lightbox {
         // vars
 
         this.namespace = &#039;lightbox&#039;;
+        this.lightboxes = $(this.options.selector);
         this.lightboxElement = null;
 
         // go
@@ -107,28 +113,57 @@ export default class Lightbox {
     }
 
     init() {
-        $(this.options.selector)
+        this.lightboxes
             .off(`click.${this.namespace}`)
             .on(`click.${this.namespace}`, (e) =&gt; {
                 e.preventDefault();
-
                 this.createLightbox(e);
-
-                setTimeout(() =&gt; {
-                    this.show();
-                }, 50);
-
             });
+    }
+
+    getNextLightbox(el) {
+        let
+            index = this.lightboxes.index(el);
+
+        if (index &lt; this.lightboxes.length - 1) {
+            index++;
+            return this.lightboxes.get(index);
+        }
+
+        return false;
+    };
+
+    getPrevLightbox(el) {
+        let
+            index = this.lightboxes.index(el);
+
+        if (index &gt; 0) {
+            index--;
+            return this.lightboxes.get(index);
+        }
+
+        return false;
     }
 
     createLightbox(e) {
         let
             img = $(&#039;&lt;img /&gt;&#039;),
             src = e.currentTarget.href,
+
+            navEl = $(&#039;&lt;div class=&quot;lightbox__nav&quot; /&gt;&#039;),
             imgEl = $(&#039;&lt;div class=&quot;lightbox__image&quot; /&gt;&#039;),
-            captionEl = $(&#039;&lt;div class=&quot;lightbox__caption&quot; /&gt;&#039;);
+            captionEl = $(&#039;&lt;div class=&quot;lightbox__caption&quot; /&gt;&#039;),
+
+            $next = this.getNextLightbox(e.currentTarget),
+            $prev = this.getPrevLightbox(e.currentTarget),
+            nextBtn = $(&#039;&lt;span class=&quot;nav nav--next&quot;&gt;Next&lt;/span&gt;&#039;),
+            prevBtn = $(&#039;&lt;span class=&quot;nav nav--prev&quot;&gt;Previous&lt;/span&gt;&#039;);
 
         this.lightboxElement = $(&#039;&lt;div class=&quot;lightbox&quot; /&gt;&#039;);
+
+        if (e.direction) {
+            this.lightboxElement.addClass(&#039;from--&#039; + e.direction);
+        }
 
         // listen for load event
 
@@ -136,10 +171,11 @@ export default class Lightbox {
             .attr(&#039;src&#039;, src)
             .on(&#039;load&#039;, (e) =&gt; {
                 this.lightboxElement
+                    .trigger(`${this.namespace}.loaded`)
                     .addClass(&#039;lightbox--loaded&#039;);
             });
 
-        // set background image    
+        // set background image   
 
         imgEl
             .css(&#039;backgroundImage&#039;, `url(${src})`);
@@ -158,6 +194,37 @@ export default class Lightbox {
                 .appendTo(this.lightboxElement);
         }
 
+        // add nav
+
+        if ($next || $prev) {
+            navEl
+                .prependTo(this.lightboxElement);
+        }
+
+        if ($next) {
+            nextBtn
+                .on(`click.${this.namespace}`, () =&gt; {
+                    this.destroy();
+                    this.createLightbox({
+                        currentTarget: $next,
+                        direction: &#039;right&#039;
+                    });
+                })
+                .appendTo(navEl);
+        }
+
+        if ($prev) {
+            prevBtn
+                .on(`click.${this.namespace}`, () =&gt; {
+                    this.destroy();
+                    this.createLightbox({
+                        currentTarget: $prev,
+                        direction: &#039;left&#039;
+                    });
+                })
+                .appendTo(navEl);
+        }
+
         // click handler
 
         this.lightboxElement
@@ -165,10 +232,36 @@ export default class Lightbox {
                 this.hide();
             });
 
+        // show it
+
+        if (e.direction) {
+            if (!$next || !$prev) {
+                this.show(false);
+            } else {
+                this.show();
+            }
+        } else {
+            setTimeout(() =&gt; {
+                this.show();
+            }, 50);
+        }
+
     }
 
-    show() {
+    show($wait = true) {
         this.lightboxElement
+            .addClass(&#039;lightbox--open&#039;)
+            .one(`transitionend.${this.namespace}`, (e) =&gt; {
+                this.lightboxElement.removeClass(&#039;from--left from--right&#039;);
+            });
+
+        if (!$wait) {
+            setTimeout(() =&gt; {
+                this.lightboxElement.trigger(`transitionend.${this.namespace}`);
+            }, 50);
+        }
+
+        $(&#039;body&#039;)
             .addClass(&#039;lightbox--open&#039;);
     };
 
@@ -178,6 +271,9 @@ export default class Lightbox {
             .on(`transitionend.${this.namespace}`, (e) =&gt; {
                 this.destroy();
             });
+
+        $(&#039;body&#039;)
+            .removeClass(&#039;lightbox--open&#039;);
     };
 
     destroy() {

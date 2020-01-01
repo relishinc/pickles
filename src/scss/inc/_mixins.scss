@@ -1,3 +1,25 @@
 @mixin breakpoint($content) {
   
 }
+
+@mixin spinner($spinner-color: #000) {
+    position: relative;
+
+    &:before {
+		position: absolute;
+		top: 50%; left: 50%;
+		width: 30px; height: 30px;
+		border-radius: 50%;
+		border: solid 3px $spinner-color;
+		border-left-color: rgba($spinner-color, 0.25);
+		display: block;
+		content: '';
+		animation: 0.6s spin infinite linear;
+		transition: opacity 0.35s;
+	}
+
+	@keyframes spin {
+		0% { transform: translate(-50%, -50%) rotate(0deg); }
+		100% { transform: translate(-50%, -50%) rotate(360deg); }
+	}
+}

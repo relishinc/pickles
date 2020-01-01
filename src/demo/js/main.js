@@ -90,16 +90,6 @@
 
                 }
             });
-        var
-            proto = Object.getPrototypeOf(myModal),
-            props = Object.getOwnPropertyNames(proto);
-
-        props.forEach((prop) => {
-            var firstLine = proto[prop].toString().split("\n")[0];
-            console.log(prop, firstLine.match(/\(.*\)+/g));
-        })
-
-
 
     };
 

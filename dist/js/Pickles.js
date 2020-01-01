@@ -439,6 +439,7 @@ function () {
     this.options = Object.assign({}, defaults, $options); // vars
 
     this.namespace = 'lightbox';
+    this.lightboxes = $(this.options.selector);
     this.lightboxElement = null; // go
 
     this.init();
@@ -449,15 +450,35 @@ function () {
     value: function init() {
       var _this = this;
 
-      $(this.options.selector).off("click.".concat(this.namespace)).on("click.".concat(this.namespace), function (e) {
+      this.lightboxes.off("click.".concat(this.namespace)).on("click.".concat(this.namespace), function (e) {
         e.preventDefault();
 
         _this.createLightbox(e);
-
-        setTimeout(function () {
-          _this.show();
-        }, 50);
       });
+    }
+  }, {
+    key: "getNextLightbox",
+    value: function getNextLightbox(el) {
+      var index = this.lightboxes.index(el);
+
+      if (index < this.lightboxes.length - 1) {
+        index++;
+        return this.lightboxes.get(index);
+      }
+
+      return false;
+    }
+  }, {
+    key: "getPrevLightbox",
+    value: function getPrevLightbox(el) {
+      var index = this.lightboxes.index(el);
+
+      if (index > 0) {
+        index--;
+        return this.lightboxes.get(index);
+      }
+
+      return false;
     }
   }, {
     key: "createLightbox",
@@ -466,13 +487,18 @@ function () {
 
       var img = $('<img />'),
           src = e.currentTarget.href,
+          navEl = $('<div class="lightbox__nav" />'),
           imgEl = $('<div class="lightbox__image" />'),
-          captionEl = $('<div class="lightbox__caption" />');
+          captionEl = $('<div class="lightbox__caption" />'),
+          $next = this.getNextLightbox(e.currentTarget),
+          $prev = this.getPrevLightbox(e.currentTarget),
+          nextBtn = $('<span class="nav nav--next">Next</span>'),
+          prevBtn = $('<span class="nav nav--prev">Previous</span>');
       this.lightboxElement = $('<div class="lightbox" />'); // listen for load event
 
       img.attr('src', src).on('load', function (e) {
-        _this2.lightboxElement.addClass('lightbox--loaded');
-      }); // set background image    
+        _this2.lightboxElement.trigger("".concat(_this2.namespace, ".loaded")).addClass('lightbox--loaded');
+      }); // set background image   
 
       imgEl.css('backgroundImage', "url(".concat(src, ")")); // append to body    
 
@@ -480,17 +506,51 @@ function () {
 
       if ($(e.currentTarget).attr('alt') || $(e.currentTarget).attr('title')) {
         captionEl.text($(e.currentTarget).attr('alt') || $(e.currentTarget).attr('title')).appendTo(this.lightboxElement);
+      } // add nav
+
+
+      if ($next || $prev) {
+        navEl.prependTo(this.lightboxElement);
+      }
+
+      if ($next) {
+        nextBtn.on("click.".concat(this.namespace), function () {
+          _this2.destroy();
+
+          _this2.createLightbox({
+            currentTarget: $next
+          });
+        }).appendTo(navEl);
+      }
+
+      if ($prev) {
+        prevBtn.on("click.".concat(this.namespace), function () {
+          _this2.destroy();
+
+          _this2.createLightbox({
+            currentTarget: $prev
+          });
+        }).appendTo(navEl);
       } // click handler
 
 
       this.lightboxElement.on("click.".concat(this.namespace), function (e) {
         _this2.hide();
-      });
+      }); // show it
+
+      if ($('body').hasClass('lightbox--open')) {
+        this.show();
+      } else {
+        setTimeout(function () {
+          _this2.show();
+        }, 50);
+      }
     }
   }, {
     key: "show",
     value: function show() {
       this.lightboxElement.addClass('lightbox--open');
+      $('body').addClass('lightbox--open');
     }
   }, {
     key: "hide",
@@ -500,6 +560,7 @@ function () {
       this.lightboxElement.removeClass('lightbox--open').on("transitionend.".concat(this.namespace), function (e) {
         _this3.destroy();
       });
+      $('body').removeClass('lightbox--open');
     }
   }, {
     key: "destroy",

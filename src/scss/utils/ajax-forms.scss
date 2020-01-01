@@ -6,6 +6,8 @@ form[data-ajax] {
     // disable and dim the form while submitting
     
     &.form--submitting {
+        @include spinner();
+        
         pointer-events: none;
         user-select: none;
 
