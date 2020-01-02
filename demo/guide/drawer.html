@@ -134,12 +134,16 @@ $drawer-hamburger-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
     <pre>
         <code class="prettyprint" data-api="myDrawer"></code>
     </pre>
-</section>
+    <h3>Events</h3>
+    <p>See demo for examples</p>
+    <h4>document</h4>
+    <ul>
+        <li><strong>drawerOpen</strong> when drawer opens</li>
+        <li><strong>drawerClose</strong> when drawer closes</li>
+    </ul></section>
 
 <section class="example-section" title="Source">
-<pre class="prettyprint lang-js"><code>import ScrollListener from &#039;../utils/scroll-listener&#039;;
-
-/* Drawer plugin
+<pre class="prettyprint lang-js"><code>/* Drawer plugin
 ----------------------------- */
 
 export default class Drawer {
@@ -148,9 +152,7 @@ export default class Drawer {
         // settings
 
         let defaults = {
-            contentSelector: &#039;#content&#039;,
-            scrolledBodyClass: &#039;page-scrolled&#039;,
-            scrollMin: 100
+            contentSelector: &#039;#content&#039;
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -166,11 +168,6 @@ export default class Drawer {
     init() {
         $(document)
             .on(`click.${this.namespace}`, &#039;[data-drawer-toggle]&#039;, e =&gt; this.toggle());
-
-        new ScrollListener(() =&gt; {
-            $(&#039;body&#039;)
-                .toggleClass(this.options.scrolledBodyClass, $(window).scrollTop() &gt; this.options.scrollMin);
-        }, true);
     };
 
     // toggle drawer navigation

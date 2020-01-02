@@ -640,75 +640,6 @@ function () {
 }();
 
 
-// CONCATENATED MODULE: ./js/utils/scroll-listener.js
-function scroll_listener_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function scroll_listener_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function scroll_listener_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_listener_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_listener_defineProperties(Constructor, staticProps); return Constructor; }
-
-/* Scroll listener
------------------------------ */
-var ScrollListener =
-/*#__PURE__*/
-function () {
-  function ScrollListener() {
-    var _this = this;
-
-    var $callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
-      return null;
-    };
-    var $immediate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    scroll_listener_classCallCheck(this, ScrollListener);
-
-    // vars
-    this.namespace = 'scrollListener';
-    this.lastScrollY = 0;
-    this.ticking = false; // internal funcs
-
-    var update = function update() {
-      $callback();
-      _this.ticking = false;
-    };
-
-    var requestTick = function requestTick() {
-      if (!_this.ticking) {
-        window.requestAnimationFrame(update);
-        _this.ticking = true;
-      }
-    };
-
-    this.onScroll = function () {
-      _this.lastScrollY = window.scrollY;
-      requestTick();
-    }; // start it
-
-
-    this.on();
-    if ($immediate) $callback();
-  }
-
-  scroll_listener_createClass(ScrollListener, [{
-    key: "off",
-    value: function off() {
-      $(window).off("scroll.".concat(this.namespace));
-    }
-  }, {
-    key: "on",
-    value: function on() {
-      var _this2 = this;
-
-      $(window).on("scroll.".concat(this.namespace), function (e) {
-        return _this2.onScroll();
-      });
-    }
-  }]);
-
-  return ScrollListener;
-}();
-
-
 // CONCATENATED MODULE: ./js/ui/drawer.js
 function drawer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -716,11 +647,9 @@ function drawer_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function drawer_createClass(Constructor, protoProps, staticProps) { if (protoProps) drawer_defineProperties(Constructor.prototype, protoProps); if (staticProps) drawer_defineProperties(Constructor, staticProps); return Constructor; }
 
-
 /* Drawer plugin
 ----------------------------- */
-
-var drawer_Drawer =
+var Drawer =
 /*#__PURE__*/
 function () {
   function Drawer() {
@@ -730,9 +659,7 @@ function () {
 
     // settings
     var defaults = {
-      contentSelector: '#content',
-      scrolledBodyClass: 'page-scrolled',
-      scrollMin: 100
+      contentSelector: '#content'
     };
     this.options = Object.assign({}, defaults, $options); // vars
 
@@ -749,9 +676,6 @@ function () {
       $(document).on("click.".concat(this.namespace), '[data-drawer-toggle]', function (e) {
         return _this.toggle();
       });
-      new ScrollListener(function () {
-        $('body').toggleClass(_this.options.scrolledBodyClass, $(window).scrollTop() > _this.options.scrollMin);
-      }, true);
     }
   }, {
     key: "toggle",
@@ -887,6 +811,75 @@ function () {
 }();
 
 
+// CONCATENATED MODULE: ./js/utils/scroll-listener.js
+function scroll_listener_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function scroll_listener_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function scroll_listener_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_listener_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_listener_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Scroll listener
+----------------------------- */
+var ScrollListener =
+/*#__PURE__*/
+function () {
+  function ScrollListener() {
+    var _this = this;
+
+    var $callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
+      return null;
+    };
+    var $immediate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    scroll_listener_classCallCheck(this, ScrollListener);
+
+    // vars
+    this.namespace = 'scrollListener';
+    this.lastScrollY = 0;
+    this.ticking = false; // internal funcs
+
+    var update = function update() {
+      $callback();
+      _this.ticking = false;
+    };
+
+    var requestTick = function requestTick() {
+      if (!_this.ticking) {
+        window.requestAnimationFrame(update);
+        _this.ticking = true;
+      }
+    };
+
+    this.onScroll = function () {
+      _this.lastScrollY = window.scrollY;
+      requestTick();
+    }; // start it
+
+
+    this.on();
+    if ($immediate) $callback();
+  }
+
+  scroll_listener_createClass(ScrollListener, [{
+    key: "off",
+    value: function off() {
+      $(window).off("scroll.".concat(this.namespace));
+    }
+  }, {
+    key: "on",
+    value: function on() {
+      var _this2 = this;
+
+      $(window).on("scroll.".concat(this.namespace), function (e) {
+        return _this2.onScroll();
+      });
+    }
+  }]);
+
+  return ScrollListener;
+}();
+
+
 // EXTERNAL MODULE: ./js/polyfills/custom-event.js
 var custom_event = __webpack_require__(1);
 
@@ -902,7 +895,7 @@ var custom_event = __webpack_require__(1);
 /* harmony default export */ var js = __webpack_exports__["default"] = ({
   Modal: modal_Modal,
   Lightbox: lightbox_Lightbox,
-  Drawer: drawer_Drawer,
+  Drawer: Drawer,
   AjaxForms: AjaxForms,
   FocusTrap: FocusTrap,
   ScrollListener: ScrollListener

@@ -1,5 +1,3 @@
-import ScrollListener from '../utils/scroll-listener';
-
 /* Drawer plugin
 ----------------------------- */
 
@@ -9,9 +7,7 @@ export default class Drawer {
         // settings
 
         let defaults = {
-            contentSelector: '#content',
-            scrolledBodyClass: 'page-scrolled',
-            scrollMin: 100
+            contentSelector: '#content'
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -27,11 +23,6 @@ export default class Drawer {
     init() {
         $(document)
             .on(`click.${this.namespace}`, '[data-drawer-toggle]', e => this.toggle());
-
-        new ScrollListener(() => {
-            $('body')
-                .toggleClass(this.options.scrolledBodyClass, $(window).scrollTop() > this.options.scrollMin);
-        }, true);
     };
 
     // toggle drawer navigation
