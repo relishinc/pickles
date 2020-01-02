@@ -41,9 +41,15 @@ export default class Drawer {
         // fire events
 
         if (!$('body').hasClass('drawer--open')) {
-            $(document).trigger(`${this.namespace}.open`);
+            document
+                .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
+                    detail: {}
+                }));
         } else {
-            $(document).trigger(`${this.namespace}.close`);
+            document
+                .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
+                    detail: {}
+                }));
         }
 
         // remove click handler from page content

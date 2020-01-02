@@ -27,17 +27,15 @@
         .ready(function($) {
 
             // create the drawer
-
             myDrawer = new Pickles.Drawer();
 
             // watch the open and close events
-
             $(document)
-                .on('drawer.open', e => {
-                    console.log('the drawer is open');
+                .on('drawerOpen', e => {
+                    console.log('the drawer is open', e.detail);
                 })
-                .on('drawer.close', e => {
-                    console.log('the drawer is closed');
+                .on('drawerClose', e => {
+                    console.log('the drawer is closed', e.detail);
                 });         
 
         });

@@ -8,6 +8,8 @@ import AjaxForms from './utils/ajax-forms';
 import FocusTrap from './utils/focus-trap';
 import ScrollListener from './utils/scroll-listener';
 
+import './polyfills/custom-event';
+
 export default {
   Modal,
   Lightbox,

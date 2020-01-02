@@ -7,7 +7,8 @@ export default class Lightbox {
         // settings
 
         let defaults = {
-            selector: '[data-thumbnail]'
+            bodyOpenClass: 'lightbox--open',
+            selector: '[data-lightbox]'
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -77,7 +78,7 @@ export default class Lightbox {
             .attr('src', src)
             .on('load', (e) => {
                 this.lightboxElement
-                    .trigger(`${this.namespace}.loaded`)
+                    .trigger(`loaded.${this.namespace}`)
                     .addClass('lightbox--loaded');
             });
 
@@ -151,8 +152,13 @@ export default class Lightbox {
             .addClass('lightbox--open');
 
         $('body')
-            .addClass('lightbox--open');
-    };
+            .addClass(this.options.bodyOpenClass);
+
+        document
+            .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
+                detail: {}
+            }));
+    }
 
     hide() {
         this.lightboxElement
@@ -162,8 +168,14 @@ export default class Lightbox {
             });
 
         $('body')
-            .removeClass('lightbox--open');
-    };
+            .removeClass(this.options.bodyOpenClass);
+
+        document
+            .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
+                detail: {}
+            }));
+
+    }
 
     destroy() {
         this.lightboxElement.remove();

@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="../../dist/css/ui/lightbox.css">
 
 	<style type="text/css">
-	 [data-thumbnail] { cursor: -webkit-zoom-in; } 
+	 [data-lightbox] { cursor: -webkit-zoom-in !important; } 
 	</style>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -26,9 +26,9 @@
 <section class="example-section" title="Demo">
     <!-- Don't forget to load the styles: "../../dist/css/ui/lightbox.css" or "scss/ui/lightbox.scss" -->
     
-    <p>Show me a big <a href="https://picsum.photos/900/600" title="This is the caption" data-thumbnail>picture</a></p>
+    <p>Show me a big <a href="https://picsum.photos/900/600" title="This is the caption" data-lightbox>picture</a></p>
     
-    <p>Show me <a href="https://picsum.photos/600/900" title="This is another caption" data-thumbnail>one more</a> and then <a href="https://picsum.photos/900/900" title="The 3rd caption" data-thumbnail>one last one</a>.</p>
+    <p>Show me <a href="https://picsum.photos/600/900" title="This is another caption" data-lightbox>one more</a> and then <a href="https://picsum.photos/900/900" title="The 3rd caption" data-lightbox>one last one</a>.</p>
     
     <!-- Load the JS library -->
     <script src="../../dist/js/Pickles.js"></script>
@@ -40,8 +40,17 @@
         jQuery(document)
             .ready(function($) {
                 
-                // Have all [data-thumbnail] links open lightboxes
+                // Have all [data-lightbox] links open lightboxes
                 myLightbox = new Pickles.Lightbox();
+    
+                // watch the open and close events
+                $(document)
+                    .on('lightboxOpen', e => {
+                        console.log('the lightbox is open', e.detail);
+                    })
+                    .on('lightboxClose', e => {
+                        console.log('the lightbox is closed', e.detail);
+                    });            
     
             });
     
@@ -50,9 +59,9 @@
 <section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/lightbox.css&quot; or &quot;scss/ui/lightbox.scss&quot; --&gt;
 
-&lt;p&gt;Show me a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-thumbnail&gt;picture&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Show me a big &lt;a href=&quot;https://picsum.photos/900/600&quot; title=&quot;This is the caption&quot; data-lightbox&gt;picture&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Show me &lt;a href=&quot;https://picsum.photos/600/900&quot; title=&quot;This is another caption&quot; data-thumbnail&gt;one more&lt;/a&gt; and then &lt;a href=&quot;https://picsum.photos/900/900&quot; title=&quot;The 3rd caption&quot; data-thumbnail&gt;one last one&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Show me &lt;a href=&quot;https://picsum.photos/600/900&quot; title=&quot;This is another caption&quot; data-lightbox&gt;one more&lt;/a&gt; and then &lt;a href=&quot;https://picsum.photos/900/900&quot; title=&quot;The 3rd caption&quot; data-lightbox&gt;one last one&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- Load the JS library --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
@@ -63,8 +72,17 @@
     jQuery(document)
         .ready(function($) {
 
-            // Have all [data-thumbnail] links open lightboxes
+            // Have all [data-lightbox] links open lightboxes
             myLightbox = new Pickles.Lightbox();
+
+            // watch the open and close events
+            $(document)
+                .on(&#039;lightboxOpen&#039;, e =&gt; {
+                    console.log(&#039;the lightbox is open&#039;, e.detail);
+                })
+                .on(&#039;lightboxClose&#039;, e =&gt; {
+                    console.log(&#039;the lightbox is closed&#039;, e.detail);
+                });
 
         });
 &lt;/script&gt;</code></pre></section>
@@ -97,7 +115,8 @@ export default class Lightbox {
         // settings
 
         let defaults = {
-            selector: &#039;[data-thumbnail]&#039;
+            bodyOpenClass: &#039;lightbox--open&#039;,
+            selector: &#039;[data-lightbox]&#039;
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -161,17 +180,13 @@ export default class Lightbox {
 
         this.lightboxElement = $(&#039;&lt;div class=&quot;lightbox&quot; /&gt;&#039;);
 
-        if (e.direction) {
-            this.lightboxElement.addClass(&#039;from--&#039; + e.direction);
-        }
-
         // listen for load event
 
         img
             .attr(&#039;src&#039;, src)
             .on(&#039;load&#039;, (e) =&gt; {
                 this.lightboxElement
-                    .trigger(`${this.namespace}.loaded`)
+                    .trigger(`loaded.${this.namespace}`)
                     .addClass(&#039;lightbox--loaded&#039;);
             });
 
@@ -206,8 +221,7 @@ export default class Lightbox {
                 .on(`click.${this.namespace}`, () =&gt; {
                     this.destroy();
                     this.createLightbox({
-                        currentTarget: $next,
-                        direction: &#039;right&#039;
+                        currentTarget: $next
                     });
                 })
                 .appendTo(navEl);
@@ -218,8 +232,7 @@ export default class Lightbox {
                 .on(`click.${this.namespace}`, () =&gt; {
                     this.destroy();
                     this.createLightbox({
-                        currentTarget: $prev,
-                        direction: &#039;left&#039;
+                        currentTarget: $prev
                     });
                 })
                 .appendTo(navEl);
@@ -234,36 +247,29 @@ export default class Lightbox {
 
         // show it
 
-        if (e.direction) {
-            if (!$next || !$prev) {
-                this.show(false);
-            } else {
-                this.show();
-            }
+        if ($(&#039;body&#039;).hasClass(&#039;lightbox--open&#039;)) {
+            this.show();
         } else {
             setTimeout(() =&gt; {
                 this.show();
             }, 50);
         }
 
+
     }
 
-    show($wait = true) {
+    show() {
         this.lightboxElement
-            .addClass(&#039;lightbox--open&#039;)
-            .one(`transitionend.${this.namespace}`, (e) =&gt; {
-                this.lightboxElement.removeClass(&#039;from--left from--right&#039;);
-            });
-
-        if (!$wait) {
-            setTimeout(() =&gt; {
-                this.lightboxElement.trigger(`transitionend.${this.namespace}`);
-            }, 50);
-        }
+            .addClass(&#039;lightbox--open&#039;);
 
         $(&#039;body&#039;)
-            .addClass(&#039;lightbox--open&#039;);
-    };
+            .addClass(this.options.bodyOpenClass);
+
+        document
+            .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
+                detail: {}
+            }));
+    }
 
     hide() {
         this.lightboxElement
@@ -273,8 +279,14 @@ export default class Lightbox {
             });
 
         $(&#039;body&#039;)
-            .removeClass(&#039;lightbox--open&#039;);
-    };
+            .removeClass(this.options.bodyOpenClass);
+
+        document
+            .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
+                detail: {}
+            }));
+
+    }
 
     destroy() {
         this.lightboxElement.remove();

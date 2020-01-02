@@ -99,7 +99,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -110,6 +110,32 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+/* CustomEvent polyfill IE9+
+------------------------------- */
+;
+
+(function () {
+  if (typeof window.CustomEvent === "function") return false;
+
+  function CustomEvent(event, params) {
+    params = params || {
+      bubbles: false,
+      cancelable: false,
+      detail: undefined
+    };
+    var evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  }
+
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;
+})();
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -278,7 +304,7 @@ function () {
 
     // settings
     var defaults = {
-      bodyOpenClass: 'overlay-open',
+      bodyOpenClass: 'modal--open',
       modalOpenClass: 'open',
       overlayClass: 'modal-overlay',
       modalClass: 'modal',
@@ -321,7 +347,7 @@ function () {
       var delay = 0;
 
       if (this.modalElement.length && this.modalElement.hasClass(this.options.overlayClass)) {
-        this.modalElement.off("".concat(this.namespace, ".show")).on("".concat(this.namespace, ".show"), function (e) {
+        this.modalElement.off("show.".concat(this.namespace)).on("show.".concat(this.namespace), function (e) {
           // start focus trap
           _this2.focusTrap.start(); // reset forms
 
@@ -346,12 +372,14 @@ function () {
           // add css classes
           $('body').addClass(_this2.options.bodyOpenClass);
 
-          _this2.modalElement.addClass(_this2.options.modalOpenClass).trigger("".concat(_this2.namespace, ".show")); // dispatch open event
+          _this2.modalElement.addClass(_this2.options.modalOpenClass).trigger("show.".concat(_this2.namespace)); // dispatch open event
 
 
-          $(document).trigger("".concat(_this2.namespace, ".open"), [{
-            target: _this2.modalElement
-          }]);
+          document.dispatchEvent(new CustomEvent("".concat(_this2.namespace, "Open"), {
+            detail: {
+              target: _this2.modalElement
+            }
+          }));
         }, delay); // TO DO - attach to transitionend event
       }
     } // close any open modal
@@ -363,7 +391,7 @@ function () {
 
       var $modal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var modal = $modal || this.modalElement;
-      modal.off("".concat(this.namespace, ".hide")).on("".concat(this.namespace, ".hide"), function (e) {
+      modal.off("hide.".concat(this.namespace)).on("hide.".concat(this.namespace), function (e) {
         // release focus trap
         if (modal == _this3.modalElement) {
           _this3.focusTrap.stop();
@@ -376,13 +404,15 @@ function () {
       }); // remove css classes
 
       $('body').removeClass(this.options.bodyOpenClass);
-      $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).removeClass(this.options.modalOpenClass).trigger("".concat(this.namespace, ".hide")); // restore scroll position
+      $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).removeClass(this.options.modalOpenClass).trigger("hide.".concat(this.namespace)); // restore scroll position
 
       $(window).scrollTop(this.scrollPosition).trigger("scroll.".concat(this.namespace)); // dispatch close event
 
-      $(document).trigger("".concat(this.namespace, ".close"), [{
-        target: modal
-      }]);
+      document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Close"), {
+        detail: {
+          target: modal
+        }
+      }));
     } // post-ajax
 
   }, {
@@ -391,7 +421,7 @@ function () {
       var element = $selector instanceof jQuery ? $selector : $($selector);
 
       if (element.is(this.modalElement) && this.modalElement.hasClass(this.options.modalOpenClass)) {
-        this.modalElement.trigger("".concat(this.namespace, ".show"));
+        this.modalElement.trigger("show.".concat(this.namespace));
       }
     } // handle key events
 
@@ -434,7 +464,8 @@ function () {
 
     // settings
     var defaults = {
-      selector: '[data-thumbnail]'
+      bodyOpenClass: 'lightbox--open',
+      selector: '[data-lightbox]'
     };
     this.options = Object.assign({}, defaults, $options); // vars
 
@@ -497,7 +528,7 @@ function () {
       this.lightboxElement = $('<div class="lightbox" />'); // listen for load event
 
       img.attr('src', src).on('load', function (e) {
-        _this2.lightboxElement.trigger("".concat(_this2.namespace, ".loaded")).addClass('lightbox--loaded');
+        _this2.lightboxElement.trigger("loaded.".concat(_this2.namespace)).addClass('lightbox--loaded');
       }); // set background image   
 
       imgEl.css('backgroundImage', "url(".concat(src, ")")); // append to body    
@@ -550,7 +581,10 @@ function () {
     key: "show",
     value: function show() {
       this.lightboxElement.addClass('lightbox--open');
-      $('body').addClass('lightbox--open');
+      $('body').addClass(this.options.bodyOpenClass);
+      document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Open"), {
+        detail: {}
+      }));
     }
   }, {
     key: "hide",
@@ -560,7 +594,10 @@ function () {
       this.lightboxElement.removeClass('lightbox--open').on("transitionend.".concat(this.namespace), function (e) {
         _this3.destroy();
       });
-      $('body').removeClass('lightbox--open');
+      $('body').removeClass(this.options.bodyOpenClass);
+      document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Close"), {
+        detail: {}
+      }));
     }
   }, {
     key: "destroy",
@@ -694,9 +731,13 @@ function () {
 
       // fire events
       if (!$('body').hasClass('drawer--open')) {
-        $(document).trigger("".concat(this.namespace, ".open"));
+        document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Open"), {
+          detail: {}
+        }));
       } else {
-        $(document).trigger("".concat(this.namespace, ".close"));
+        document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Close"), {
+          detail: {}
+        }));
       } // remove click handler from page content
 
 
@@ -816,7 +857,11 @@ function () {
 }();
 
 
+// EXTERNAL MODULE: ./js/polyfills/custom-event.js
+var custom_event = __webpack_require__(1);
+
 // CONCATENATED MODULE: ./js/index.js
+
 
 
 

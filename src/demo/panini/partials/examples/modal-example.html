@@ -22,6 +22,15 @@
             // Have all [data-modal] links open modals based on href selector
             myModal = new Pickles.Modal();
 
+            // watch the open and close events
+            $(document)
+                .on('modalOpen', e => {
+                    console.log('the modal is open', e.detail);
+                })
+                .on('modalClose', e => {
+                    console.log('the modal is closed', e.detail);
+                });    
+                        
         });
 
 </script>

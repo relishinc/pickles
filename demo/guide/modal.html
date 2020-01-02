@@ -48,6 +48,15 @@
                 // Have all [data-modal] links open modals based on href selector
                 myModal = new Pickles.Modal();
     
+                // watch the open and close events
+                $(document)
+                    .on('modalOpen', e => {
+                        console.log('the modal is open', e.detail);
+                    })
+                    .on('modalClose', e => {
+                        console.log('the modal is closed', e.detail);
+                    });    
+                            
             });
     
     </script></section>
@@ -75,6 +84,15 @@
 
             // Have all [data-modal] links open modals based on href selector
             myModal = new Pickles.Modal();
+
+            // watch the open and close events
+            $(document)
+                .on(&#039;modalOpen&#039;, e =&gt; {
+                    console.log(&#039;the modal is open&#039;, e.detail);
+                })
+                .on(&#039;modalClose&#039;, e =&gt; {
+                    console.log(&#039;the modal is closed&#039;, e.detail);
+                });
 
         });
 &lt;/script&gt;</code></pre></section>
@@ -107,7 +125,7 @@ export default class Modal {
         // settings
 
         let defaults = {
-            bodyOpenClass: &#039;overlay-open&#039;,
+            bodyOpenClass: &#039;modal--open&#039;,
             modalOpenClass: &#039;open&#039;,
             overlayClass: &#039;modal-overlay&#039;,
             modalClass: &#039;modal&#039;,
@@ -158,8 +176,8 @@ export default class Modal {
 
         if (this.modalElement.length &amp;&amp; this.modalElement.hasClass(this.options.overlayClass)) {
             this.modalElement
-                .off(`${this.namespace}.show`)
-                .on(`${this.namespace}.show`, e =&gt; {
+                .off(`show.${this.namespace}`)
+                .on(`show.${this.namespace}`, e =&gt; {
 
                     // start focus trap
 
@@ -196,14 +214,16 @@ export default class Modal {
 
                 this.modalElement
                     .addClass(this.options.modalOpenClass)
-                    .trigger(`${this.namespace}.show`);
+                    .trigger(`show.${this.namespace}`);
 
                 // dispatch open event
 
-                $(document)
-                    .trigger(`${this.namespace}.open`, [{
-                        target: this.modalElement
-                    }]);
+                document
+                    .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
+                        detail: {
+                            target: this.modalElement
+                        }
+                    }));
 
             }, delay); // TO DO - attach to transitionend event
 
@@ -217,8 +237,8 @@ export default class Modal {
         let modal = $modal || this.modalElement;
 
         modal
-            .off(`${this.namespace}.hide`)
-            .on(`${this.namespace}.hide`, e =&gt; {
+            .off(`hide.${this.namespace}`)
+            .on(`hide.${this.namespace}`, e =&gt; {
 
                 // release focus trap
 
@@ -239,7 +259,7 @@ export default class Modal {
 
         $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
             .removeClass(this.options.modalOpenClass)
-            .trigger(`${this.namespace}.hide`);
+            .trigger(`hide.${this.namespace}`);
 
         // restore scroll position
 
@@ -249,10 +269,12 @@ export default class Modal {
 
         // dispatch close event
 
-        $(document)
-            .trigger(`${this.namespace}.close`, [{
-                target: modal
-            }]);
+        document
+            .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
+                detail: {
+                    target: modal
+                }
+            }));
     }
 
     // post-ajax
@@ -261,7 +283,7 @@ export default class Modal {
         let element = $selector instanceof jQuery ? $selector : $($selector);
 
         if (element.is(this.modalElement) &amp;&amp; this.modalElement.hasClass(this.options.modalOpenClass)) {
-            this.modalElement.trigger(`${this.namespace}.show`);
+            this.modalElement.trigger(`show.${this.namespace}`);
         }
     }
 

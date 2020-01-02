@@ -9,7 +9,7 @@ export default class Modal {
     // settings
 
     let defaults = {
-      bodyOpenClass: 'overlay-open',
+      bodyOpenClass: 'modal--open',
       modalOpenClass: 'open',
       overlayClass: 'modal-overlay',
       modalClass: 'modal',
@@ -60,8 +60,8 @@ export default class Modal {
 
     if (this.modalElement.length && this.modalElement.hasClass(this.options.overlayClass)) {
       this.modalElement
-        .off(`${this.namespace}.show`)
-        .on(`${this.namespace}.show`, e => {
+        .off(`show.${this.namespace}`)
+        .on(`show.${this.namespace}`, e => {
 
           // start focus trap
 
@@ -98,12 +98,17 @@ export default class Modal {
 
         this.modalElement
           .addClass(this.options.modalOpenClass)
-          .trigger(`${this.namespace}.show`);
+          .trigger(`show.${this.namespace}`);
 
         // dispatch open event
 
-        $(document)
-          .trigger(`${this.namespace}.open`, [{ target: this.modalElement }]);
+        document
+          .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
+            detail:
+            {
+              target: this.modalElement
+            }
+          }));
 
       }, delay); // TO DO - attach to transitionend event
 
@@ -117,8 +122,8 @@ export default class Modal {
     let modal = $modal || this.modalElement;
 
     modal
-      .off(`${this.namespace}.hide`)
-      .on(`${this.namespace}.hide`, e => {
+      .off(`hide.${this.namespace}`)
+      .on(`hide.${this.namespace}`, e => {
 
         // release focus trap
 
@@ -139,7 +144,7 @@ export default class Modal {
 
     $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
       .removeClass(this.options.modalOpenClass)
-      .trigger(`${this.namespace}.hide`);
+      .trigger(`hide.${this.namespace}`);
 
     // restore scroll position
 
@@ -149,8 +154,13 @@ export default class Modal {
 
     // dispatch close event
 
-    $(document)
-      .trigger(`${this.namespace}.close`, [{ target: modal }]);
+    document
+      .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
+        detail:
+        {
+          target: modal
+        }
+      }));
   }
 
   // post-ajax
@@ -159,7 +169,7 @@ export default class Modal {
     let element = $selector instanceof jQuery ? $selector : $($selector);
 
     if (element.is(this.modalElement) && this.modalElement.hasClass(this.options.modalOpenClass)) {
-      this.modalElement.trigger(`${this.namespace}.show`);
+      this.modalElement.trigger(`show.${this.namespace}`);
     }
   }
 
