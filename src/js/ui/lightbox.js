@@ -1,3 +1,5 @@
+import { whichTransitionEvent } from '../utils/utils';
+
 /* Lightbox plugin
 ----------------------------- */
 
@@ -149,6 +151,7 @@ export default class Lightbox {
 
     show() {
         this.lightboxElement
+            .trigger(`show.${this.namespace}`)
             .addClass('lightbox--open');
 
         $('body')
@@ -156,23 +159,27 @@ export default class Lightbox {
 
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
-                detail: {}
+                detail: {
+                    el: this.lightboxElement
+                }
             }));
     }
 
     hide() {
         this.lightboxElement
-            .removeClass('lightbox--open')
-            .on(`transitionend.${this.namespace}`, (e) => {
+            .one(`${whichTransitionEvent()}`, e => {
                 this.destroy();
-            });
+            })
+            .trigger(`hide.${this.namespace}`)
+            .removeClass('lightbox--open');
 
         $('body')
             .removeClass(this.options.bodyOpenClass);
 
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
-                detail: {}
+                detail: {
+                }
             }));
 
     }

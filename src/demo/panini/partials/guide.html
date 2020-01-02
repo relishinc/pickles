@@ -25,9 +25,15 @@
 
 {{#if api }}
 <section class="example-section" title="API">
+    <h3>API</h3>
     <pre>
         <code class="prettyprint" data-api="{{ api }}"></code>
     </pre>
+    {{#if events }}
+    <h3>Events</h3>
+    <p>See demo for examples</p>
+    {{> (lookup . 'events')}}
+    {{/if}}
 </section>
 {{/if}}
 

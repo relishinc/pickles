@@ -26,11 +26,19 @@
 <section class="example-section" title="Demo">
     <!-- Don't forget to load the styles: "../../dist/css/ui/modal.css" or "scss/ui/modal.scss" -->
     
-    <p>This is a <a href="#something" data-modal>modal</a></p>
+    <p>This is a <a href="#something" data-modal>modal</a>. And this is <a href="#another" data-modal>another one</a>!</p>
     
     <div id="something" class="modal-overlay">
         <div class="modal">
             <p>Say hello to my little modal</p>
+            <p>Want to open <a href="#another" data-modal>another one</a>?</p>
+            <a href="#" data-close-modal>Goodbye</a>
+        </div>
+    </div>
+    
+    <div id="another" class="modal-overlay">
+        <div class="modal">
+            <p>Say hello to another one</p>
             <a href="#" data-close-modal>Goodbye</a>
         </div>
     </div>
@@ -51,12 +59,19 @@
                 // watch the open and close events
                 $(document)
                     .on('modalOpen', e => {
-                        console.log('the modal is open', e.detail);
+                        console.log('the modal is open:', e.detail.el);
                     })
                     .on('modalClose', e => {
-                        console.log('the modal is closed', e.detail);
-                    });    
-                            
+                        console.log('the modal is closed:', e.detail.el);
+                    }); 
+                    
+                $(document)
+                    .on('show.modal', '#something', e => {
+                        console.log('the modal is shown');
+                    })
+                    .on('hide.modal', '#something', e => {
+                        console.log('the modal is hidden');
+                    });                        
             });
     
     </script></section>
@@ -64,11 +79,19 @@
 <section class="example-section" title="Code">
 <pre class="prettyprint lang-html"><code>&lt;!-- Don&#039;t forget to load the styles: &quot;../../dist/css/ui/modal.css&quot; or &quot;scss/ui/modal.scss&quot; --&gt;
 
-&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is a &lt;a href=&quot;#something&quot; data-modal&gt;modal&lt;/a&gt;. And this is &lt;a href=&quot;#another&quot; data-modal&gt;another one&lt;/a&gt;!&lt;/p&gt;
 
 &lt;div id=&quot;something&quot; class=&quot;modal-overlay&quot;&gt;
     &lt;div class=&quot;modal&quot;&gt;
         &lt;p&gt;Say hello to my little modal&lt;/p&gt;
+        &lt;p&gt;Want to open &lt;a href=&quot;#another&quot; data-modal&gt;another one&lt;/a&gt;?&lt;/p&gt;
+        &lt;a href=&quot;#&quot; data-close-modal&gt;Goodbye&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;another&quot; class=&quot;modal-overlay&quot;&gt;
+    &lt;div class=&quot;modal&quot;&gt;
+        &lt;p&gt;Say hello to another one&lt;/p&gt;
         &lt;a href=&quot;#&quot; data-close-modal&gt;Goodbye&lt;/a&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -88,12 +111,19 @@
             // watch the open and close events
             $(document)
                 .on(&#039;modalOpen&#039;, e =&gt; {
-                    console.log(&#039;the modal is open&#039;, e.detail);
+                    console.log(&#039;the modal is open:&#039;, e.detail.el);
                 })
                 .on(&#039;modalClose&#039;, e =&gt; {
-                    console.log(&#039;the modal is closed&#039;, e.detail);
+                    console.log(&#039;the modal is closed:&#039;, e.detail.el);
                 });
 
+            $(document)
+                .on(&#039;show.modal&#039;, &#039;#something&#039;, e =&gt; {
+                    console.log(&#039;the modal is shown&#039;);
+                })
+                .on(&#039;hide.modal&#039;, &#039;#something&#039;, e =&gt; {
+                    console.log(&#039;the modal is hidden&#039;);
+                });
         });
 &lt;/script&gt;</code></pre></section>
 
@@ -108,13 +138,29 @@ $modal-bg-color: #fff !default;
 </section>
 
 <section class="example-section" title="API">
+    <h3>API</h3>
     <pre>
         <code class="prettyprint" data-api="myModal"></code>
     </pre>
-</section>
+    <h3>Events</h3>
+    <p>See demo for examples</p>
+    <h4>document</h4>
+    <ul>
+        <li><strong>modalOpen</strong> when modal opens</li>
+        <li><strong>modalClose</strong> when modal closes</li>
+    </ul>
+    
+    <h4>Modal element</h4>
+    <ul>
+        <li><strong>show.modal</strong> when modal opens</li>
+        <li><strong>hide.modal</strong> when modal closes</li>
+    </ul></section>
 
 <section class="example-section" title="Source">
 <pre class="prettyprint lang-js"><code>import FocusTrap from &#039;../utils/focus-trap&#039;;
+import {
+    whichTransitionEvent
+} from &#039;../utils/utils&#039;;
 
 /* Modal plugin
 ----------------------------- */
@@ -171,9 +217,6 @@ export default class Modal {
         this.scrollPosition = $(window).scrollTop();
         this.modalElement = $selector instanceof jQuery ? $selector : $($selector);
 
-        let
-            delay = 0;
-
         if (this.modalElement.length &amp;&amp; this.modalElement.hasClass(this.options.overlayClass)) {
             this.modalElement
                 .off(`show.${this.namespace}`)
@@ -197,16 +240,12 @@ export default class Modal {
                 });
 
             // new focus trap
+
             this.focusTrap = new FocusTrap(this.modalElement);
 
-            // are any modals open?
+            // function to open modal
 
-            if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length &amp;&amp; $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
-                this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)); // close any open modals
-                delay = 300;
-            }
-
-            setTimeout(() =&gt; {
+            let open = () =&gt; {
                 // add css classes
 
                 $(&#039;body&#039;)
@@ -221,11 +260,19 @@ export default class Modal {
                 document
                     .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
                         detail: {
-                            target: this.modalElement
+                            el: this.modalElement
                         }
                     }));
 
-            }, delay); // TO DO - attach to transitionend event
+            };
+
+            // are any modals open?
+
+            if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length &amp;&amp; $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
+                this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`), () =&gt; open()); // close any open modals
+            } else {
+                open();
+            }
 
         }
 
@@ -233,7 +280,7 @@ export default class Modal {
 
     // close any open modal
 
-    close($modal = false) {
+    close($modal = false, $callback = () =&gt; null) {
         let modal = $modal || this.modalElement;
 
         modal
@@ -258,8 +305,12 @@ export default class Modal {
             .removeClass(this.options.bodyOpenClass);
 
         $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
+            .off(`${whichTransitionEvent()}.${this.namespace}`)
+            .one(`${whichTransitionEvent()}.${this.namespace}`, e =&gt; {
+                $callback();
+            })
             .removeClass(this.options.modalOpenClass)
-            .trigger(`hide.${this.namespace}`);
+            .trigger(`hide.${this.namespace}`)
 
         // restore scroll position
 
@@ -272,7 +323,7 @@ export default class Modal {
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
                 detail: {
-                    target: modal
+                    el: modal
                 }
             }));
     }

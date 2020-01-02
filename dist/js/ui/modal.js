@@ -1,4 +1,5 @@
 import FocusTrap from '../utils/focus-trap';
+import { whichTransitionEvent } from '../utils/utils';
 
 /* Modal plugin
 ----------------------------- */
@@ -55,9 +56,6 @@ export default class Modal {
     this.scrollPosition = $(window).scrollTop();
     this.modalElement = $selector instanceof jQuery ? $selector : $($selector);
 
-    let
-      delay = 0;
-
     if (this.modalElement.length && this.modalElement.hasClass(this.options.overlayClass)) {
       this.modalElement
         .off(`show.${this.namespace}`)
@@ -81,16 +79,12 @@ export default class Modal {
         });
 
       // new focus trap
+
       this.focusTrap = new FocusTrap(this.modalElement);
 
-      // are any modals open?
+      // function to open modal
 
-      if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length && $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
-        this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)); // close any open modals
-        delay = 300;
-      }
-
-      setTimeout(() => {
+      let open = () => {
         // add css classes
 
         $('body')
@@ -106,11 +100,20 @@ export default class Modal {
           .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
             detail:
             {
-              target: this.modalElement
+              el: this.modalElement
             }
           }));
 
-      }, delay); // TO DO - attach to transitionend event
+      };
+
+      // are any modals open?
+
+      if ($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`).length && $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)[0] != this.modalElement[0]) {
+        this.close($(`.${this.options.overlayClass}.${this.options.modalOpenClass}`), () => open()); // close any open modals
+      }
+      else {
+        open();
+      }
 
     }
 
@@ -118,7 +121,7 @@ export default class Modal {
 
   // close any open modal
 
-  close($modal = false) {
+  close($modal = false, $callback = () => null) {
     let modal = $modal || this.modalElement;
 
     modal
@@ -143,8 +146,12 @@ export default class Modal {
       .removeClass(this.options.bodyOpenClass);
 
     $(`.${this.options.overlayClass}.${this.options.modalOpenClass}`)
+      .off(`${whichTransitionEvent()}.${this.namespace}`)
+      .one(`${whichTransitionEvent()}.${this.namespace}`, e => {
+        $callback();
+      })
       .removeClass(this.options.modalOpenClass)
-      .trigger(`hide.${this.namespace}`);
+      .trigger(`hide.${this.namespace}`)
 
     // restore scroll position
 
@@ -158,7 +165,7 @@ export default class Modal {
       .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
         detail:
         {
-          target: modal
+          el: modal
         }
       }));
   }

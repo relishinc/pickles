@@ -1,10 +1,18 @@
 <!-- Don't forget to load the styles: "{{css}}" or "{{sass}}" -->
 
-<p>This is a <a href="#something" data-modal>modal</a></p>
+<p>This is a <a href="#something" data-modal>modal</a>. And this is <a href="#another" data-modal>another one</a>!</p>
 
 <div id="something" class="modal-overlay">
     <div class="modal">
         <p>Say hello to my little modal</p>
+        <p>Want to open <a href="#another" data-modal>another one</a>?</p>
+        <a href="#" data-close-modal>Goodbye</a>
+    </div>
+</div>
+
+<div id="another" class="modal-overlay">
+    <div class="modal">
+        <p>Say hello to another one</p>
         <a href="#" data-close-modal>Goodbye</a>
     </div>
 </div>
@@ -25,12 +33,19 @@
             // watch the open and close events
             $(document)
                 .on('modalOpen', e => {
-                    console.log('the modal is open', e.detail);
+                    console.log('the modal is open:', e.detail.el);
                 })
                 .on('modalClose', e => {
-                    console.log('the modal is closed', e.detail);
-                });    
-                        
+                    console.log('the modal is closed:', e.detail.el);
+                }); 
+                
+            $(document)
+                .on('show.modal', '#something', e => {
+                    console.log('the modal is shown');
+                })
+                .on('hide.modal', '#something', e => {
+                    console.log('the modal is hidden');
+                });                        
         });
 
 </script>

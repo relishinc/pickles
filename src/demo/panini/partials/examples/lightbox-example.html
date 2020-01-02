@@ -20,10 +20,10 @@
             // watch the open and close events
             $(document)
                 .on('lightboxOpen', e => {
-                    console.log('the lightbox is open', e.detail);
+                    console.log('the lightbox is open:', e.detail.el);
                 })
                 .on('lightboxClose', e => {
-                    console.log('the lightbox is closed', e.detail);
+                    console.log('the lightbox is closed');
                 });            
 
         });

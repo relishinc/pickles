@@ -281,12 +281,31 @@ function () {
 }();
 
 
+// CONCATENATED MODULE: ./js/utils/utils.js
+/* Return the right transitionend event type
+----------------------------- */
+var whichTransitionEvent = function whichTransitionEvent() {
+  var el = document.createElement('fakeelement');
+  var transitions = {
+    'transition': 'transitionend',
+    'OTransition': 'oTransitionEnd',
+    'MozTransition': 'transitionend',
+    'WebkitTransition': 'webkitTransitionEnd'
+  };
+
+  for (var t in transitions) {
+    if (el.style[t] !== undefined) {
+      return transitions[t];
+    }
+  }
+};
 // CONCATENATED MODULE: ./js/ui/modal.js
 function modal_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function modal_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function modal_createClass(Constructor, protoProps, staticProps) { if (protoProps) modal_defineProperties(Constructor.prototype, protoProps); if (staticProps) modal_defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 /* Modal plugin
@@ -344,7 +363,6 @@ function () {
       // remember scroll position
       this.scrollPosition = $(window).scrollTop();
       this.modalElement = $selector instanceof jQuery ? $selector : $($selector);
-      var delay = 0;
 
       if (this.modalElement.length && this.modalElement.hasClass(this.options.overlayClass)) {
         this.modalElement.off("show.".concat(this.namespace)).on("show.".concat(this.namespace), function (e) {
@@ -360,15 +378,9 @@ function () {
           });
         }); // new focus trap
 
-        this.focusTrap = new FocusTrap(this.modalElement); // are any modals open?
+        this.focusTrap = new FocusTrap(this.modalElement); // function to open modal
 
-        if ($(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).length && $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass))[0] != this.modalElement[0]) {
-          this.close($(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass))); // close any open modals
-
-          delay = 300;
-        }
-
-        setTimeout(function () {
+        var open = function open() {
           // add css classes
           $('body').addClass(_this2.options.bodyOpenClass);
 
@@ -377,10 +389,19 @@ function () {
 
           document.dispatchEvent(new CustomEvent("".concat(_this2.namespace, "Open"), {
             detail: {
-              target: _this2.modalElement
+              el: _this2.modalElement
             }
           }));
-        }, delay); // TO DO - attach to transitionend event
+        }; // are any modals open?
+
+
+        if ($(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).length && $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass))[0] != this.modalElement[0]) {
+          this.close($(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)), function () {
+            return open();
+          }); // close any open modals
+        } else {
+          open();
+        }
       }
     } // close any open modal
 
@@ -390,6 +411,9 @@ function () {
       var _this3 = this;
 
       var $modal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var $callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+        return null;
+      };
       var modal = $modal || this.modalElement;
       modal.off("hide.".concat(this.namespace)).on("hide.".concat(this.namespace), function (e) {
         // release focus trap
@@ -404,13 +428,15 @@ function () {
       }); // remove css classes
 
       $('body').removeClass(this.options.bodyOpenClass);
-      $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).removeClass(this.options.modalOpenClass).trigger("hide.".concat(this.namespace)); // restore scroll position
+      $(".".concat(this.options.overlayClass, ".").concat(this.options.modalOpenClass)).off("".concat(whichTransitionEvent(), ".").concat(this.namespace)).one("".concat(whichTransitionEvent(), ".").concat(this.namespace), function (e) {
+        $callback();
+      }).removeClass(this.options.modalOpenClass).trigger("hide.".concat(this.namespace)); // restore scroll position
 
       $(window).scrollTop(this.scrollPosition).trigger("scroll.".concat(this.namespace)); // dispatch close event
 
       document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Close"), {
         detail: {
-          target: modal
+          el: modal
         }
       }));
     } // post-ajax
@@ -452,9 +478,11 @@ function lightbox_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function lightbox_createClass(Constructor, protoProps, staticProps) { if (protoProps) lightbox_defineProperties(Constructor.prototype, protoProps); if (staticProps) lightbox_defineProperties(Constructor, staticProps); return Constructor; }
 
+
 /* Lightbox plugin
 ----------------------------- */
-var Lightbox =
+
+var lightbox_Lightbox =
 /*#__PURE__*/
 function () {
   function Lightbox() {
@@ -580,10 +608,12 @@ function () {
   }, {
     key: "show",
     value: function show() {
-      this.lightboxElement.addClass('lightbox--open');
+      this.lightboxElement.trigger("show.".concat(this.namespace)).addClass('lightbox--open');
       $('body').addClass(this.options.bodyOpenClass);
       document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Open"), {
-        detail: {}
+        detail: {
+          el: this.lightboxElement
+        }
       }));
     }
   }, {
@@ -591,9 +621,9 @@ function () {
     value: function hide() {
       var _this3 = this;
 
-      this.lightboxElement.removeClass('lightbox--open').on("transitionend.".concat(this.namespace), function (e) {
+      this.lightboxElement.one("".concat(whichTransitionEvent()), function (e) {
         _this3.destroy();
-      });
+      }).trigger("hide.".concat(this.namespace)).removeClass('lightbox--open');
       $('body').removeClass(this.options.bodyOpenClass);
       document.dispatchEvent(new CustomEvent("".concat(this.namespace, "Close"), {
         detail: {}
@@ -871,7 +901,7 @@ var custom_event = __webpack_require__(1);
 
 /* harmony default export */ var js = __webpack_exports__["default"] = ({
   Modal: modal_Modal,
-  Lightbox: Lightbox,
+  Lightbox: lightbox_Lightbox,
   Drawer: drawer_Drawer,
   AjaxForms: AjaxForms,
   FocusTrap: FocusTrap,
