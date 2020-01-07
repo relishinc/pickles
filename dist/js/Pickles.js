@@ -863,15 +863,19 @@ function () {
   scroll_listener_createClass(ScrollListener, [{
     key: "off",
     value: function off() {
-      $(window).off("scroll.".concat(this.namespace));
+      var _this2 = this;
+
+      $(window).off("scroll.".concat(this.namespace), function (e) {
+        return _this2.onScroll();
+      });
     }
   }, {
     key: "on",
     value: function on() {
-      var _this2 = this;
+      var _this3 = this;
 
       $(window).on("scroll.".concat(this.namespace), function (e) {
-        return _this2.onScroll();
+        return _this3.onScroll();
       });
     }
   }]);

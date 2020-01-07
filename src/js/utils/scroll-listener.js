@@ -39,7 +39,7 @@ export default class ScrollListener {
 
   off() {
     $(window)
-      .off(`scroll.${this.namespace}`);
+      .off(`scroll.${this.namespace}`, e => this.onScroll());
   }
 
   on() {
