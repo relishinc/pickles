@@ -199,7 +199,11 @@ function () {
         this.lastFocusedElement = $(document.activeElement);
       }
 
-      this.focusableElements = this.element.find(':focusable');
+      this.focusableElements = this.element.find(':focusable').sort(function (a, b) {
+        var aIndex = !isNaN(parseInt($(a).attr('tabindex'))) ? parseInt($(a).attr('tabindex')) : 9999,
+            bIndex = !isNaN(parseInt($(b).attr('tabindex'))) ? parseInt($(b).attr('tabindex')) : 9999;
+        return aIndex - bIndex;
+      });
       this.firstFocusableElement = this.focusableElements.first();
       this.lastFocusableElement = this.focusableElements.last();
       this.firstFocusableElement.focus();
