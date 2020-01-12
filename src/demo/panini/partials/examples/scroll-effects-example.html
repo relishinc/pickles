@@ -1,0 +1,26 @@
+<p>First, include TweenMax</p>
+{{#code}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+{{/code}}
+<p>Then start scrolling...</p>
+
+<div class="tile tile1" data-scroll='{ "y": 200, "opacity": 0, "rotation": 45 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+<div class="tile tile2" data-scroll='{ "y": 150, "opacity": 0, "scale": 0.5 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+<div class="tile tile3" data-scroll='{ "y": 100, "opacity": 0, "rotation": -90 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+
+<!-- Load the JS library -->
+<script src="../../dist/js/Pickles.js"></script>
+
+<script>
+
+    var myScrollEffects;
+
+    jQuery(document)
+        .ready(function($) {
+
+            // Create a listener with a callback that fires while scrolling
+            myScrollEffects = new Pickles.ScrollEffects();
+
+        });
+
+</script>

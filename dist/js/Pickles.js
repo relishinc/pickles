@@ -303,6 +303,38 @@ var whichTransitionEvent = function whichTransitionEvent() {
     }
   }
 };
+/* Is element in viewport?
+----------------------------- */
+
+var isInViewport = function isInViewport($el) {
+  var bounding = $el.getBoundingClientRect();
+  return bounding.top >= -bounding.width && bounding.left >= -bounding.height && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) + bounding.height && bounding.right <= (window.innerWidth || document.documentElement.clientWidth) + bounding.width;
+};
+/* Debounce
+----------------------------- */
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function () {
+    var context = this,
+        args = arguments;
+
+    var later = function later() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
+;
 // CONCATENATED MODULE: ./js/ui/modal.js
 function modal_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -732,6 +764,171 @@ function () {
 }();
 
 
+// CONCATENATED MODULE: ./js/utils/scroll-listener.js
+function scroll_listener_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function scroll_listener_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function scroll_listener_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_listener_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_listener_defineProperties(Constructor, staticProps); return Constructor; }
+
+/* Scroll listener
+----------------------------- */
+var ScrollListener =
+/*#__PURE__*/
+function () {
+  function ScrollListener() {
+    var _this = this;
+
+    var $callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
+      return null;
+    };
+    var $immediate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    scroll_listener_classCallCheck(this, ScrollListener);
+
+    // vars
+    this.namespace = 'scrollListener';
+    this.lastScrollY = 0;
+    this.ticking = false; // internal funcs
+
+    var update = function update() {
+      $callback();
+      _this.ticking = false;
+    };
+
+    var requestTick = function requestTick() {
+      if (!_this.ticking) {
+        window.requestAnimationFrame(update);
+        _this.ticking = true;
+      }
+    };
+
+    this.onScroll = function () {
+      _this.lastScrollY = window.scrollY;
+      requestTick();
+    }; // start it
+
+
+    this.on();
+    if ($immediate) $callback();
+  }
+
+  scroll_listener_createClass(ScrollListener, [{
+    key: "off",
+    value: function off() {
+      var _this2 = this;
+
+      $(window).off("scroll.".concat(this.namespace), function (e) {
+        return _this2.onScroll();
+      });
+    }
+  }, {
+    key: "on",
+    value: function on() {
+      var _this3 = this;
+
+      $(window).on("scroll.".concat(this.namespace), function (e) {
+        return _this3.onScroll();
+      });
+    }
+  }]);
+
+  return ScrollListener;
+}();
+
+
+// CONCATENATED MODULE: ./js/anim/scroll-effects.js
+function scroll_effects_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function scroll_effects_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function scroll_effects_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_effects_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_effects_defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+var scroll_effects_ScrollEffects =
+/*#__PURE__*/
+function () {
+  function ScrollEffects() {
+    var _this = this;
+
+    var $options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    scroll_effects_classCallCheck(this, ScrollEffects);
+
+    // settings
+    var defaults = {
+      selector: '[data-scroll], [data-scroll-from], [data-scroll-to]'
+    };
+    this.options = Object.assign({}, defaults, $options); // vars
+
+    this.namespace = 'scrollEffects';
+    this.items = []; // create timelines
+
+    $(this.options.selector).each(function (index, el) {
+      //<div 
+      //	data-scroll-from='{ "y": 100, "opacity": 0 }'	 // the properties to animate (starting values)
+      // 	data-scroll-start="0"														// when to start animation [ 0 = when element STARTS to enter viewport ]
+      //	data-scroll-end="1"															// when to stop animation [ 1 = when element STARTS to leave viewport ]
+      // 	data-scroll-exit="true"													// calculate "end" based on when element completely LEAVES viewport
+      //>
+      try {
+        var tl = new TimelineLite({
+          paused: true
+        }),
+            props = $(el).data('scroll-to') || $(el).data('scroll') || $(el).data('scroll-from') || {},
+            method = $(el).data('scroll-to') ? 'to' : 'from'; // clear out any old inline styles
+
+        for (var prop in props) {
+          el.style[prop] = null;
+        }
+
+        tl[method]($(el), 1, props); //$(el).css({ transform: 'translate3d(0,0,0)', backfaceVisibility: 'hidden' })
+
+        _this.items.push({
+          el: el,
+          tl: tl
+        });
+      } catch (e) {
+        console.log('Could not animate on scroll:', e);
+      }
+    });
+    new ScrollListener(function () {
+      return _this.onScroll();
+    }, true);
+    $(window).on("resize.".concat(this.namespace), debounce(function (e) {
+      return _this.onScroll();
+    }, 250));
+  }
+
+  scroll_effects_createClass(ScrollEffects, [{
+    key: "onScroll",
+    value: function onScroll() {
+      var wh = $(window).height(),
+          st = $(window).scrollTop();
+      $.each(this.items, function (index, item) {
+        if (!isInViewport(item.el)) return;
+        var et = $(item.el).offset().top,
+            eh = $(item.el).outerHeight(),
+            end = $.isNumeric($(item.el).data('scroll-end')) ? $(item.el).data('scroll-end') : 1,
+            start = $.isNumeric($(item.el).data('scroll-start')) ? $(item.el).data('scroll-start') : 0,
+            enter = et + wh * (start - 1),
+            // when element enters "start" point
+        exit = $(item.el).data('scroll-exit') ? // when element leaves "end" point 
+        et + eh + wh * (end - 1) : // element completely leaves viewport
+        et + wh * (end - 1); // element starts to leave viewport
+
+        var progress = Math.max(0, Math.min(1, (st - enter) / (exit - enter)));
+        item.tl.progress(progress);
+      });
+    }
+  }]);
+
+  return ScrollEffects;
+}();
+
+
 // CONCATENATED MODULE: ./js/utils/ajax-forms.js
 function ajax_forms_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -815,83 +1012,11 @@ function () {
 }();
 
 
-// CONCATENATED MODULE: ./js/utils/scroll-listener.js
-function scroll_listener_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function scroll_listener_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function scroll_listener_createClass(Constructor, protoProps, staticProps) { if (protoProps) scroll_listener_defineProperties(Constructor.prototype, protoProps); if (staticProps) scroll_listener_defineProperties(Constructor, staticProps); return Constructor; }
-
-/* Scroll listener
------------------------------ */
-var ScrollListener =
-/*#__PURE__*/
-function () {
-  function ScrollListener() {
-    var _this = this;
-
-    var $callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
-      return null;
-    };
-    var $immediate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-    scroll_listener_classCallCheck(this, ScrollListener);
-
-    // vars
-    this.namespace = 'scrollListener';
-    this.lastScrollY = 0;
-    this.ticking = false; // internal funcs
-
-    var update = function update() {
-      $callback();
-      _this.ticking = false;
-    };
-
-    var requestTick = function requestTick() {
-      if (!_this.ticking) {
-        window.requestAnimationFrame(update);
-        _this.ticking = true;
-      }
-    };
-
-    this.onScroll = function () {
-      _this.lastScrollY = window.scrollY;
-      requestTick();
-    }; // start it
-
-
-    this.on();
-    if ($immediate) $callback();
-  }
-
-  scroll_listener_createClass(ScrollListener, [{
-    key: "off",
-    value: function off() {
-      var _this2 = this;
-
-      $(window).off("scroll.".concat(this.namespace), function (e) {
-        return _this2.onScroll();
-      });
-    }
-  }, {
-    key: "on",
-    value: function on() {
-      var _this3 = this;
-
-      $(window).on("scroll.".concat(this.namespace), function (e) {
-        return _this3.onScroll();
-      });
-    }
-  }]);
-
-  return ScrollListener;
-}();
-
-
 // EXTERNAL MODULE: ./js/polyfills/custom-event.js
 var custom_event = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./js/index.js
+
 
 
 
@@ -906,7 +1031,8 @@ var custom_event = __webpack_require__(1);
   Drawer: Drawer,
   AjaxForms: AjaxForms,
   FocusTrap: FocusTrap,
-  ScrollListener: ScrollListener
+  ScrollListener: ScrollListener,
+  ScrollEffects: scroll_effects_ScrollEffects
 });
 
 /***/ })

@@ -1,0 +1,32 @@
+---
+title: 'Scroll Effects'
+styles: '
+body {
+    min-height: 200vh;
+}
+.tile {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+}
+.tile1 {
+  top: 100vh; left: 20vw; background: red;
+}
+.tile2 {
+  top: 120vh; left: 50vw; background: green;
+}
+.tile3 {
+  top: 90vh; left: 70vw; background: blue;
+}
+'
+scripts: '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U=" crossorigin="anonymous"></script>'
+---
+
+<h2>Scroll Effects</h2>
+
+{{> guide 
+    example='scroll-effects-example'
+    options='myScrollEffects.options'
+    api='myScrollEffects'
+    source='js/anim/scroll-effects.js'
+}}

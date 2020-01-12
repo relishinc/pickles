@@ -1,0 +1,191 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Scroll Effects</title>
+
+	<link rel="stylesheet" href="../../demo/css/main.css">
+	<link rel="stylesheet" href="">
+
+	<style type="text/css">
+	 body { min-height: 200vh; } .tile { position: absolute; width: 200px; height: 200px; } .tile1 { top: 100vh; left: 20vw; background: red; } .tile2 { top: 120vh; left: 50vw; background: green; } .tile3 { top: 90vh; left: 70vw; background: blue; } 
+	</style>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<a href="../index.html">⬅️Back</a>
+
+<h2>Scroll Effects</h2>
+
+<section class="example-section" title="Demo">
+    <p>First, include TweenMax</p>
+    <pre class="prettyprint lang-html"><code>&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js&quot;&gt;&lt;/script&gt;</code></pre><p>Then start scrolling...</p>
+    
+    <div class="tile tile1" data-scroll='{ "y": 200, "opacity": 0, "rotation": 45 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+    <div class="tile tile2" data-scroll='{ "y": 150, "opacity": 0, "scale": 0.5 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+    <div class="tile tile3" data-scroll='{ "y": 100, "opacity": 0, "rotation": -90 }' data-scroll-start="0" data-scroll-end="0.75"></div>
+    
+    <!-- Load the JS library -->
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        var myScrollEffects;
+    
+        jQuery(document)
+            .ready(function($) {
+    
+                // Create a listener with a callback that fires while scrolling
+                myScrollEffects = new Pickles.ScrollEffects();
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
+<pre class="prettyprint lang-html"><code>&lt;p&gt;First, include TweenMax&lt;/p&gt;
+&lt;pre class=&quot;prettyprint lang-html&quot;&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then start scrolling...&lt;/p&gt;
+
+&lt;div class=&quot;tile tile1&quot; data-scroll=&#039;{ &quot;y&quot;: 200, &quot;opacity&quot;: 0, &quot;rotation&quot;: 45 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;tile tile2&quot; data-scroll=&#039;{ &quot;y&quot;: 150, &quot;opacity&quot;: 0, &quot;scale&quot;: 0.5 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;tile tile3&quot; data-scroll=&#039;{ &quot;y&quot;: 100, &quot;opacity&quot;: 0, &quot;rotation&quot;: -90 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Load the JS library --&gt;
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    var myScrollEffects;
+
+    jQuery(document)
+        .ready(function($) {
+
+            // Create a listener with a callback that fires while scrolling
+            myScrollEffects = new Pickles.ScrollEffects();
+
+        });
+&lt;/script&gt;</code></pre></section>
+
+<section class="example-section" title="Config">
+        <h4>Options</h4>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myScrollEffects.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <h3>API</h3>
+    <pre>
+        <code class="prettyprint" data-api="myScrollEffects"></code>
+    </pre>
+</section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>import {
+    isInViewport,
+    debounce
+} from &#039;../utils/utils&#039;;
+import ScrollListener from &#039;../utils/scroll-listener&#039;;
+
+export default class ScrollEffects {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            selector: &#039;[data-scroll], [data-scroll-from], [data-scroll-to]&#039;,
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // vars
+
+        this.namespace = &#039;scrollEffects&#039;;
+        this.items = [];
+
+        // create timelines
+
+        $(this.options.selector)
+            .each((index, el) =&gt; {
+                //&lt;div 
+                //	data-scroll-from=&#039;{ &quot;y&quot;: 100, &quot;opacity&quot;: 0 }&#039;	 // the properties to animate (starting values)
+                // 	data-scroll-start=&quot;0&quot;														// when to start animation [ 0 = when element STARTS to enter viewport ]
+                //	data-scroll-end=&quot;1&quot;															// when to stop animation [ 1 = when element STARTS to leave viewport ]
+                // 	data-scroll-exit=&quot;true&quot;													// calculate &quot;end&quot; based on when element completely LEAVES viewport
+                //&gt;
+
+                try {
+
+                    let
+                        tl = new TimelineLite({
+                            paused: true
+                        }),
+                        props = $(el).data(&#039;scroll-to&#039;) || $(el).data(&#039;scroll&#039;) || $(el).data(&#039;scroll-from&#039;) || {},
+                        method = $(el).data(&#039;scroll-to&#039;) ? &#039;to&#039; : &#039;from&#039;;
+
+                    // clear out any old inline styles
+                    for (var prop in props) {
+                        el.style[prop] = null;
+                    }
+
+                    tl[method]($(el), 1, props);
+
+                    //$(el).css({ transform: &#039;translate3d(0,0,0)&#039;, backfaceVisibility: &#039;hidden&#039; })
+
+                    this.items.push({
+                        el,
+                        tl
+                    });
+                } catch (e) {
+                    console.log(&#039;Could not animate on scroll:&#039;, e);
+                }
+
+            });
+
+        new ScrollListener(() =&gt; this.onScroll(), true);
+
+        $(window)
+            .on(`resize.${this.namespace}`, debounce(e =&gt; this.onScroll(), 250));
+
+    }
+
+    onScroll() {
+        let
+            wh = $(window).height(),
+            st = $(window).scrollTop();
+
+        $.each(this.items, (index, item) =&gt; {
+            if (!isInViewport(item.el)) return;
+
+            let
+                et = $(item.el).offset().top,
+                eh = $(item.el).outerHeight(),
+
+                end = $.isNumeric($(item.el).data(&#039;scroll-end&#039;)) ? $(item.el).data(&#039;scroll-end&#039;) : 1,
+                start = $.isNumeric($(item.el).data(&#039;scroll-start&#039;)) ? $(item.el).data(&#039;scroll-start&#039;) : 0,
+
+                enter = et + wh * (start - 1), // when element enters &quot;start&quot; point
+                exit = $(item.el).data(&#039;scroll-exit&#039;) ? // when element leaves &quot;end&quot; point 
+                (et + eh + wh * (end - 1)) : // element completely leaves viewport
+                (et + wh * (end - 1)); // element starts to leave viewport
+
+            let progress = Math.max(0, Math.min(1, (st - enter) / (exit - enter)));
+
+            item.tl.progress(progress);
+        });
+    };
+
+}</code></pre></section>
+
+
+<script src="../../demo/js/main.js"></script>
+
+</body>
+</html>
