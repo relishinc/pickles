@@ -4,8 +4,24 @@ title: "ES6 module imports"
 
 <h3>{{ title }}</h3>
 
-<p>See <code><a href="../../src/demo/js/examples/import.js">src/demo/js/examples/import.js</a></code></p>
+<p>Install Pickles with a package manager</p>
+
+{{#code}}
+yarn add https://bitbucket.org/relishinc/pickles.git
+{{/code}}
+
+<p>Then import the modules you need like so...</p>
 
 {{#code lang='js'}}
-{{#fetch}}demo/js/examples/import.js{{/fetch}}
+import { Modal, FocusTrap } from 'pickles';
+
+//=== 
+
+console.log('Modal', Modal);
+console.log('FocusTrap', FocusTrap);
+
+// ===
+
+let ft = new FocusTrap('#foo');
+ft.stop();
 {{/code}}

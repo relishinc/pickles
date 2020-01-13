@@ -1,3 +1,5 @@
+// index
+
 import Modal from './src/js/ui/modal';
 import Lightbox from './src/js/ui/lightbox';
 import Drawer from './src/js/ui/drawer';

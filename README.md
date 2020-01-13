@@ -8,7 +8,8 @@ yarn add https://bitbucket.org/relishinc/pickles.git
 npm install https://bitbucket.org/relishinc/pickles.git --save
 ```
 ### Documentation and demos
-Fires up local webserver with examples
+[http://pickles.reli.sh](http://pickles.reli.sh)
+The folloing command fires up the same site on a local webserver
 ```
 yarn install && yarn start
 ```
@@ -16,7 +17,7 @@ yarn install && yarn start
 ### Loading modules
 ES6 imports
 ```
-import Modal from 'pickles/dist/js/ui/modal';
+import { Modal, Lightbox } from 'pickles';
 ```
 ES5 library
 ```

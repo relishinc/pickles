@@ -16,7 +16,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.5/gsap.min.js" integrity="sha256-CkQcTxuQyZLqzqWqntH3FDxeDKMV0m7cw0aM5eph4Do=" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -26,8 +26,8 @@
 <h2>Scroll Effects</h2>
 
 <section class="example-section" title="Demo">
-    <p>First, include TweenMax</p>
-    <pre class="prettyprint lang-html"><code>&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js&quot;&gt;&lt;/script&gt;</code></pre><p>Then start scrolling...</p>
+    <p>First, include TweenMax <a href="https://greensock.com/docs/v2/NPMUsage">via NPM/Yarn</a> or via a CDN:</p>
+    <pre class="prettyprint lang-html"><code>&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.5/gsap.min.js&quot;&gt;&lt;/script&gt;</code></pre><p>Then start scrolling...</p>
     
     <div class="tile tile1" data-scroll='{ "y": 200, "opacity": 0, "rotation": 45 }' data-scroll-start="0" data-scroll-end="0.75"></div>
     <div class="tile tile2" data-scroll='{ "y": 150, "opacity": 0, "scale": 0.5 }' data-scroll-start="0" data-scroll-end="0.75"></div>
@@ -51,8 +51,8 @@
     </script></section>
 
 <section class="example-section" title="Code">
-<pre class="prettyprint lang-html"><code>&lt;p&gt;First, include TweenMax&lt;/p&gt;
-&lt;pre class=&quot;prettyprint lang-html&quot;&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+<pre class="prettyprint lang-html"><code>&lt;p&gt;First, include TweenMax &lt;a href=&quot;https://greensock.com/docs/v2/NPMUsage&quot;&gt;via NPM/Yarn&lt;/a&gt; or via a CDN:&lt;/p&gt;
+&lt;pre class=&quot;prettyprint lang-html&quot;&gt;&lt;code&gt;&amp;lt;script src=&amp;quot;https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.5/gsap.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Then start scrolling...&lt;/p&gt;
 
 &lt;div class=&quot;tile tile1&quot; data-scroll=&#039;{ &quot;y&quot;: 200, &quot;opacity&quot;: 0, &quot;rotation&quot;: 45 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;

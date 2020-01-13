@@ -25,10 +25,15 @@
 
 <h3>ES6 module imports</h3>
 
-<p>See <code><a href="../../src/demo/js/examples/import.js">src/demo/js/examples/import.js</a></code></p>
+<p>Install Pickles with a package manager</p>
 
-<pre class="prettyprint lang-js"><code>import Modal from &#039;../../../js/ui/modal&#039;;
-import FocusTrap from &#039;../../../js/utils/focus-trap&#039;;
+<pre class="prettyprint lang-html"><code>yarn add https://bitbucket.org/relishinc/pickles.git</code></pre>
+<p>Then import the modules you need like so...</p>
+
+<pre class="prettyprint lang-js"><code>import {
+    Modal,
+    FocusTrap
+} from &#039;pickles&#039;;
 
 //=== 
 
