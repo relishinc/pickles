@@ -3,7 +3,12 @@
   "author": "Relish",
   "version": "1.0.0",
   "homepage": "https://reli.sh",
-  "main": "gulpfile.js",
+  "main": "dist/js/Pickles.js",
+  "filename": "dist/js/index.js",
+  "module": "dist/js/index.js",
+  "files": [
+    "dist"
+  ],
   "description": "Relish's UI toolkit",
   "scripts": {
     "start": "gulp",

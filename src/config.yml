@@ -18,7 +18,7 @@ PATHS:
   images: "img/**/*.*"
   js: 
     - "js/**/*.js"
-    - "!js/index.js"
+  #  - "!js/index.js"
     - "!js/polyfills/**/*.js"
   # Path to scss folders
   css:
