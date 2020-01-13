@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "homepage": "https://reli.sh",
   "main": "dist/js/Pickles.js",
-  "filename": "dist/js/index.js",
-  "module": "dist/js/index.js",
+  "filename": "index.js",
+  "module": "index.js",
   "files": [
     "dist"
   ],
@@ -64,7 +64,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://bitbucket.org/relishinc/pickles.git"
   },
   "bugs": {
     "url": ""
