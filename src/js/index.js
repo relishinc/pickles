@@ -7,6 +7,7 @@ import Drawer from './src/js/ui/drawer';
 // anim
 
 import ScrollEffects from './src/js/anim/scroll-effects';
+import Appear from './src/js/anim/appear';
 
 // utils
 
@@ -23,5 +24,6 @@ export {
   AjaxForms,
   FocusTrap,
   ScrollListener,
-  ScrollEffects
+  ScrollEffects,
+  Appear
 };

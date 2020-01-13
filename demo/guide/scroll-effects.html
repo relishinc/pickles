@@ -13,6 +13,7 @@
 	 body { min-height: 200vh; } .tile { position: absolute; width: 200px; height: 200px; } .tile1 { top: 100vh; left: 20vw; background: red; } .tile2 { top: 120vh; left: 50vw; background: green; } .tile3 { top: 90vh; left: 70vw; background: blue; } 
 	</style>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js" integrity="sha256-ffw+9zwShMev88XNrDgS0hLIuJkDfXhgyLogod77mn8=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
@@ -24,6 +25,7 @@
 <a href="../index.html">⬅️Back</a>
 
 <h2>Scroll Effects</h2>
+<p>Animate stuff as you scroll.</p>
 
 <section class="example-section" title="Demo">
     <p>First, include TweenMax <a href="https://greensock.com/docs/v2/NPMUsage">via NPM/Yarn</a> or via a CDN:</p>
@@ -43,7 +45,6 @@
         jQuery(document)
             .ready(function($) {
     
-                // Create a listener with a callback that fires while scrolling
                 myScrollEffects = new Pickles.ScrollEffects();
     
             });
@@ -68,7 +69,6 @@
     jQuery(document)
         .ready(function($) {
 
-            // Create a listener with a callback that fires while scrolling
             myScrollEffects = new Pickles.ScrollEffects();
 
         });

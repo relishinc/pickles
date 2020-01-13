@@ -1,0 +1,153 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Appear</title>
+
+	<link rel="stylesheet" href="../../demo/css/main.css">
+	<link rel="stylesheet" href="../../dist/css/anim/appear.css">
+
+	<style type="text/css">
+	 img { width: 200px;  height: auto;  display: block; } 
+	</style>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js" integrity="sha256-ffw+9zwShMev88XNrDgS0hLIuJkDfXhgyLogod77mn8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+	
+
+</head>
+<body>
+
+<a href="../index.html">⬅️Back</a>
+
+<h2>Appear</h2>
+<p>Animate stuff into place when the page loads.</p>
+
+<section class="example-section" title="Demo">
+    <p>Include the stylesheet...</p>
+    
+    <pre class="prettyprint lang-html"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;pickles/dist/css/anim/appear.css&quot;&gt;</code></pre>
+    <h1 data-appear="fade-in" data-appear-delay="500">A heading that appears</h1>
+    <p data-appear="fade-up" data-appear-duration="1000" data-appear-delay="700" data-appear-easing="ease-in-out-circ">Some text that also appears when the page loads.</p>
+    <img data-appear="fade-in" data-appear-delay="1300" src="https://picsum.photos/400/400">
+    
+    <!-- Load the JS library -->
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        var myAppear;
+    
+        jQuery(document)
+            .ready(function($) {
+    
+                myAppear = new Pickles.Appear();
+    
+            });
+    
+    </script></section>
+
+<section class="example-section" title="Code">
+<pre class="prettyprint lang-html"><code>&lt;p&gt;Include the stylesheet...&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint lang-html&quot;&gt;&lt;code&gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;pickles/dist/css/anim/appear.css&amp;quot;&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 data-appear=&quot;fade-in&quot; data-appear-delay=&quot;500&quot;&gt;A heading that appears&lt;/h1&gt;
+&lt;p data-appear=&quot;fade-up&quot; data-appear-duration=&quot;1000&quot; data-appear-delay=&quot;700&quot; data-appear-easing=&quot;ease-in-out-circ&quot;&gt;Some text that also appears when the page loads.&lt;/p&gt;
+&lt;img data-appear=&quot;fade-in&quot; data-appear-delay=&quot;1300&quot; src=&quot;https://picsum.photos/400/400&quot;&gt;
+
+&lt;!-- Load the JS library --&gt;
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    var myAppear;
+
+    jQuery(document)
+        .ready(function($) {
+
+            myAppear = new Pickles.Appear();
+
+        });
+&lt;/script&gt;</code></pre></section>
+
+<section class="example-section" title="Config">
+        <h4>SASS vars</h4>
+<pre><code class="prettyprint lang-css">$appear-timing-max: 5000 !default;
+$appear-timing-increment: 50 !default;
+$appear-fade-distance: 50px !default;
+</code></pre>        <h4>Options</h4>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myAppear.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <h3>API</h3>
+    <pre>
+        <code class="prettyprint" data-api="myAppear"></code>
+    </pre>
+</section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>export default class Appear {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            startEvent: &#039;DOMContentLoaded&#039;,
+            easing: &#039;ease-in-out&#039;,
+            duration: 500,
+            delay: 0
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // body tag attributes can override the above
+
+        this.options.easing = $(&#039;body&#039;).data(&#039;appear-easing&#039;) || this.options.easing;
+        this.options.duration = $(&#039;body&#039;).data(&#039;appear-duration&#039;) || this.options.duration;
+        this.options.delay = $(&#039;body&#039;).data(&#039;appear-delay&#039;) || this.options.delay;
+
+        $(&#039;body&#039;)
+            .attr(&#039;data-appear-easing&#039;, this.options.easing)
+            .attr(&#039;data-appear-duration&#039;, this.options.duration)
+            .attr(&#039;data-appear-delay&#039;, this.options.delay);
+
+        //&lt;div 
+        //	data-appear=&quot;fade-in&quot;                             // transition
+        // 	data-appear-easing=&quot;ease-in-out&quot;                  // easing
+        //  data-appear-duration=&quot;500&quot;                        // duration in ms
+        //  data-appear-delay=&quot;0&quot;                             // delay in ms
+        //&gt;
+
+        if (
+            this.options.startEvent == &#039;DOMContentLoaded&#039; &amp;&amp;
+            (
+                document.readyState === &#039;complete&#039; ||
+                (document.readyState !== &#039;loading&#039; &amp;&amp; !document.documentElement.doScroll)
+            )
+        ) {
+            this.initAnimations();
+        } else {
+            document.addEventListener(this.options.startEvent, e =&gt; {
+                this.initAnimations();
+            });
+        }
+
+    }
+
+    initAnimations() {
+        $(&#039;[data-appear]:not(.appear-animate)&#039;)
+            .addClass(&#039;appear-animate&#039;);
+    }
+
+}</code></pre></section>
+
+
+<script src="../../demo/js/main.js"></script>
+
+</body>
+</html>
