@@ -1,5 +1,6 @@
 import FocusTrap from '../utils/focus-trap';
 import { whichTransitionEvent } from '../utils/utils';
+import '../polyfills/custom-event';
 
 /* Modal plugin
 ----------------------------- */

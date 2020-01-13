@@ -15,7 +15,7 @@
 		exports["Pickles"] = factory(require("jQuery"));
 	else
 		root["Pickles"] = factory(root["jQuery"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE__0__) {
+})(window, function(__WEBPACK_EXTERNAL_MODULE__1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -106,12 +106,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
 /* CustomEvent polyfill IE9+
 ------------------------------- */
 ;
@@ -135,6 +129,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 })();
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
+
+/***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -142,7 +142,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "jQuery"
-var external_jQuery_ = __webpack_require__(0);
+var external_jQuery_ = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./js/utils/focus-trap.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -335,12 +335,16 @@ function debounce(func, wait, immediate) {
   };
 }
 ;
+// EXTERNAL MODULE: ./js/polyfills/custom-event.js
+var custom_event = __webpack_require__(0);
+
 // CONCATENATED MODULE: ./js/ui/modal.js
 function modal_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function modal_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function modal_createClass(Constructor, protoProps, staticProps) { if (protoProps) modal_defineProperties(Constructor.prototype, protoProps); if (staticProps) modal_defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -515,6 +519,7 @@ function lightbox_defineProperties(target, props) { for (var i = 0; i < props.le
 function lightbox_createClass(Constructor, protoProps, staticProps) { if (protoProps) lightbox_defineProperties(Constructor.prototype, protoProps); if (staticProps) lightbox_defineProperties(Constructor, staticProps); return Constructor; }
 
 
+
 /* Lightbox plugin
 ----------------------------- */
 
@@ -683,8 +688,10 @@ function drawer_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function drawer_createClass(Constructor, protoProps, staticProps) { if (protoProps) drawer_defineProperties(Constructor.prototype, protoProps); if (staticProps) drawer_defineProperties(Constructor, staticProps); return Constructor; }
 
+
 /* Drawer plugin
 ----------------------------- */
+
 var Drawer =
 /*#__PURE__*/
 function () {
@@ -1011,9 +1018,6 @@ function () {
   return AjaxForms;
 }();
 
-
-// EXTERNAL MODULE: ./js/polyfills/custom-event.js
-var custom_event = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./js/umd.js
 

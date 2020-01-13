@@ -10,8 +10,6 @@ import ScrollListener from './utils/scroll-listener';
 
 //import './polyfills/custom-event';
 
-export default const Pickles = () => {};
-
 export {
   Modal,
   Lightbox,

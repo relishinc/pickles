@@ -1,4 +1,5 @@
 import { whichTransitionEvent } from '../utils/utils';
+import '../polyfills/custom-event';
 
 /* Lightbox plugin
 ----------------------------- */
