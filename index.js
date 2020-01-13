@@ -1,12 +1,12 @@
-import Modal from './dist/ui/modal';
-import Lightbox from './dist/ui/lightbox';
-import Drawer from './dist/ui/drawer';
+import Modal from './dist/js/ui/modal';
+import Lightbox from './dist/js/ui/lightbox';
+import Drawer from './dist/js/ui/drawer';
 
-import ScrollEffects from './dist/anim/scroll-effects';
+import ScrollEffects from './dist/js/anim/scroll-effects';
 
-import AjaxForms from './dist/utils/ajax-forms';
-import FocusTrap from './dist/utils/focus-trap';
-import ScrollListener from './dist/utils/scroll-listener';
+import AjaxForms from './dist/js/utils/ajax-forms';
+import FocusTrap from './dist/js/utils/focus-trap';
+import ScrollListener from './dist/js/utils/scroll-listener';
 
 export {
   Modal,
