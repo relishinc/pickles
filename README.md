@@ -8,8 +8,9 @@ yarn add https://bitbucket.org/relishinc/pickles.git
 npm install https://bitbucket.org/relishinc/pickles.git --save
 ```
 ### Documentation and demos
-[http://pickles.reli.sh](http://pickles.reli.sh)
-The folloing command fires up the same site on a local webserver
+Located at [http://pickles.reli.sh](http://pickles.reli.sh)
+
+You can also fire up the same site on a local webserver
 ```
 yarn install && yarn start
 ```
