@@ -18,7 +18,7 @@ PATHS:
   images: "img/**/*.*"
   js: 
     - "js/**/*.js"
-  #  - "!js/index.js"
+    - "!js/umd.js"
   #  - "!js/polyfills/**/*.js"
   # Path to scss folders
   css:
@@ -30,4 +30,4 @@ PATHS:
     - "node_modules/flexboxgrid/dist"
   # Paths to JavaScript entry points for webpack to bundle modules
   entries:
-    - "js/index.js"
+    - "js/umd.js"

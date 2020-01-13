@@ -1015,7 +1015,7 @@ function () {
 // EXTERNAL MODULE: ./js/polyfills/custom-event.js
 var custom_event = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./js/index.js
+// CONCATENATED MODULE: ./js/umd.js
 
 
 
@@ -1025,7 +1025,7 @@ var custom_event = __webpack_require__(1);
 
 
 
-/* harmony default export */ var js = __webpack_exports__["default"] = ({
+/* harmony default export */ var umd = __webpack_exports__["default"] = ({
   Modal: modal_Modal,
   Lightbox: lightbox_Lightbox,
   Drawer: Drawer,
