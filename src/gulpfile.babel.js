@@ -31,11 +31,11 @@ gulp.task('demo',
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('deploy',
-    gulp.series(clean, sass, js, bundle, images));
+    gulp.series(clean, sass, js, index, bundle, images));
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
-    gulp.series(clean, sass, js, bundle, images, 'demo'));
+    gulp.series(clean, sass, js, index, bundle, images, 'demo'));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -71,8 +71,12 @@ function sass() {
 
 function js() {
     return gulp.src(PATHS.js)
-        //.pipe(umd())
         .pipe(gulp.dest(PATHS.dist + '/js'));
+}
+
+function index() {
+    return gulp.src(PATHS.index)
+        .pipe(gulp.dest(PATHS.root));
 }
 
 function bundle() {
@@ -190,7 +194,7 @@ function reload(done) {
 
 function watch() {
     gulp.watch(PATHS.css).on('all', gulp.series(sass));
-    gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, reload));
+    gulp.watch('js/**/*.js').on('all', gulp.series(bundle, js, index, reload));
     gulp.watch(PATHS.images).on('all', gulp.series(images, reload));
 
     gulp.watch(PATHS.demo.js).on('all', gulp.series(demo_js, reload));

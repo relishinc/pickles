@@ -5,6 +5,7 @@ PATHS:
   server: "../"
   # Path to dist folder
   dist: "../dist/"
+  root: "../"
   # Path to demo folder
   demo: 
     dist: "../demo/"
@@ -16,10 +17,14 @@ PATHS:
     pages: "demo/panini/pages/**/*.html"
   # Path to images folder
   images: "img/**/*.*"
+  # JS
   js: 
     - "js/**/*.js"
     - "!js/umd.js"
-  #  - "!js/polyfills/**/*.js"
+    - "!js/index.js"
+    - "!js/polyfills/**/*.js"
+  index:
+    - "js/index.js"
   # Path to scss folders
   css:
     - "scss/**/*.scss"
