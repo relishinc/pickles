@@ -2,19 +2,19 @@ PORT: 3000
 
 # Gulp will reference these paths when it copies files
 PATHS:
-  server: "../"
+  server: "."
   # Path to dist folder
-  dist: "../dist/"
-  root: "../"
+  dist: "dist"
+  root: "."
   # Path to demo folder
   demo: 
-    dist: "../demo/"
-    js: "demo/js/**/*.js"
-    css: "demo/scss/**/*.scss"
-    json: "demo/json/**/*.*"
+    dist: "demo/"
+    js: "src/demo/js/**/*.js"
+    css: "src/demo/scss/**/*.scss"
+    json: "src/demo/json/**/*.*"
     # Path to panini
-    panini: "demo/panini/"
-    pages: "demo/panini/pages/**/*.html"
+    panini: "src/demo/panini/"
+    pages: "src/demo/panini/pages/**/*.html"
   # Path to images folder
   images: "img/**/*.*"
   # JS
