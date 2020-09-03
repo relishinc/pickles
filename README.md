@@ -4,8 +4,8 @@ Relish UI Library
 
 ### Installing
 ```
-yarn add https://bitbucket.org/relishinc/pickles.git
-npm install https://bitbucket.org/relishinc/pickles.git --save
+yarn add https://bitbucket.org/relishinc/pickles.git#latest
+npm install https://bitbucket.org/relishinc/pickles.git#latest --save
 ```
 ### Documentation and demos
 Located at [http://pickles.reli.sh](http://pickles.reli.sh)
