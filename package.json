@@ -17,15 +17,13 @@
   "keywords": [
     "Relish"
   ],
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@babel/register": "^7.7.7",
-    "awesome-sass-easing": "^1.1.2",
     "babel-loader": "^8.0.6",
     "browser-sync": "^2.26.7",
     "current-device": "^0.10.0",
-    "flexboxgrid": "^6.3.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
@@ -46,7 +44,6 @@
     "gulp-umd": "^2.0.0",
     "gulp-util": "^3.0.8",
     "imports-loader": "^0.7.1",
-    "jquery": "^3.4.1",
     "js-beautify": "^1.10.2",
     "js-cookie": "^2.2.1",
     "js-yaml": "^3.4.6",
@@ -61,6 +58,11 @@
     "webpack": "^4.41.2",
     "webpack-stream": "^5.2.1",
     "yargs": "^3.32.0"
+  },
+  "dependencies": {
+    "awesome-sass-easing": "^1.1.2",
+    "flexboxgrid": "^6.3.1",
+    "jquery": "^3.4.1"
   },
   "repository": {
     "type": "git",
