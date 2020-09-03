@@ -139,7 +139,8 @@ export default class Lightbox {
 
         let defaults = {
             bodyOpenClass: &#039;lightbox--open&#039;,
-            selector: &#039;[data-lightbox]&#039;
+            selector: &#039;[data-lightbox]&#039;,
+            closeButton: false
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -198,8 +199,9 @@ export default class Lightbox {
 
             $next = this.getNextLightbox(e.currentTarget),
             $prev = this.getPrevLightbox(e.currentTarget),
-            nextBtn = $(&#039;&lt;span class=&quot;nav nav--next&quot;&gt;Next&lt;/span&gt;&#039;),
-            prevBtn = $(&#039;&lt;span class=&quot;nav nav--prev&quot;&gt;Previous&lt;/span&gt;&#039;);
+            nextBtn = $(&#039;&lt;a href=&quot;#&quot; class=&quot;nav nav--next&quot;&gt;Next image&lt;/a&gt;&#039;),
+            prevBtn = $(&#039;&lt;a href=&quot;#&quot; class=&quot;nav nav--prev&quot;&gt;Previous image&lt;/a&gt;&#039;),
+            closeBtn = $(&#039;&lt;a href=&quot;#&quot; class=&quot;nav nav--close&quot;&gt;Close&lt;/a&gt;&#039;);
 
         this.lightboxElement = $(&#039;&lt;div class=&quot;lightbox&quot; /&gt;&#039;);
 
@@ -241,7 +243,8 @@ export default class Lightbox {
 
         if ($next) {
             nextBtn
-                .on(`click.${this.namespace}`, () =&gt; {
+                .on(`click.${this.namespace}`, e =&gt; {
+                    e.preventDefault();
                     this.destroy();
                     this.createLightbox({
                         currentTarget: $next
@@ -252,11 +255,21 @@ export default class Lightbox {
 
         if ($prev) {
             prevBtn
-                .on(`click.${this.namespace}`, () =&gt; {
+                .on(`click.${this.namespace}`, e =&gt; {
+                    e.preventDefault();
                     this.destroy();
                     this.createLightbox({
                         currentTarget: $prev
                     });
+                })
+                .appendTo(navEl);
+        }
+
+        if (this.options.closeButton) {
+            closeBtn
+                .on(`click.${this.namespace}`, e =&gt; {
+                    e.preventDefault();
+                    this.hide();
                 })
                 .appendTo(navEl);
         }

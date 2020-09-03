@@ -11,7 +11,8 @@ export default class Lightbox {
 
         let defaults = {
             bodyOpenClass: 'lightbox--open',
-            selector: '[data-lightbox]'
+            selector: '[data-lightbox]',
+            closeButton: false
         };
         this.options = Object.assign({}, defaults, $options);
 
@@ -70,8 +71,9 @@ export default class Lightbox {
 
             $next = this.getNextLightbox(e.currentTarget),
             $prev = this.getPrevLightbox(e.currentTarget),
-            nextBtn = $('<span class="nav nav--next">Next</span>'),
-            prevBtn = $('<span class="nav nav--prev">Previous</span>');
+            nextBtn = $('<a href="#" class="nav nav--next">Next image</a>'),
+            prevBtn = $('<a href="#" class="nav nav--prev">Previous image</a>'),
+            closeBtn = $('<a href="#" class="nav nav--close">Close</a>');
 
         this.lightboxElement = $('<div class="lightbox" />');
 
@@ -113,7 +115,8 @@ export default class Lightbox {
 
         if ($next) {
             nextBtn
-                .on(`click.${this.namespace}`, () => {
+                .on(`click.${this.namespace}`, e => {
+                    e.preventDefault();
                     this.destroy();
                     this.createLightbox({ currentTarget: $next });
                 })
@@ -122,9 +125,19 @@ export default class Lightbox {
 
         if ($prev) {
             prevBtn
-                .on(`click.${this.namespace}`, () => {
+                .on(`click.${this.namespace}`, e => {
+                    e.preventDefault();
                     this.destroy();
                     this.createLightbox({ currentTarget: $prev });
+                })
+                .appendTo(navEl);
+        }
+
+        if (this.options.closeButton) {
+            closeBtn
+                .on(`click.${this.namespace}`, e => {
+                    e.preventDefault();
+                    this.hide();
                 })
                 .appendTo(navEl);
         }
