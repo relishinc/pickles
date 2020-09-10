@@ -1,7 +1,7 @@
 {
   "name": "Pickles",
   "author": "Relish",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://reli.sh",
   "main": "dist/js/Pickles.js",
   "filename": "index.js",
@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "awesome-sass-easing": "^1.1.2",
+    "sass-easing": "^1.0.3",
     "flexboxgrid": "^6.3.1",
     "jquery": "^3.4.1"
   },
