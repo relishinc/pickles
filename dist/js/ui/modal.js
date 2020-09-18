@@ -74,7 +74,7 @@ export default class Modal {
 
           // key listener
 
-          this.modalElement
+          $(document)
             .on(`keydown.${this.namespace}`, e => this.keyHandler(e));
 
         });
@@ -131,12 +131,13 @@ export default class Modal {
 
         // release focus trap
 
-        if (modal == this.modalElement) {
+        if ( modal == this.modalElement ) {
           this.focusTrap.stop();
         }
+        
         // key listener
 
-        modal
+        $(document)
           .off(`keydown.${this.namespace}`, e => this.keyHandler(e));
 
       });

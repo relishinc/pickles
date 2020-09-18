@@ -38,11 +38,19 @@ export default class Drawer {
                 .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
                     detail: {}
                 }));
+
+            // key listener
+            $(document)
+                .on(`keydown.${this.namespace}`, e => this.keyHandler(e));        
         } else {
             document
                 .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
                     detail: {}
                 }));
+
+            // key listener
+            $(document)
+                .off(`keydown.${this.namespace}`, e => this.keyHandler(e));                    
         }
 
         // remove click handler from page content
@@ -79,5 +87,22 @@ export default class Drawer {
             this.toggle();
         }
     };
+
+    // handle key events
+
+    keyHandler(e) {
+        const KEY_ESC = 27;
+
+        // which keys are pressed
+
+        switch (e.keyCode) {
+            case KEY_ESC:
+                this.close();
+                break;
+            default:
+                break;
+        }
+
+    }    
 
 }
