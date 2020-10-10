@@ -138,7 +138,7 @@ export default class Modal {
         // key listener
 
         $(document)
-          .off(`keydown.${this.namespace}`, e => this.keyHandler(e));
+          .off(`keydown.${this.namespace}`);
 
       });
 

@@ -46,7 +46,7 @@
         <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
     </div>
         
-    <!-- Load the JS library -->
+    <!-- Load the JS library (or use an ES6 import) -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
@@ -91,7 +91,7 @@
     &lt;p&gt;This is some content. Use the hamburger or &lt;a href=&quot;#&quot; data-drawer-toggle&gt;click here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;!-- Load the JS library --&gt;
+&lt;!-- Load the JS library (or use an ES6 import) --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
@@ -201,7 +201,7 @@ export default class Drawer {
 
             // key listener
             $(document)
-                .off(`keydown.${this.namespace}`, e =&gt; this.keyHandler(e));
+                .off(`keydown.${this.namespace}`);
         }
 
         // remove click handler from page content

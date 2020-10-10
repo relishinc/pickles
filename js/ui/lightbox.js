@@ -1,3 +1,4 @@
+import FocusTrap from '../utils/focus-trap';
 import { whichTransitionEvent } from '../utils/utils';
 import '../polyfills/custom-event';
 
@@ -21,6 +22,7 @@ export default class Lightbox {
         this.namespace = 'lightbox';
         this.lightboxes = $(this.options.selector);
         this.lightboxElement = null;
+        this.focusTrap = new FocusTrap();
 
         // go
 
@@ -171,12 +173,23 @@ export default class Lightbox {
         $('body')
             .addClass(this.options.bodyOpenClass);
 
+        // key listener
+
+        $(document)
+            .on(`keydown.${this.namespace}`, e => this.keyHandler(e));   
+
+        // fire event
+
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
                 detail: {
                     el: this.lightboxElement
                 }
             }));
+
+        // focus trap
+
+        this.focusTrap.start(this.lightboxElement);
     }
 
     hide() {
@@ -190,16 +203,52 @@ export default class Lightbox {
         $('body')
             .removeClass(this.options.bodyOpenClass);
 
+        // key listener
+
+        $(document)
+            .off(`keydown.${this.namespace}`);
+
+        // fire event
+
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
                 detail: {
                 }
             }));
 
+        // focus trap
+
+        this.focusTrap.stop();
     }
 
     destroy() {
         this.lightboxElement.remove();
     }
+
+
+    // handle key events
+
+    keyHandler(e) {
+        const KEY_ESC = 27;
+        const KEY_RIGHT = 39;
+        const KEY_LEFT = 37;
+
+        // which keys are pressed
+
+        switch (e.keyCode) {
+            case KEY_ESC:
+                this.hide();
+                break;
+            case KEY_RIGHT:
+                this.lightboxElement.find('.nav--next').trigger(`click.${this.namespace}`);
+                break;                
+            case KEY_LEFT:
+                this.lightboxElement.find('.nav--prev').trigger(`click.${this.namespace}`);
+                break;            
+            default:
+                break;
+        }
+
+    }     
 
 }

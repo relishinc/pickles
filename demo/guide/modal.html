@@ -47,7 +47,7 @@
         </div>
     </div>
     
-    <!-- Load the JS library -->
+    <!-- Load the JS library (or use an ES6 import) -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
@@ -63,18 +63,18 @@
                 // watch the open and close events
                 $(document)
                     .on('modalOpen', e => {
-                        console.log('the modal is open:', e.detail.el);
+                        console.log('this modal is open:', e.detail.el);
                     })
                     .on('modalClose', e => {
-                        console.log('the modal is closed:', e.detail.el);
+                        console.log('this modal is closed:', e.detail.el);
                     }); 
                     
                 $(document)
                     .on('show.modal', '#something', e => {
-                        console.log('the modal is shown');
+                        console.log('the #something modal is shown');
                     })
                     .on('hide.modal', '#something', e => {
-                        console.log('the modal is hidden');
+                        console.log('the #something modal is hidden');
                     });                        
             });
     
@@ -100,7 +100,7 @@
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;!-- Load the JS library --&gt;
+&lt;!-- Load the JS library (or use an ES6 import) --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
@@ -115,18 +115,18 @@
             // watch the open and close events
             $(document)
                 .on(&#039;modalOpen&#039;, e =&gt; {
-                    console.log(&#039;the modal is open:&#039;, e.detail.el);
+                    console.log(&#039;this modal is open:&#039;, e.detail.el);
                 })
                 .on(&#039;modalClose&#039;, e =&gt; {
-                    console.log(&#039;the modal is closed:&#039;, e.detail.el);
+                    console.log(&#039;this modal is closed:&#039;, e.detail.el);
                 });
 
             $(document)
                 .on(&#039;show.modal&#039;, &#039;#something&#039;, e =&gt; {
-                    console.log(&#039;the modal is shown&#039;);
+                    console.log(&#039;the #something modal is shown&#039;);
                 })
                 .on(&#039;hide.modal&#039;, &#039;#something&#039;, e =&gt; {
-                    console.log(&#039;the modal is hidden&#039;);
+                    console.log(&#039;the #something modal is hidden&#039;);
                 });
         });
 &lt;/script&gt;</code></pre></section>
@@ -301,7 +301,7 @@ export default class Modal {
                 // key listener
 
                 $(document)
-                    .off(`keydown.${this.namespace}`, e =&gt; this.keyHandler(e));
+                    .off(`keydown.${this.namespace}`);
 
             });
 

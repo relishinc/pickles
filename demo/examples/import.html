@@ -31,7 +31,8 @@
 <pre class="prettyprint lang-html"><code>yarn add https://bitbucket.org/relishinc/pickles.git</code></pre>
 <p>Then import the modules you need like so...</p>
 
-<pre class="prettyprint lang-js"><code>import {
+<pre class="prettyprint lang-js"><code>import jQuery from &#039;jquery&#039;;
+import {
     Modal,
     FocusTrap
 } from &#039;pickles&#039;;
@@ -43,8 +44,12 @@ console.log(&#039;FocusTrap&#039;, FocusTrap);
 
 // ===
 
-let ft = new FocusTrap(&#039;#foo&#039;);
-ft.stop();</code></pre>
+jQuery(document).ready(() =&gt; {
+
+    let ft = new FocusTrap(&#039;#foo&#039;);
+    ft.start();
+
+});</code></pre>
 <script src="../../demo/js/main.js"></script>
 
 </body>

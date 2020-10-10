@@ -34,7 +34,7 @@
     
     <p>Show me <a href="https://picsum.photos/600/900" title="This is another caption" data-lightbox>one more</a> and then <a href="https://picsum.photos/900/900" title="The 3rd caption" data-lightbox>one last one</a>.</p>
     
-    <!-- Load the JS library -->
+    <!-- Load the JS library (or use an ES6 import) -->
     <script src="../../dist/js/Pickles.js"></script>
     
     <script>
@@ -67,7 +67,7 @@
 
 &lt;p&gt;Show me &lt;a href=&quot;https://picsum.photos/600/900&quot; title=&quot;This is another caption&quot; data-lightbox&gt;one more&lt;/a&gt; and then &lt;a href=&quot;https://picsum.photos/900/900&quot; title=&quot;The 3rd caption&quot; data-lightbox&gt;one last one&lt;/a&gt;.&lt;/p&gt;
 
-&lt;!-- Load the JS library --&gt;
+&lt;!-- Load the JS library (or use an ES6 import) --&gt;
 &lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
@@ -124,7 +124,8 @@ $spinner-color: $caption-text-color !default;
     </ul></section>
 
 <section class="example-section" title="Source">
-<pre class="prettyprint lang-js"><code>import {
+<pre class="prettyprint lang-js"><code>import FocusTrap from &#039;../utils/focus-trap&#039;;
+import {
     whichTransitionEvent
 } from &#039;../utils/utils&#039;;
 import &#039;../polyfills/custom-event&#039;;
@@ -149,6 +150,7 @@ export default class Lightbox {
         this.namespace = &#039;lightbox&#039;;
         this.lightboxes = $(this.options.selector);
         this.lightboxElement = null;
+        this.focusTrap = new FocusTrap();
 
         // go
 
@@ -302,12 +304,23 @@ export default class Lightbox {
         $(&#039;body&#039;)
             .addClass(this.options.bodyOpenClass);
 
+        // key listener
+
+        $(document)
+            .on(`keydown.${this.namespace}`, e =&gt; this.keyHandler(e));
+
+        // fire event
+
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Open`, {
                 detail: {
                     el: this.lightboxElement
                 }
             }));
+
+        // focus trap
+
+        this.focusTrap.start(this.lightboxElement);
     }
 
     hide() {
@@ -321,15 +334,51 @@ export default class Lightbox {
         $(&#039;body&#039;)
             .removeClass(this.options.bodyOpenClass);
 
+        // key listener
+
+        $(document)
+            .off(`keydown.${this.namespace}`);
+
+        // fire event
+
         document
             .dispatchEvent(new CustomEvent(`${this.namespace}Close`, {
                 detail: {}
             }));
 
+        // focus trap
+
+        this.focusTrap.stop();
     }
 
     destroy() {
         this.lightboxElement.remove();
+    }
+
+
+    // handle key events
+
+    keyHandler(e) {
+        const KEY_ESC = 27;
+        const KEY_RIGHT = 39;
+        const KEY_LEFT = 37;
+
+        // which keys are pressed
+
+        switch (e.keyCode) {
+            case KEY_ESC:
+                this.hide();
+                break;
+            case KEY_RIGHT:
+                this.lightboxElement.find(&#039;.nav--next&#039;).trigger(`click.${this.namespace}`);
+                break;
+            case KEY_LEFT:
+                this.lightboxElement.find(&#039;.nav--prev&#039;).trigger(`click.${this.namespace}`);
+                break;
+            default:
+                break;
+        }
+
     }
 
 }</code></pre></section>

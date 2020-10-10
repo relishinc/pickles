@@ -50,7 +50,7 @@ export default class Drawer {
 
             // key listener
             $(document)
-                .off(`keydown.${this.namespace}`, e => this.keyHandler(e));                    
+                .off(`keydown.${this.namespace}`);                    
         }
 
         // remove click handler from page content

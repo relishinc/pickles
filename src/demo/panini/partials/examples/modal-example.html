@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<!-- Load the JS library -->
+<!-- Load the JS library (or use an ES6 import) -->
 <script src="../../dist/js/Pickles.js"></script>
 
 <script>
@@ -33,18 +33,18 @@
             // watch the open and close events
             $(document)
                 .on('modalOpen', e => {
-                    console.log('the modal is open:', e.detail.el);
+                    console.log('this modal is open:', e.detail.el);
                 })
                 .on('modalClose', e => {
-                    console.log('the modal is closed:', e.detail.el);
+                    console.log('this modal is closed:', e.detail.el);
                 }); 
                 
             $(document)
                 .on('show.modal', '#something', e => {
-                    console.log('the modal is shown');
+                    console.log('the #something modal is shown');
                 })
                 .on('hide.modal', '#something', e => {
-                    console.log('the modal is hidden');
+                    console.log('the #something modal is hidden');
                 });                        
         });
 

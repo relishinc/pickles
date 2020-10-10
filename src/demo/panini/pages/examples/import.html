@@ -13,6 +13,7 @@ yarn add https://bitbucket.org/relishinc/pickles.git
 <p>Then import the modules you need like so...</p>
 
 {{#code lang='js'}}
+import jQuery from 'jquery';
 import { Modal, FocusTrap } from 'pickles';
 
 //=== 
@@ -22,6 +23,11 @@ console.log('FocusTrap', FocusTrap);
 
 // ===
 
-let ft = new FocusTrap('#foo');
-ft.stop();
+jQuery(document).ready(() => {
+
+    let ft = new FocusTrap('#foo');
+    ft.start();
+
+});
+
 {{/code}}
