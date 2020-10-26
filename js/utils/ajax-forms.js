@@ -63,7 +63,7 @@ export default class AjaxForms {
                             type: 'post',
                             data: formData
                         })
-                            .done((response) => {
+                            .always((response) => {
                                 form.removeClass(this.options.submittedClass);
 
                                 let
@@ -71,11 +71,11 @@ export default class AjaxForms {
                                     alert;
 
                                 if (response.success) {
-                                    message = response.data.message || 'Your submission was received';
+                                    message = ( response.data && response.data.message ) || 'Your submission was received';
                                     alert = '<div class="' + this.options.alertClass + ' success">' + message + '</div>';
                                     form.trigger(`reset.${this.namespace}`);
                                 } else {
-                                    message = response.data.message || 'There was a problem – please try again';
+                                    message = ( response.data && response.data.message ) || 'There was a problem – please try again';
                                     alert = '<div class="' + this.options.alertClass + ' error">' + message + '</div>';
                                 }
 
