@@ -1,7 +1,7 @@
 {
   "name": "pickles",
   "author": "Relish",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "homepage": "https://reli.sh",
   "main": "dist/js/Pickles.js",
   "filename": "index.js",
