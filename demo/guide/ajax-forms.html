@@ -27,24 +27,194 @@
 <h2>Ajax Forms</h2>
 <p>Submit forms via Ajax and display the results below the form.</p>
 
-<form data-ajax="../json/ajax.json">
+<section class="example-section" title="Demo">
+    <form data-ajax="../json/ajax.json">
+    
+        <label>Name</label>
+        <input type="name" placeholder="Enter name" required="required">
+    
+        <label>Email</label>
+        <input type="email" placeholder="Enter email" required="required">
+    
+        <div class="alert-wrapper"></div>
+    
+        <button type="submit">Submit</button>
+    
+    </form>
+    
+    <!-- Load the JS library (or use an ES6 import) -->
+    <script src="../../dist/js/Pickles.js"></script>
+    
+    <script>
+    
+        var myAjaxForms;
+    
+        jQuery(document)
+            .ready(function($) {
+    
+                myAjaxForms = new Pickles.AjaxForms();
+    
+            });
+    
+    </script></section>
 
-    <label>Name</label>
-    <input type="name" placeholder="Enter name" required="required">
+<section class="example-section" title="Code">
+<pre class="prettyprint lang-html"><code>&lt;form data-ajax=&quot;../json/ajax.json&quot;&gt;
 
-    <label>Email</label>
-    <input type="email" placeholder="Enter email" required="required">
+    &lt;label&gt;Name&lt;/label&gt;
+    &lt;input type=&quot;name&quot; placeholder=&quot;Enter name&quot; required=&quot;required&quot;&gt;
 
-    <button type="submit">Submit</button>
+    &lt;label&gt;Email&lt;/label&gt;
+    &lt;input type=&quot;email&quot; placeholder=&quot;Enter email&quot; required=&quot;required&quot;&gt;
 
-</form>
+    &lt;div class=&quot;alert-wrapper&quot;&gt;&lt;/div&gt;
 
-<script src="../../dist/js/Pickles.js"></script>
-<script>
+    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
 
-    let af = new Pickles.AjaxForms();
+&lt;/form&gt;
 
-</script>
+&lt;!-- Load the JS library (or use an ES6 import) --&gt;
+&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    var myAjaxForms;
+
+    jQuery(document)
+        .ready(function($) {
+
+            myAjaxForms = new Pickles.AjaxForms();
+
+        });
+&lt;/script&gt;</code></pre></section>
+
+<section class="example-section" title="Config">
+        <h4>Options</h4>
+        <pre>
+            <code class="prettyprint lang-json" data-options="myAjaxForms.options"></code>
+        </pre>
+</section>
+
+<section class="example-section" title="API">
+    <h3>API</h3>
+    <pre>
+        <code class="prettyprint" data-api="myAjaxForms"></code>
+    </pre>
+    <h3>Events</h3>
+    <p>See demo for examples</p>
+    <h4>Form element</h4>
+    <ul>
+        <li><strong>complete.ajax</strong> when AJAX response is loaded</li>
+        <li><strong>success.ajax</strong> when AJAX responds with { success: true, ... }</li>
+        <li><strong>error.ajax</strong> when AJAX responds with  { success: false, ... }</li>
+    </ul></section>
+
+<section class="example-section" title="Source">
+<pre class="prettyprint lang-js"><code>/* AJAX form plugin
+----------------------------- */
+
+export default class AjaxForms {
+
+    constructor($options = {}) {
+        // settings
+
+        let defaults = {
+            selector: &#039;form[data-ajax]&#039;,
+            alertClass: &#039;alert&#039;,
+            alertHolderClass: &#039;alert-wrapper&#039;,
+            submittedClass: &#039;form--submitting&#039;,
+            ajaxUrl: &#039;&#039;
+        };
+        this.options = Object.assign({}, defaults, $options);
+
+        // vars
+
+        this.namespace = &#039;ajax&#039;;
+
+        // go
+
+        this.init();
+    }
+
+    init() {
+
+        $(this.options.selector)
+            .each((index, el) =&gt; {
+                let
+                    form = $(el),
+                    ajaxUrl = (this.options.ajaxUrl || form.data(&#039;ajax&#039;)) || form.attr(&#039;action&#039;);
+
+                form
+                    .on(`clear.${this.namespace}`, () =&gt; {
+
+                        // clear out any old alerts
+
+                        form
+                            .find(`.${this.options.alertClass}`)
+                            .remove();
+                    })
+                    .on(`submit.${this.namespace}`, () =&gt; {
+                        let
+                            formData = form.serialize();
+
+                        // disable input and clear old alerts
+
+                        form.addClass(this.options.submittedClass);
+                        form.trigger(`clear.${this.namespace}`);
+
+                        // confirm ajax url exists
+
+                        if (!ajaxUrl) {
+                            console.warn(&#039;No AJAX url!&#039;);
+                            return;
+                        }
+
+                        // subit to ajax endpoint
+
+                        $.getJSON({
+                                url: ajaxUrl,
+                                type: &#039;post&#039;,
+                                data: formData
+                            })
+                            .always((response) =&gt; {
+                                form.removeClass(this.options.submittedClass);
+                                form.trigger(`complete.${this.namespace}`);
+
+                                let
+                                    message,
+                                    alert;
+
+                                if (response.success) {
+                                    message = (response.data &amp;&amp; response.data.message) || &#039;Your submission was received&#039;;
+                                    alert = &#039;&lt;div class=&quot;&#039; + this.options.alertClass + &#039; success&quot;&gt;&#039; + message + &#039;&lt;/div&gt;&#039;;
+                                    form.trigger(`reset.${this.namespace}`);
+                                    form.trigger(`success.${this.namespace}`);
+                                } else {
+                                    message = (response.data &amp;&amp; response.data.message) || &#039;There was a problem – please try again&#039;;
+                                    alert = &#039;&lt;div class=&quot;&#039; + this.options.alertClass + &#039; error&quot;&gt;&#039; + message + &#039;&lt;/div&gt;&#039;;
+                                    form.trigger(`error.${this.namespace}`);
+                                }
+
+                                if (form.find(`.${this.options.alertHolderClass}`).length) {
+                                    form
+                                        .find(`.${this.options.alertHolderClass}`)
+                                        .append(alert);
+                                } else {
+                                    form
+                                        .append(alert);
+                                }
+
+                            });
+
+                        return false;
+
+                    });
+
+
+            });
+
+    }
+}</code></pre></section>
+
 
 <script src="../../demo/js/main.js"></script>
 

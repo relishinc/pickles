@@ -39,21 +39,10 @@ button {
 <h2>Ajax Forms</h2>
 <p>Submit forms via Ajax and display the results below the form.</p>
 
-<form data-ajax="../json/ajax.json">
-
-    <label>Name</label>
-    <input type="name" placeholder="Enter name" required="required">
-
-    <label>Email</label>
-    <input type="email" placeholder="Enter email" required="required">
-
-    <button type="submit">Submit</button>
-
-</form>
-
-<script src="../../dist/js/Pickles.js"></script>
-<script>
-
-    let af = new Pickles.AjaxForms();
-
-</script>
+{{> guide 
+    example='ajax-forms-example'
+    options='myAjaxForms.options'
+    api='myAjaxForms'
+    events='ajax-forms-events'
+    source='js/utils/ajax-forms.js'
+  }}

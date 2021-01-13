@@ -9,6 +9,7 @@ export default class AjaxForms {
         let defaults = {
             selector: 'form[data-ajax]',
             alertClass: 'alert',
+            alertHolderClass: 'alert-wrapper',
             submittedClass: 'form--submitting',
             ajaxUrl: ''
         };
@@ -65,6 +66,7 @@ export default class AjaxForms {
                         })
                             .always((response) => {
                                 form.removeClass(this.options.submittedClass);
+                                form.trigger(`complete.${this.namespace}`);
 
                                 let
                                     message,
@@ -74,13 +76,22 @@ export default class AjaxForms {
                                     message = ( response.data && response.data.message ) || 'Your submission was received';
                                     alert = '<div class="' + this.options.alertClass + ' success">' + message + '</div>';
                                     form.trigger(`reset.${this.namespace}`);
+                                    form.trigger(`success.${this.namespace}`);
                                 } else {
                                     message = ( response.data && response.data.message ) || 'There was a problem – please try again';
                                     alert = '<div class="' + this.options.alertClass + ' error">' + message + '</div>';
+                                    form.trigger(`error.${this.namespace}`);
                                 }
 
-                                form
-                                    .append(alert);
+                                if ( form.find(`.${this.options.alertHolderClass}`).length ) {
+                                    form
+                                        .find(`.${this.options.alertHolderClass}`)
+                                        .append(alert);
+                                }
+                                else {
+                                    form
+                                        .append(alert);
+                                }
 
                             });
 

@@ -71,13 +71,13 @@
 
         blocks
             .each((index, el) => {
-                var
-                    instance = $(el).data('api'),
-                    proto = Object.getPrototypeOf(window[instance]),
-                    props = Object.getOwnPropertyNames(proto),
-                    methods = [];
-
                 try {
+                    var
+                        instance = $(el).data('api'),
+                        proto = Object.getPrototypeOf(window[instance]),
+                        props = Object.getOwnPropertyNames(proto),
+                        methods = [];
+
                     props.forEach((prop) => {
                         var firstLine = proto[prop].toString().split("\n")[0];
                         methods.push(`${prop} ${firstLine.match(/\(.*\)+/g)} {}`);

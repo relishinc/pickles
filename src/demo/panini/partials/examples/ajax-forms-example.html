@@ -1,0 +1,29 @@
+<form data-ajax="../json/ajax.json">
+
+    <label>Name</label>
+    <input type="name" placeholder="Enter name" required="required">
+
+    <label>Email</label>
+    <input type="email" placeholder="Enter email" required="required">
+
+    <div class="alert-wrapper"></div>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<!-- Load the JS library (or use an ES6 import) -->
+<script src="../../dist/js/Pickles.js"></script>
+
+<script>
+
+    var myAjaxForms;
+
+    jQuery(document)
+        .ready(function($) {
+
+            myAjaxForms = new Pickles.AjaxForms();
+
+        });
+
+</script>
