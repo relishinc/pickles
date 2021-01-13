@@ -46,8 +46,11 @@
         <p>This is some content. Use the hamburger or <a href="#" data-drawer-toggle>click here</a>.</p>    
     </div>
         
-    <!-- Load the JS library (or use an ES6 import) -->
-    <script src="../../dist/js/Pickles.js"></script>
+    <!-- Load the JS library (or use an ES6 import: 
+        import { Drawer } from 'pickles';
+        var myDrawer = new Drawer();
+    ) -->
+    <script src="../../dist/js/pickles.js"></script>
     
     <script>
     
@@ -91,8 +94,11 @@
     &lt;p&gt;This is some content. Use the hamburger or &lt;a href=&quot;#&quot; data-drawer-toggle&gt;click here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;!-- Load the JS library (or use an ES6 import) --&gt;
-&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Load the JS library (or use an ES6 import: 
+            import { Drawer } from &#039;pickles&#039;;
+            var myDrawer = new Drawer();
+        ) --&gt;
+&lt;script src=&quot;../../dist/js/pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var myDrawer;
@@ -117,7 +123,19 @@
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-        <h4>Options</h4>
+<pre><code class="prettyprint lang-css">$drawer-width-desktop: 20% !default;
+$drawer-width-phone: 80% !default;
+$drawer-breakpoint: 700px !default;
+$drawer-easing: cubic-bezier(0.075, 0.82, 0.165, 1) !default;
+$drawer-bg: #fff !default;
+$drawer-shadow: 0 0 50px rgba(#000, 0.5) !default;
+$drawer-content-opacity: 0.25 !default;
+$drawer-hamburger-color: #333 !default;
+$drawer-hamburger-width: 30px !default;
+$drawer-hamburger-bar-height: 2px !default;
+$drawer-hamburger-bar-gap: 6px !default;
+$drawer-hamburger-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
+</code></pre>        <h4>Options</h4>
         <pre>
             <code class="prettyprint lang-json" data-options="myDrawer.options"></code>
         </pre>

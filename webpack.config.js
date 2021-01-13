@@ -1,12 +1,11 @@
 import webpack from 'webpack';
 import pkg from './package.json';
 var pkgName = pkg.name.charAt(0).toUpperCase() + pkg.name.slice(1);
-var banner = `
-   ${pkgName} - ${pkg.description}
-   Author: ${pkg.author}
-   Version: v${pkg.version}
-   Url: ${pkg.homepage}
-`;
+var banner = `/*!
+ * ${pkgName} v${pkg.version}
+ * Copyright (c) ${new Date().getFullYear()} ${pkg.author} (${pkg.homepage})
+ * @license MIT
+ */`;
 
 module.exports = {
   output: {
@@ -37,6 +36,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.BannerPlugin(banner)
+    new webpack.BannerPlugin({ banner, raw: true })
   ]
 };

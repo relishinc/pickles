@@ -47,8 +47,11 @@
         </div>
     </div>
     
-    <!-- Load the JS library (or use an ES6 import) -->
-    <script src="../../dist/js/Pickles.js"></script>
+    <!-- Load the JS library (or use an ES6 import: 
+        import { Modal } from 'pickles';
+        var myModal = new Modal();
+    ) -->
+    <script src="../../dist/js/pickles.js"></script>
     
     <script>
     
@@ -100,8 +103,11 @@
     &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;!-- Load the JS library (or use an ES6 import) --&gt;
-&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Load the JS library (or use an ES6 import: 
+            import { Modal } from &#039;pickles&#039;;
+            var myModal = new Modal();
+        ) --&gt;
+&lt;script src=&quot;../../dist/js/pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var myModal;
@@ -133,7 +139,9 @@
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-        <h4>Options</h4>
+<pre><code class="prettyprint lang-css">$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+$modal-bg-color: #fff !default;
+</code></pre>        <h4>Options</h4>
         <pre>
             <code class="prettyprint lang-json" data-options="myModal.options"></code>
         </pre>

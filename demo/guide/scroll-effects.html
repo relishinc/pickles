@@ -35,8 +35,11 @@
     <div class="tile tile2" data-scroll='{ "y": 150, "opacity": 0, "scale": 0.5 }' data-scroll-start="0" data-scroll-end="0.75"></div>
     <div class="tile tile3" data-scroll='{ "y": 100, "opacity": 0, "rotation": -90 }' data-scroll-start="0" data-scroll-end="0.75"></div>
     
-    <!-- Load the JS library (or use an ES6 import) -->
-    <script src="../../dist/js/Pickles.js"></script>
+    <!-- Load the JS library (or use an ES6 import: 
+        import { ScrollEffects } from 'pickles';
+        var myScrollEffects = new ScrollEffects();
+    ) -->
+    <script src="../../dist/js/pickles.js"></script>
     
     <script>
     
@@ -60,8 +63,11 @@
 &lt;div class=&quot;tile tile2&quot; data-scroll=&#039;{ &quot;y&quot;: 150, &quot;opacity&quot;: 0, &quot;scale&quot;: 0.5 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;tile tile3&quot; data-scroll=&#039;{ &quot;y&quot;: 100, &quot;opacity&quot;: 0, &quot;rotation&quot;: -90 }&#039; data-scroll-start=&quot;0&quot; data-scroll-end=&quot;0.75&quot;&gt;&lt;/div&gt;
 
-&lt;!-- Load the JS library (or use an ES6 import) --&gt;
-&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Load the JS library (or use an ES6 import: 
+            import { ScrollEffects } from &#039;pickles&#039;;
+            var myScrollEffects = new ScrollEffects();
+        ) --&gt;
+&lt;script src=&quot;../../dist/js/pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var myScrollEffects;

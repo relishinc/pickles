@@ -82,7 +82,7 @@ function index() {
 function bundle() {
     return gulp.src(PATHS.entries)
         .pipe(webpack(require('./webpack.config.js')))
-        .pipe($.if(PRODUCTION, $.uglify()
+        .pipe($.if(PRODUCTION, $.uglify({ output: { comments: 'some' } })
             .on('error', e => {
                 console.log(e);
             })

@@ -22,7 +22,7 @@ import { Modal, Lightbox } from 'pickles';
 ```
 ES5 library
 ```
-<script src="pickles/dist/js/Pickles.js"></script>
+<script src="pickles/dist/js/pickles.js"></script>
 ```
 
 ### Loading styles

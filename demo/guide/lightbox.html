@@ -34,8 +34,11 @@
     
     <p>Show me <a href="https://picsum.photos/600/900" title="This is another caption" data-lightbox>one more</a> and then <a href="https://picsum.photos/900/900" title="The 3rd caption" data-lightbox>one last one</a>.</p>
     
-    <!-- Load the JS library (or use an ES6 import) -->
-    <script src="../../dist/js/Pickles.js"></script>
+    <!-- Load the JS library (or use an ES6 import: 
+        import { Lightbox } from 'pickles';
+        var myLightbox = new Lightbox();
+    ) -->
+    <script src="../../dist/js/pickles.js"></script>
     
     <script>
     
@@ -67,8 +70,11 @@
 
 &lt;p&gt;Show me &lt;a href=&quot;https://picsum.photos/600/900&quot; title=&quot;This is another caption&quot; data-lightbox&gt;one more&lt;/a&gt; and then &lt;a href=&quot;https://picsum.photos/900/900&quot; title=&quot;The 3rd caption&quot; data-lightbox&gt;one last one&lt;/a&gt;.&lt;/p&gt;
 
-&lt;!-- Load the JS library (or use an ES6 import) --&gt;
-&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Load the JS library (or use an ES6 import: 
+            import { Lightbox } from &#039;pickles&#039;;
+            var myLightbox = new Lightbox();
+        ) --&gt;
+&lt;script src=&quot;../../dist/js/pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var myLightbox;
@@ -93,7 +99,11 @@
 
 <section class="example-section" title="Config">
         <h4>SASS vars</h4>
-        <h4>Options</h4>
+<pre><code class="prettyprint lang-css">$overlay-bg-color: rgba(#1F1E20, 0.9) !default;
+$caption-text-color: #fff !default;
+$nav-color: $caption-text-color !default;
+$spinner-color: $caption-text-color !default;
+</code></pre>        <h4>Options</h4>
         <pre>
             <code class="prettyprint lang-json" data-options="myLightbox.options"></code>
         </pre>

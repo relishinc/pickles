@@ -32,8 +32,13 @@
     
     <div id="counter"></div>
     
-    <!-- Load the JS library (or use an ES6 import) -->
-    <script src="../../dist/js/Pickles.js"></script>
+    <!-- Load the JS library (or use an ES6 import: 
+        import { ScrollListener } from 'pickles';
+        var myScrollListener = new ScrollListener(() => {
+            ...
+        });
+    ) -->
+    <script src="../../dist/js/pickles.js"></script>
     
     <script>
     
@@ -56,8 +61,13 @@
 
 &lt;div id=&quot;counter&quot;&gt;&lt;/div&gt;
 
-&lt;!-- Load the JS library (or use an ES6 import) --&gt;
-&lt;script src=&quot;../../dist/js/Pickles.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Load the JS library (or use an ES6 import: 
+            import { ScrollListener } from &#039;pickles&#039;;
+            var myScrollListener = new ScrollListener(() =&gt; {
+                ...
+            });
+        ) --&gt;
+&lt;script src=&quot;../../dist/js/pickles.js&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
     var myScrollListener;
