@@ -1,7 +1,8 @@
 import webpack from 'webpack';
 import pkg from './package.json';
+var pkgName = pkg.name.charAt(0).toUpperCase() + pkg.name.slice(1);
 var banner = `
-   ${pkg.name} - ${pkg.description}
+   ${pkgName} - ${pkg.description}
    Author: ${pkg.author}
    Version: v${pkg.version}
    Url: ${pkg.homepage}
@@ -9,7 +10,7 @@ var banner = `
 
 module.exports = {
   output: {
-    library: pkg.name,
+    library: pkgName,
     libraryExport: 'default',
     libraryTarget: 'umd',
     filename: `${pkg.name}.js`
