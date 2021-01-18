@@ -183,7 +183,7 @@ export default class AjaxForms {
                             })
                             .always((response) =&gt; {
                                 form.removeClass(this.options.submittedClass);
-                                form.trigger(`complete.${this.namespace}`);
+                                form.trigger(`complete.${this.namespace}`, [response]);
 
                                 let
                                     message,
@@ -193,11 +193,11 @@ export default class AjaxForms {
                                     message = (response.data &amp;&amp; response.data.message) || &#039;Your submission was received&#039;;
                                     alert = &#039;&lt;div class=&quot;&#039; + this.options.alertClass + &#039; success&quot;&gt;&#039; + message + &#039;&lt;/div&gt;&#039;;
                                     form.trigger(`reset.${this.namespace}`);
-                                    form.trigger(`success.${this.namespace}`);
+                                    form.trigger(`success.${this.namespace}`, [response]);
                                 } else {
                                     message = (response.data &amp;&amp; response.data.message) || &#039;There was a problem – please try again&#039;;
                                     alert = &#039;&lt;div class=&quot;&#039; + this.options.alertClass + &#039; error&quot;&gt;&#039; + message + &#039;&lt;/div&gt;&#039;;
-                                    form.trigger(`error.${this.namespace}`);
+                                    form.trigger(`error.${this.namespace}`, [response]);
                                 }
 
                                 if (form.find(`.${this.options.alertHolderClass}`).length) {

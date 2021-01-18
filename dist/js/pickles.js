@@ -1,5 +1,5 @@
 /*!
- * Pickles v0.2.4
+ * Pickles v0.2.5
  * Copyright (c) 2021 Relish (https://reli.sh)
  * @license MIT
  */
@@ -242,4 +242,4 @@ o.find(".".concat(t.options.alertClass)).remove()}).on("submit.".concat(t.namesp
 // disable input and clear old alerts
 // confirm ajax url exists
 // subit to ajax endpoint
-return o.addClass(t.options.submittedClass),o.trigger("clear.".concat(t.namespace)),a?($.getJSON({url:a,type:"post",data:e}).always(function(e){o.removeClass(t.options.submittedClass),o.trigger("complete.".concat(t.namespace));var n,a;e.success?(n=e.data&&e.data.message||"Your submission was received",a='<div class="'+t.options.alertClass+' success">'+n+"</div>",o.trigger("reset.".concat(t.namespace)),o.trigger("success.".concat(t.namespace))):(n=e.data&&e.data.message||"There was a problem – please try again",a='<div class="'+t.options.alertClass+' error">'+n+"</div>",o.trigger("error.".concat(t.namespace))),o.find(".".concat(t.options.alertHolderClass)).length?o.find(".".concat(t.options.alertHolderClass)).append(a):o.append(a)}),!1):void console.warn("No AJAX url!")})})}}]),t}();e["default"]={Modal:L,Lightbox:D,Drawer:H,AjaxForms:Q,FocusTrap:S,ScrollListener:N,ScrollEffects:_,Appear:M}}])["default"]});
+return o.addClass(t.options.submittedClass),o.trigger("clear.".concat(t.namespace)),a?($.getJSON({url:a,type:"post",data:e}).always(function(e){o.removeClass(t.options.submittedClass),o.trigger("complete.".concat(t.namespace),[e]);var n,a;e.success?(n=e.data&&e.data.message||"Your submission was received",a='<div class="'+t.options.alertClass+' success">'+n+"</div>",o.trigger("reset.".concat(t.namespace)),o.trigger("success.".concat(t.namespace),[e])):(n=e.data&&e.data.message||"There was a problem – please try again",a='<div class="'+t.options.alertClass+' error">'+n+"</div>",o.trigger("error.".concat(t.namespace),[e])),o.find(".".concat(t.options.alertHolderClass)).length?o.find(".".concat(t.options.alertHolderClass)).append(a):o.append(a)}),!1):void console.warn("No AJAX url!")})})}}]),t}();e["default"]={Modal:L,Lightbox:D,Drawer:H,AjaxForms:Q,FocusTrap:S,ScrollListener:N,ScrollEffects:_,Appear:M}}])["default"]});
